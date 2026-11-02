@@ -189,5 +189,6 @@ BigWigs_BossNames_ruRU = {
 	["Zereketh the Unbound"] = "Зерекет Бездонный",
 	["Zuramat the Obliterator"] = "Зурамат Уничтожитель",
 
-	["Hogan Death Herald"] = "Вестник смерти Хогана",
+	["Hogan Death Herald"] = "Вестник смерти Хоган",
+	["Siege of Dalaran"] = "Осада Даларана",
 }

@@ -6,6 +6,10 @@ mod.toggleOptions = { 12345, 12346 }  -- список ID способносте�
 local L = mod:NewLocale("enUS", true)
 if L then
 	L.spell_bar = "Spell (%d)"
+	-- Every id in toggleOptions needs a localized title, otherwise the options
+	-- panel shows blank checkboxes (and, before the Constants.lua guard, errored).
+	L[12345] = "Grave Strike"
+	L[12346] = "Death Herald Cry"
 end
 L = mod:GetLocale()
 

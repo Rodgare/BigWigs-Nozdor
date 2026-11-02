@@ -162,6 +162,12 @@ function BigWigs:GetBossOptionDetails(module, option)
 
 			local L = module:GetLocale(true)
 			local title, description = L[option], L[option .. "_desc"]
+			-- Nozdor 3.3.5: modules can declare a toggle whose locale entry has only a
+			-- title (or only a description) in one locale file, and AceLocale may leave
+			-- holes; never let a nil description reach the gsub below.
+			if description ~= nil and type(description) ~= "string" then
+				description = tostring(description)
+			end
 			if title then
 				if type(title) == "number" then
 					if not description then description = title end -- Allow a nil description to mean the same id as the title, if title is a number.

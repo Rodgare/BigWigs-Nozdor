@@ -15,6 +15,7 @@ local lds = LibStub("BW-LibDualSpec-1.0")
 
 local loader = BigWigsLoader
 local API = BigWigsAPI
+local sort = table.sort
 options.SendMessage = loader.SendMessage
 
 local bwTooltip = CreateFrame("GameTooltip", "BigWigsOptionsTooltip", UIParent, "GameTooltipTemplate")
@@ -633,6 +634,9 @@ end
 
 local function getDefaultToggleOption(scrollFrame, dropdown, module, bossOption)
 	local dbKey, name, desc, icon, alternativeName = BigWigs:GetBossOptionDetails(module, bossOption)
+	-- Nozdor 3.3.5: options without locale title/description must still render
+	if name == nil then name = tostring(dbKey) end
+	if desc == nil then desc = "" end
 
 	local check = AceGUI:Create("CheckBox")
 	check:SetLabel(alternativeName and L.alternativeName:format(name, alternativeName) or name)
@@ -815,7 +819,8 @@ do
 					local spellLink = GetSpellLink(o)
 					if not spellLink then
 						local spellName = GetSpellInfo(o)
-						link = ("\124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r"):format(o, spellName)
+						-- Nozdor 3.3.5: some ids have no name here, guard the format
+						link = ("\124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r"):format(o, spellName or tostring(o))
 						--BigWigs:Error(("Failed to fetch the link for spell id %d, tell the authors."):format(o))
 					else
 						link = spellLink
@@ -1014,7 +1019,11 @@ local function populateToggleOptions(widget, module)
 			header:SetFullWidth(true)
 			scrollFrame:AddChild(header)
 		end
-		scrollFrame:AddChildren(getDefaultToggleOption(scrollFrame, widget, module, option))
+		-- Nozdor 3.3.5: one malformed option must not wipe out the whole boss panel
+		local ok, check, button = pcall(getDefaultToggleOption, scrollFrame, widget, module, option)
+		if ok then
+			scrollFrame:AddChildren(check, button)
+		end
 	end
 	end -- end toggleOptions guard
 	local list = AceGUI:Create("Button")
@@ -1245,6 +1254,7 @@ else
 						[631] = "Цитадель Ледяной Короны", -- Icecrown Citadel
 						[649] = "Испытание крестоносца",   -- Trial of the Crusader
 						[724] = "Рубиновое святилище",     -- Ruby Sanctum
+						[961] = "Осада Даларана",          -- Siege of Dalaran (Nozdor custom)
 						-- WotLK 5-man dungeons
 						[574] = "Крепость Утгард",         -- Utgarde Keep
 						[575] = "Вершина Утгард",          -- Utgarde Pinnacle
