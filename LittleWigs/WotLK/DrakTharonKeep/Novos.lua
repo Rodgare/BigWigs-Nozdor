@@ -33,22 +33,22 @@ function mod:GetOptions()
 	return {
 		"stages",
 		"adds", -- Crystal Handler
-		47346, -- Arcane Field
-		49034, -- Blizzard
-		50089, -- Wrath of Misery
-		59910, -- Summon Minions
+		192640, -- Arcane Field
+		192644, -- Blizzard
+		192647, -- Wrath of Misery
+		192648, -- Summon Minions
 	}, {
 		["stages"] = "general",
 		["adds"] = CL.stage:format(1),
-		[49034] = CL.stage:format(2),
+		[192644] = CL.stage:format(2),
 	}
 end
 
 function mod:OnBossEnable()
 	-- Arcane Field, normal/heroic Blizzard
-	self:Log("SPELL_AURA_APPLIED", "GroundDamage", 47346, 49034, 59854)
-	self:Log("SPELL_PERIODIC_DAMAGE", "GroundDamage", 47346)
-	self:Log("SPELL_PERIODIC_MISSED", "GroundDamage", 47346)
+	self:Log("SPELL_AURA_APPLIED", "GroundDamage", 192640, 192644, 192644)
+	self:Log("SPELL_PERIODIC_DAMAGE", "GroundDamage", 192640)
+	self:Log("SPELL_PERIODIC_MISSED", "GroundDamage", 192640)
 
 	-- Stage 1
 	self:RegisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
@@ -57,11 +57,11 @@ function mod:OnBossEnable()
 	-- Stage 2
 	self:RegisterUnitEvent("UNIT_TARGETABLE_CHANGED", nil, "boss1")
 
-	self:Log("SPELL_AURA_APPLIED", "WrathOfMisery", 50089, 59856) -- normal, heroic
-	self:Log("SPELL_AURA_REMOVED", "WrathOfMiseryRemoved", 50089, 59856)
-	self:Log("SPELL_CAST_SUCCESS", "WrathOfMiseryCastSuccess", 50089, 59856)
+	self:Log("SPELL_AURA_APPLIED", "WrathOfMisery", 192647, 192647) -- normal, heroic
+	self:Log("SPELL_AURA_REMOVED", "WrathOfMiseryRemoved", 192647, 192647)
+	self:Log("SPELL_CAST_SUCCESS", "WrathOfMiseryCastSuccess", 192647, 192647)
 
-	self:Log("SPELL_CAST_SUCCESS", "SummonMinions", 59910)
+	self:Log("SPELL_CAST_SUCCESS", "SummonMinions", 192648)
 end
 
 function mod:OnEngage()
@@ -83,7 +83,7 @@ do
 			local t = GetTime()
 			if t - prev > 1.5 then
 				prev = t
-				self:Message(args.spellId == 59854 and 49034 or args.spellId, "blue", "Alert", CL.you:format(args.spellName))
+				self:Message(args.spellId == 192644 and 192644 or args.spellId, "blue", "Alert", CL.you:format(args.spellName))
 			end
 		end
 	end
@@ -112,17 +112,17 @@ end
 function mod:UNIT_TARGETABLE_CHANGED(_, unit)
 	if UnitCanAttack("player", unit) then
 		self:Message("stages", "cyan", nil, CL.stage:format(2), false)
-		self:CDBar(50089, 6) -- Wrath of Misery
+		self:CDBar(192647, 6) -- Wrath of Misery
 		if not self:Normal() then
-			self:CDBar(59910, 1.5) -- Summon Minions
+			self:CDBar(192648, 1.5) -- Summon Minions
 		end
 	end
 end
 
 function mod:WrathOfMisery(args)
 	if self:Me(args.destGUID) or self:Healer() or self:Dispeller("curse") then
-		self:TargetMessage(50089, args.destName, "orange")
-		self:TargetBar(50089, 8, args.destName)
+		self:TargetMessage(192647, args.destName, "orange")
+		self:TargetBar(192647, 8, args.destName)
 	end
 end
 
@@ -131,7 +131,7 @@ function mod:WrathOfMiseryRemoved(args)
 end
 
 function mod:WrathOfMiseryCastSuccess()
-	self:CDBar(50089, 8.5) -- 8.5 - 15.8s
+	self:CDBar(192647, 8.5) -- 8.5 - 15.8s
 end
 
 function mod:SummonMinions(args)

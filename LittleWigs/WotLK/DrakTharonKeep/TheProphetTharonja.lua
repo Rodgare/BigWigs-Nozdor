@@ -15,18 +15,18 @@ mod.engageId = 1975
 function mod:GetOptions()
 	return {
 		"stages",
-		59971, -- Rain of Fire
-		49527, -- Curse of Life
+		192662, -- Rain of Fire
+		192660, -- Curse of Life
 	}
 end
 
 function mod:OnBossEnable()
 	self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
-	self:Log("SPELL_AURA_APPLIED", "RainOfFire", 49518, 59971) -- normal, heroic
-	self:Log("SPELL_PERIODIC_DAMAGE", "RainOfFire", 49518, 59971)
-	self:Log("SPELL_PERIODIC_MISSED", "RainOfFire", 49518, 59971)
-	self:Log("SPELL_AURA_APPLIED", "CurseOfLife", 49527, 59972) -- normal, heroic
-	self:Log("SPELL_AURA_REMOVED", "CurseOfLifeRemoved", 49527, 59972)
+	self:Log("SPELL_AURA_APPLIED", "RainOfFire", 192662, 192662) -- normal, heroic
+	self:Log("SPELL_PERIODIC_DAMAGE", "RainOfFire", 192662, 192662)
+	self:Log("SPELL_PERIODIC_MISSED", "RainOfFire", 192662, 192662)
+	self:Log("SPELL_AURA_APPLIED", "CurseOfLife", 192660, 192660) -- normal, heroic
+	self:Log("SPELL_AURA_REMOVED", "CurseOfLifeRemoved", 192660, 192660)
 	self:Log("SPELL_CAST_SUCCESS", "DecayFlesh", 49356)
 	self:Log("SPELL_CAST_SUCCESS", "ReturnFlesh", 53463)
 end
@@ -59,7 +59,7 @@ do
 			local t = GetTime()
 			if t - prev > 1.5 then
 				prev = t
-				self:Message(59971, "blue", "Alert", CL.you:format(args.spellName))
+				self:Message(192662, "blue", "Alert", CL.you:format(args.spellName))
 			end
 		end
 	end
@@ -67,8 +67,8 @@ end
 
 function mod:CurseOfLife(args)
 	if self:Me(args.destGUID) or self:Healer() then -- despite its name, it's not actually a curse
-		self:TargetMessage(49527, args.destName, "orange")
-		self:TargetBar(49527, 9, args.destName)
+		self:TargetMessage(192660, args.destName, "orange")
+		self:TargetBar(192660, 9, args.destName)
 	end
 end
 

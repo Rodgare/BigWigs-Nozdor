@@ -5,6 +5,7 @@
 <Script file="Novos.lua"/>
 <Script file="KingDred.lua"/>
 <Script file="TheProphetTharonja.lua"/>
+<Script file="Trash.lua"/>
 
 <Include file="Options\options.xml"/>
 
