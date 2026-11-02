@@ -273,14 +273,13 @@ if not C_Spell.RequestLoadSpellData then
 	C_Spell.RequestLoadSpellData = function() end
 end
 
--- C_NamePlate, C_Scenario, C_BattleNet, C_FriendList, C_UIWidgetManager:
--- no 3.3.5 equivalent; any method returns nil so callers never error.
-if not C_NamePlate then
-	C_NamePlate = setmetatable({}, { __index = function(self, k) self[k] = function() return nil end; return self[k] end })
-end
-if not C_NamePlate.GetNamePlateForUnit then
-	C_NamePlate.GetNamePlateForUnit = function() return nil end
-end
+-- ElvUI nameplates flip onto the modern driver path whenever C_NamePlate is
+-- truthy (INP = C_NamePlate and true). Stubbing C_NamePlate here made INP
+-- true while GetNamePlateForUnit/GetNamePlates returned nil, so ElvUI's
+-- NAME_PLATE_UNIT_ADDED never found a frame and every nameplate disappeared.
+-- Leave the client namespace absent so ElvUI keeps its working 3.3.5 fallback.
+-- (C_Scenario, C_BattleNet, C_FriendList, C_UIWidgetManager have no such
+-- consumer, so they are still stubbed to return nil without erroring.)
 for _, ns in next, { "C_Scenario", "C_BattleNet", "C_FriendList", "C_UIWidgetManager" } do
 	if not _G[ns] then
 		_G[ns] = setmetatable({}, { __index = function(self, k) self[k] = function() return nil end; return self[k] end })

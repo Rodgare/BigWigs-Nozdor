@@ -52,7 +52,7 @@ local applyTimelineLayout
 local applyClassicLayout
 local timelineStyleSet
 local UnitGUID = UnitGUID
-local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local GetNamePlateForUnit = C_NamePlate and C_NamePlate.GetNamePlateForUnit or nil -- Nozdor: client has no C_NamePlate; nameplate-relative bars are skipped
 
 local clickHandlers = {}
 
@@ -1631,7 +1631,7 @@ do
 	rearrangeNameplateBars = function(guid)
 		local unit = findUnitByGUID(guid)
 		if not unit then return end
-		local nameplate = GetNamePlateForUnit(unit)
+		local nameplate = GetNamePlateForUnit and GetNamePlateForUnit(unit) or nil
 		local unitBars = nameplateBars[guid]
 		if unitBars then
 			local sorted = getOrder(nameplateBars[guid])
@@ -2371,9 +2371,11 @@ function plugin:CreateBar(module, key, text, time, icon, isApprox, unitGUID)
 		width, height = db.nameplateWidth, db.nameplateHeight
 		if db.nameplateAutoWidth then
 			local unit = findUnitByGUID(unitGUID)
-			if unit then
+			if unit and GetNamePlateForUnit then
 				local nameplate = GetNamePlateForUnit(unit)
-				width = nameplate:GetWidth()
+				if nameplate then
+					width = nameplate:GetWidth()
+				end
 			end
 		end
 	else
@@ -2455,6 +2457,7 @@ function plugin:BigWigs_StartBar(_, module, key, text, time, icon, isApprox)
 end
 
 function plugin:BigWigs_StartNameplateBar(_, module, key, text, time, icon, isApprox, unitGUID)
+	if not GetNamePlateForUnit then return end -- Nozdor: no nameplate API, feature unavailable
 	if not text then text = "" end
 	self:StopNameplateBar(nil, module, text, unitGUID)
 
@@ -2724,9 +2727,11 @@ function plugin:NAME_PLATE_UNIT_ADDED(_, unit)
 	if not unitBars then return end
 	for _, barInfo in next, unitBars do
 		local width, height = db.nameplateWidth, db.nameplateHeight
-		if db.nameplateAutoWidth then
+		if db.nameplateAutoWidth and GetNamePlateForUnit then
 			local nameplate = GetNamePlateForUnit(unit)
-			width = nameplate:GetWidth()
+			if nameplate then
+				width = nameplate:GetWidth()
+			end
 		end
 		local time = barInfo.paused and barInfo.remaining or barInfo.exp - GetTime()
 		local bar = plugin:CreateBar(
