@@ -1,0 +1,141 @@
+==== A) BOSSES (INSTANCE_ENCOUNTER_ENGAGE_UNIT) ====
+  mobId=53000   name=Вестник смерти Хоган                     guid=0xF13000CF080000BD
+  mobId=53000   name=Вестник смерти Хоган                     guid=0xF13000CF080000BD
+  mobId=53000   name=Вестник смерти Хоган                     guid=0xF13000CF080000BD
+  mobId=53000   name=Вестник смерти Хоган                     guid=0xF13000CF080000BD
+  mobId=53000   name=Вестник смерти Хоган                     guid=0xF13000CF080000BD
+  mobId=53000   name=Вестник смерти Хоган                     guid=0xF13000CF080000BD
+
+==== B) UNITS by cast-count ====
+casts    unit                                           key             
+528      Озорнойузбек  [PLAYER]                         P:Озорнойузбек
+448      Орива  [PLAYER]                                P:Орива
+389      Coda  [PLAYER]                                 P:Coda
+381      Терпила  [PLAYER]                              P:Терпила
+372      Stripedrat  [PLAYER]                           P:Stripedrat
+362      Aimonfae  [PLAYER]                             P:Aimonfae
+295      Pickmehell  [PLAYER]                           P:Pickmehell
+287      Бычокторчок  [PLAYER]                          P:Бычокторчок
+286      Юраслышитзов  [PLAYER]                         P:Юраслышитзов
+279      Баунс  [PLAYER]                                P:Баунс
+272      Свобода  [PLAYER]                              P:Свобода
+255      Бабайка  [PLAYER]                              P:Бабайка
+242      M:UNKNOWN:Волк                                 M:UNKNOWN:Волк
+240      Ленамассаж  [PLAYER]                           P:Ленамассаж
+237      Опустошенный  [PLAYER]                         P:Опустошенный
+232      Kodzakura  [PLAYER]                            P:Kodzakura
+231      M:UNKNOWN:Gelpit                               M:UNKNOWN:Gelpit
+228      Валдисалкаш  [PLAYER]                          P:Валдисалкаш
+222      Аскольт  [PLAYER]                              P:Аскольт
+220      Сушилда  [PLAYER]                              P:Сушилда
+217      Хатяко  [PLAYER]                               P:Хатяко
+198      Эмопанкбой  [PLAYER]                           P:Эмопанкбой
+197      Азатайталиев  [PLAYER]                         P:Азатайталиев
+196      Леа  [PLAYER]                                  P:Леа
+195      Фаргрим  [PLAYER]                              P:Фаргрим
+173      Amamoon  [PLAYER]                              P:Amamoon
+165      Zerodivision  [PLAYER]                         P:Zerodivision
+139      M:UNKNOWN:Элементаль воды                      M:UNKNOWN:Элементаль воды
+118      Маминпирожок  [PLAYER]                         P:Маминпирожок
+88       M:UNKNOWN:Восставший скелет                    M:UNKNOWN:Восставший скелет
+57       M:UNKNOWN:Хати                                 M:UNKNOWN:Хати
+56       M:UNKNOWN:Blackwing Trigger                    M:UNKNOWN:Blackwing Trigger
+53       M:UNKNOWN:Большой элементаль огня              M:UNKNOWN:Большой элементаль огня
+38       M:UNKNOWN:Ядовитая змея                        M:UNKNOWN:Ядовитая змея
+33       M:UNKNOWN:Гадюка                               M:UNKNOWN:Гадюка
+24       M:UNKNOWN:Вурдалак из войска мертвых           M:UNKNOWN:Вурдалак из войска мертвых
+19       M:UNKNOWN:Восставший рыцарь смерти             M:UNKNOWN:Восставший рыцарь смерти
+19       Фрейзер  [PLAYER]                              P:Фрейзер
+17       M:UNKNOWN:Зеркальное изображение               M:UNKNOWN:Зеркальное изображение
+17       Agrikyltyra  [PLAYER]                          P:Agrikyltyra
+16       Восставший скелет                              M053004
+12       Ауф  [PLAYER]                                  P:Ауф
+11       Кир  [PLAYER]                                  P:Кир
+10       Вестник смерти Хоган                           M053000
+10       M:UNKNOWN:Мясной голем                         M:UNKNOWN:Мясной голем
+6        M:UNKNOWN:Тотем элементаля огня                M:UNKNOWN:Тотем элементаля огня
+6        Восставший рыцарь смерти                       M053008
+5        Мясной голем                                   M053012
+4        Глосу  [PLAYER]                                P:Глосу
+2        nil  [PLAYER]                                  P:nil
+2        Ву  [PLAYER]                                   P:Ву
+1        M:UNKNOWN:Дениспушилин                         M:UNKNOWN:Дениспушилин
+1        Умножунаноль  [PLAYER]                         P:Умножунаноль
+1        M:UNKNOWN:Джози Бирч                           M:UNKNOWN:Джози Бирч
+1        Невижузла  [PLAYER]                            P:Невижузла
+1        M:UNKNOWN:Олисарра Добрая                      M:UNKNOWN:Олисарра Добрая
+
+==== C) ABILITIES per mob (for timers) ====
+
+-- M:UNKNOWN:Волк (casts=242) M:UNKNOWN:Волк
+    spellId=52474  Укус                                     x206  t=559.4..1400.8  ~1.5s between
+    spellId=64495  Неистовый вой                            x16   t=557.6..1378.1  ~28.0s between
+    spellId=53401  Раж                                      x14   t=557.7..1392.1  ~31.5s between
+    spellId=53434  Зов дикой природы                        x6    t=547.8..1267.9  ~11.6s between
+
+-- M:UNKNOWN:Gelpit (casts=231) M:UNKNOWN:Gelpit
+    spellId=47964  Огненная стрела                          x210  t=558.2..1402.2  ~1.9s between
+    spellId=47983  Огненный щит                             x12   t=562.1..1284.2  ~3.4s between
+    spellId=4511   Бегство в астрал                         x5    t=772.7..1549.5  ~186.0s between
+    spellId=47982  Кровавый союз                            x4    t=772.7..1549.5  ~362.0s between
+
+-- M:UNKNOWN:Элементаль воды (casts=139) M:UNKNOWN:Элементаль воды
+    spellId=72898  Водяная стрела                           x139  t=562.6..1493.6  ~2.4s between
+
+-- M:UNKNOWN:Восставший скелет (casts=88) M:UNKNOWN:Восставший скелет
+    spellId=87007  Костяной осколок                         x88   t=604.1..1489.0  ~0.0s between
+
+-- M:UNKNOWN:Хати (casts=57) M:UNKNOWN:Хати
+    spellId=160451 Укус бури                                x57   t=561.7..1401.6  ~2.0s between
+
+-- M:UNKNOWN:Blackwing Trigger (casts=56) M:UNKNOWN:Blackwing Trigger
+    spellId=57879  Эффект змеиной ловушки                   x56   t=558.4..1438.8  ~0.0s between
+
+-- M:UNKNOWN:Большой элементаль огня (casts=53) M:UNKNOWN:Большой элементаль огня
+    spellId=12470  Кольцо огня                              x53   t=578.3..1378.2  ~6.3s between
+
+-- M:UNKNOWN:Ядовитая змея (casts=38) M:UNKNOWN:Ядовитая змея
+    spellId=25810  Дурманящий яд                            x25   t=559.1..1439.9  ~2.1s between
+    spellId=30981  Калечащий яд                             x13   t=562.6..1279.1  ~2.4s between
+
+-- M:UNKNOWN:Гадюка (casts=33) M:UNKNOWN:Гадюка
+    spellId=25810  Дурманящий яд                            x23   t=559.6..1439.6  ~2.2s between
+    spellId=30981  Калечащий яд                             x10   t=562.4..1439.5  ~5.6s between
+
+-- M:UNKNOWN:Вурдалак из войска мертвых (casts=24) M:UNKNOWN:Вурдалак из войска мертвых
+    spellId=47468  Цапнуть                                  x24   t=698.7..1468.0  ~1.6s between
+
+-- M:UNKNOWN:Восставший рыцарь смерти (casts=19) M:UNKNOWN:Восставший рыцарь смерти
+    spellId=87010  Темный рассекающий удар                  x19   t=608.1..1486.0  ~0.0s between
+
+-- M:UNKNOWN:Зеркальное изображение (casts=17) M:UNKNOWN:Зеркальное изображение
+    spellId=59637  Огненный взрыв                           x17   t=969.5..1456.7  ~0.1s between
+
+-- Восставший скелет (casts=16) M053004
+    spellId=87007  Костяной осколок                         x16   t=604.1..1489.0  ~7.0s between
+
+-- Вестник смерти Хоган (casts=10) M053000
+    spellId=87005  Восстаньте                               x10   t=596.1..1474.0  ~62.8s between
+
+-- M:UNKNOWN:Мясной голем (casts=10) M:UNKNOWN:Мясной голем
+    spellId=87013  Костяной сокрушитель                     x5    t=606.1..1315.2  ~55.4s between
+    spellId=87014  Размашистый удар                         x5    t=610.2..1440.0  ~91.8s between
+
+-- M:UNKNOWN:Тотем элементаля огня (casts=6) M:UNKNOWN:Тотем элементаля огня
+    spellId=32982  Тотем элементаля огня                    x6    t=558.9..1276.6  ~8.8s between
+
+-- Восставший рыцарь смерти (casts=6) M053008
+    spellId=87010  Темный рассекающий удар                  x6    t=959.1..1486.0  ~49.5s between
+
+-- Мясной голем (casts=5) M053012
+    spellId=87014  Размашистый удар                         x3    t=610.2..1367.7  ~378.8s between
+    spellId=87013  Костяной сокрушитель                     x2    t=606.1..957.2
+
+-- M:UNKNOWN:Дениспушилин (casts=1) M:UNKNOWN:Дениспушилин
+    spellId=24453  Крадущийся зверь                         x1    t=1596.7..1596.7
+
+-- M:UNKNOWN:Джози Бирч (casts=1) M:UNKNOWN:Джози Бирч
+    spellId=746    Первая помощь                            x1    t=1849.0..1849.0
+
+-- M:UNKNOWN:Олисарра Добрая (casts=1) M:UNKNOWN:Олисарра Добрая
+    spellId=746    Первая помощь                            x1    t=1856.2..1856.2
