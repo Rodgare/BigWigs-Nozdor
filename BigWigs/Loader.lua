@@ -168,41 +168,41 @@ do
 		[249] = wotlk, -- Onyxia's Lair
 		[961] = wotlk, -- Siege of Dalaran (Nozdor custom)
 		--[[ BigWigs: Cataclysm ]]--
-		[671] = cata, -- The Bastion of Twilight
-		[669] = cata, -- Blackwing Descent
-		[754] = cata, -- Throne of the Four Winds
-		[757] = cata, -- Baradin Hold
-		[720] = cata, -- Firelands
-		[967] = cata, -- Dragon Soul
+		-- [671] = cata, -- The Bastion of Twilight
+		-- [669] = cata, -- Blackwing Descent
+		-- [754] = cata, -- Throne of the Four Winds
+		-- [757] = cata, -- Baradin Hold
+		-- [720] = cata, -- Firelands
+		-- [967] = cata, -- Dragon Soul
 		--[[ BigWigs: Mists of Pandaria ]]--
-		[-424] = mop, -- Pandaria (Fake Menu)
-		[1009] = mop, -- Heart of Fear
-		[996] = mop, -- Terrace of Endless Spring
-		[1008] = mop, -- Mogu'shan Vaults
-		[1098] = mop, -- Throne of Thunder
-		[1136] = mop, -- Siege of Orgrimmar
+		-- [-424] = mop, -- Pandaria (Fake Menu)
+		-- [1009] = mop, -- Heart of Fear
+		-- [996] = mop, -- Terrace of Endless Spring
+		-- [1008] = mop, -- Mogu'shan Vaults
+		-- [1098] = mop, -- Throne of Thunder
+		-- [1136] = mop, -- Siege of Orgrimmar
 		--[[ BigWigs: Warlords of Draenor ]]--
-		[-572] = wod, -- Draenor (Fake Menu)
-		[1228] = wod, -- Highmaul
-		[1205] = wod, -- Blackrock Foundry
-		[1448] = wod, -- Hellfire Citadel
+		-- [-572] = wod, -- Draenor (Fake Menu)
+		-- [1228] = wod, -- Highmaul
+		-- [1205] = wod, -- Blackrock Foundry
+		-- [1448] = wod, -- Hellfire Citadel
 		--[[ BigWigs: Legion ]]--
-		[-619] = l, -- Broken Isles (Fake Menu)
-		[1520] = l, -- The Emerald Nightmare
-		[1648] = l, -- Trial of Valor
-		[1530] = l, -- The Nighthold
-		[1676] = l, -- Tomb of Sargeras
-		[1712] = l, -- Antorus, the Burning Throne
-		[1779] = l, -- Invasion Points
+		-- [-619] = l, -- Broken Isles (Fake Menu)
+		-- [1520] = l, -- The Emerald Nightmare
+		-- [1648] = l, -- Trial of Valor
+		-- [1530] = l, -- The Nighthold
+		-- [1676] = l, -- Tomb of Sargeras
+		-- [1712] = l, -- Antorus, the Burning Throne
+		-- [1779] = l, -- Invasion Points
 		--[[ BigWigs: Battle for Azeroth ]]--
-		[-947] = bfa, -- Azeroth (Fake Menu)
-		[1861] = bfa, -- Uldir
-		[2070] = bfa, -- Battle Of Dazar'alor
-		[2096] = bfa, -- Crucible of Storms
-		[2164] = bfa, -- The Eternal Palace
-		[2217] = bfa, -- Ny'alotha, the Waking City
+		-- [-947] = bfa, -- Azeroth (Fake Menu)
+		-- [1861] = bfa, -- Uldir
+		-- [2070] = bfa, -- Battle Of Dazar'alor
+		-- [2096] = bfa, -- Crucible of Storms
+		-- [2164] = bfa, -- The Eternal Palace
+		-- [2217] = bfa, -- Ny'alotha, the Waking City
 		--[[ BigWigs: Shadowlands ]]--
-		[2296] = s, -- Castle Nathria
+		-- [2296] = s, -- Castle Nathria
 
 		--[[ LittleWigs: Classic ]]--
 		[33] = lw_c, -- Shadowfang Keep
@@ -256,7 +256,9 @@ do
 		--[[ LittleWigs: Mists of Pandaria ]]--
 		[959] = lw_mop, -- Shado-Pan Monastery
 		[960] = lw_mop, -- Temple of the Jade Serpent
-		[961] = lw_mop, -- Stormstout Brewery
+		-- [961] is Siege of Dalaran (Nozdor custom raid) on this client, which
+		-- collides with retail's Stormstout Brewery id. The WotLK entry above wins;
+		-- LittleWigs has no MoP modulepack installed here anyway.
 		[962] = lw_mop, -- Gate of the Setting Sun
 		[994] = lw_mop, -- Mogu'shan Palace
 		[1001] = lw_mop, -- Scarlet Halls

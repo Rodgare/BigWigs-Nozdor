@@ -683,7 +683,7 @@ local function getDefaultToggleOption(scrollFrame, dropdown, module, bossOption)
 	end
 
 	if type(dbKey) == "string" and dbKey:find("^custom_") then
-		return check
+		return check   -- no ">>" button for custom toggles
 	end
 
 	local flagIcons = {}
@@ -1019,10 +1019,12 @@ local function populateToggleOptions(widget, module)
 			header:SetFullWidth(true)
 			scrollFrame:AddChild(header)
 		end
-		-- Nozdor 3.3.5: one malformed option must not wipe out the whole boss panel
+		-- Nozdor 3.3.5: one malformed option must not wipe out the whole boss panel.
+		-- AddChildren(nil) would crash inside AceGUI, so add only non-nil widgets.
 		local ok, check, button = pcall(getDefaultToggleOption, scrollFrame, widget, module, option)
 		if ok then
-			scrollFrame:AddChildren(check, button)
+			if check then scrollFrame:AddChild(check) end
+			if button then scrollFrame:AddChild(button) end
 		end
 	end
 	end -- end toggleOptions guard
@@ -1324,7 +1326,7 @@ else
 				for i = 1, #treeTbl do -- Sort each expansion's zones alphabetically
 					local children = treeTbl[i] and treeTbl[i].children
 					if children then
-						sort(children, function(a, b) return a.text < b.text end)
+						sort(children, function(a, b) return tostring(a.text) < tostring(b.text) end)
 					end
 				end
 

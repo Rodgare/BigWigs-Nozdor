@@ -1,4 +1,4 @@
-local mod = BigWigs:NewBoss("Hogan Death Herald", 961, 53000) -- zone 961 = Осада Даларана
+local mod = BigWigs:NewBoss("Hogan Death Herald", 961, 53000)
 if not mod then return end
 mod:RegisterEnableMob(53000)  -- mob ID босса (из твоего лога GUID ...080000BD / ID)
 mod.toggleOptions = { 12345, 12346 }  -- список ID способностей для чекбоксов
