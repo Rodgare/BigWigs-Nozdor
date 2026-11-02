@@ -1105,6 +1105,16 @@ function boss:SpellName(spellId)
 	return spells[spellId]
 end
 
+--- True for empty/secret chat messages that boss trigger handlers should skip.
+-- Upstream helper lost in the Nozdor port; several WotLK modules (Ulduar,
+-- Coliseum, Citadel) call self:IsSecret(msg) as the first check in their
+-- CHAT_MSG handlers, so it must exist to avoid a nil-call crash.
+-- @string msg the chat message to inspect
+-- @return boolean
+function boss:IsSecret(msg)
+	return (not msg) or (type(msg) ~= "string") or (msg == "") or (msg == "|7") or (msg == "|8")
+end
+
 --- Check if a GUID is you.
 -- @string guid player GUID
 -- @return boolean

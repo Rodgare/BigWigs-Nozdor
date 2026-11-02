@@ -188,4 +188,6 @@ BigWigs_BossNames_ruRU = {
 	["Yogg-Saron"] = "Йогг-Сарон",
 	["Zereketh the Unbound"] = "Зерекет Бездонный",
 	["Zuramat the Obliterator"] = "Зурамат Уничтожитель",
+
+	["Hogan Death Herald"] = "Вестник смерти Хогана",
 }

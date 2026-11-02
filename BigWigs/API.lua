@@ -148,14 +148,25 @@ end
 --------------------------------------------------------------------------------
 
 -- C_ChatInfo: the BigWigs/LittleWigs set calls SendAddonMessage in the classic
--- 3.3.5 order (prefix, message, distribution [,target]).
+-- 3.3.5 order (prefix, message, distribution [,target]). BigWigsLoader binds
+-- C_ChatInfo.SendAddonMessage as the upvalue every plugin sends through, so a
+-- single wrapper here fixes every sender.
+--
+-- The modern Nozdor AddonComm has no "INSTANCE_CHAT" distribution and throws
+-- "Unknown addon chat type" the moment it is passed (BigWigs uses it for
+-- instance raid-sync/version queries). AddonComm hooks the raw global
+-- SendAddonMessage, which may not exist when this file loads, so normalize the
+-- distribution here and always dispatch through the *live* global at call time:
+-- RAID for a raid instance, otherwise PARTY, which the client accepts.
 if not C_ChatInfo then
 	C_ChatInfo = {}
 end
-if not C_ChatInfo.SendAddonMessage then
-	local send = SendAddonMessage
-	C_ChatInfo.SendAddonMessage = function(prefix, message, distribution, target)
-		if send then send(prefix, message, distribution, target) end
+C_ChatInfo.SendAddonMessage = function(prefix, message, distribution, target)
+	if distribution == "INSTANCE_CHAT" then
+		distribution = IsInRaid() and "RAID" or "PARTY"
+	end
+	if SendAddonMessage then
+		SendAddonMessage(prefix, message, distribution, target)
 	end
 end
 if not C_ChatInfo.RegisterAddonMessagePrefix then

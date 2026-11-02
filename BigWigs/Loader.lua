@@ -166,6 +166,7 @@ do
 		[631] = wotlk, -- Icecrown Citadel
 		[615] = wotlk, -- The Obsidian Sanctum
 		[249] = wotlk, -- Onyxia's Lair
+		[961] = wotlk, -- Siege of Dalaran (Nozdor custom)
 		--[[ BigWigs: Cataclysm ]]--
 		[671] = cata, -- The Bastion of Twilight
 		[669] = cata, -- Blackwing Descent
