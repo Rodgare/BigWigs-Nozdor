@@ -85,7 +85,11 @@ end
 
 local tooltipFunctions = {}
 local next, tonumber, strsplit = next, tonumber, strsplit
-local SendAddonMessage, Ambiguate, CTimerAfter, CTimerNewTicker = C_ChatInfo.SendAddonMessage, Ambiguate, C_Timer.After, C_Timer.NewTicker
+local SendAddonMessage, CTimerAfter, CTimerNewTicker = C_ChatInfo.SendAddonMessage, C_Timer.After, C_Timer.NewTicker
+local function Ambiguate(name)
+	local fullname, realm = strsplit("-", name)
+	return realm and fullname or name
+end
 local GetInstanceInfo, GetBestMapForUnit, GetMapInfo = GetInstanceInfo, C_Map.GetBestMapForUnit, C_Map.GetMapInfo
 local UnitName = UnitName
 
