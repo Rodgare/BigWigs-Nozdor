@@ -1,4 +1,4 @@
-local mod = BigWigs:NewBoss("Hogan Death Herald", 961, 53046)
+local mod = BigWigs:NewBoss("Overseer Malkren", 961, 53046)
 if not mod then return end
 mod:RegisterEnableMob(53046)
 mod.toggleOptions = {

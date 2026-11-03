@@ -1,7 +1,7 @@
 local mod = BigWigs:NewBoss("Hogan Death Herald", 961, 53000)
 if not mod then return end
 mod:RegisterEnableMob(53000)
-mod.toggleOptions = { 
+mod.toggleOptions = {
     87005,
     87027,
     {87038, "ME_ONLY", "FLASH"},
