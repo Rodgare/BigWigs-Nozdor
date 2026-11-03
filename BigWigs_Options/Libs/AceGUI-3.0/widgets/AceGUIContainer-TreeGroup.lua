@@ -77,12 +77,15 @@ local function UpdateButton(button, treeline, selected, canExpand, isExpanded)
 	end
 	button.level = level
 	if ( level == 1 ) then
-		button:SetNormalFontObject("GameFontNormal")
-		button:SetHighlightFontObject("GameFontHighlight")
+		-- 3.3.5: SetNormalFontObject needs a Font object, not a name string.
+		-- Passing "GameFontNormal" left every tree node without a font, so the
+		-- whole BigWigs menu rendered as empty rows.
+		button:SetNormalFontObject(_G["GameFontNormal"])
+		button:SetHighlightFontObject(_G["GameFontHighlight"])
 		button.text:SetPoint("LEFT", (icon and 16 or 0) + 8, 2)
 	else
-		button:SetNormalFontObject("GameFontHighlightSmall")
-		button:SetHighlightFontObject("GameFontHighlightSmall")
+		button:SetNormalFontObject(_G["GameFontHighlightSmall"])
+		button:SetHighlightFontObject(_G["GameFontHighlightSmall"])
 		button.text:SetPoint("LEFT", (icon and 16 or 0) + 8 * level, 2)
 	end
 
@@ -321,13 +324,30 @@ local methods = {
 
 	["CreateButton"] = function(self)
 		local num = AceGUI:GetNextWidgetNum("TreeGroupButton")
-		local button = CreateFrame("Button", ("AceGUI30TreeButton%d"):format(num), self.treeframe, "OptionsListButtonTemplate")
+		-- 3.3.5 has no "OptionsListButtonTemplate" (MoP+). Creating a button
+		-- from it yields a bare frame without .text/.toggle, so every tree
+		-- entry rendered blank. Build the children explicitly instead.
+		local button = CreateFrame("Button", ("AceGUI30TreeButton%d"):format(num), self.treeframe)
 		button.obj = self
+		button:SetHeight(16)
+		button:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
+
+		local text = button:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+		text:SetJustifyH("LEFT")
+		text:SetJustifyV("MIDDLE")
+		text:SetHeight(14) -- Prevents text wrapping
+		button.text = text
 
 		local icon = button:CreateTexture(nil, "OVERLAY")
 		icon:SetWidth(14)
 		icon:SetHeight(14)
 		button.icon = icon
+
+		local toggle = CreateFrame("Button", nil, button)
+		toggle:SetWidth(16)
+		toggle:SetHeight(16)
+		toggle:SetPoint("LEFT", -16, 0)
+		button.toggle = toggle
 
 		button:SetScript("OnClick",Button_OnClick)
 		button:SetScript("OnDoubleClick", Button_OnDoubleClick)
@@ -336,8 +356,6 @@ local methods = {
 
 		button.toggle.button = button
 		button.toggle:SetScript("OnClick",Expand_OnClick)
-
-		button.text:SetHeight(14) -- Prevents text wrapping
 
 		return button
 	end,

@@ -370,33 +370,8 @@ if not IsEncounterInProgress then
 	IsEncounterInProgress = function() return (UnitAffectingCombat and UnitAffectingCombat("player")) and true or false end
 end
 
--- 3.3.5 frames have no IsEventRegistered (added in MoP). Plugins such as
--- BossBlock call it on every boss engage, and a nil call there threw inside
--- BigWigs_OnBossEngage, killing all boss indicators. Track registrations in a
--- side table so the compatibility shim answers correctly.
-do
-	local registered = setmetatable({}, { __mode = "k" })
-	local originalRegister = Frame.RegisterEvent
-	local originalUnregister = Frame.UnregisterEvent
-	local originalUnregisterAll = Frame.UnregisterAllEvents
-	Frame.RegisterEvent = function(self, event)
-		if registered[self] == nil then registered[self] = {} end
-		registered[self][event] = true
-		return originalRegister(self, event)
-	end
-	Frame.UnregisterEvent = function(self, event)
-		if registered[self] then registered[self][event] = nil end
-		return originalUnregister(self, event)
-	end
-	Frame.UnregisterAllEvents = function(self)
-		registered[self] = nil
-		if originalUnregisterAll then
-			return originalUnregisterAll(self)
-		end
-	end
-	if not Frame.IsEventRegistered then
-		Frame.IsEventRegistered = function(self, event)
-			return (registered[self] and registered[self][event]) and true or false
-		end
-	end
-end
+-- 3.3.5 has no IsEventRegistered (added in MoP). It is NOT added to the global
+-- frame prototype here: patching RegisterEvent/UnregisterEvent for every widget
+-- in the game also patched every ElvUI frame, which broke ElvUI's settings
+-- (missing menu entries / unrendered text). BossBlock, the only caller, uses a
+-- local fallback instead.

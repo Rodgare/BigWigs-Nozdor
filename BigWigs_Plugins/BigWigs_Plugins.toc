@@ -7,7 +7,7 @@
 ## Title-frFR: BigWigs [|cffeda55fPlugins|r]
 ## Title-itIT: BigWigs [|cffeda55fPlugins|r]
 ## Title-koKR: BigWigs [|cffeda55fн”Њлџ¬к·ёмќё|r]
-## Title-ruRU: BigWigs [|cffeda55fРџР»Р°РіРёРЅС‹|r]
+## Title-ruRU: BigWigs [|cffeda55fПлагины|r]
 ## Title-ptBR: BigWigs [|cffeda55fPlugins|r]
 ## Title-esES: BigWigs [|cffeda55fPlugins|r]
 ## Title-esMX: BigWigs [|cffeda55fPlugins|r]
@@ -18,7 +18,7 @@
 ## Notes-frFR: Plugins du noyau de BigWigs.
 ## Notes-itIT: Plugins di base per BigWigs
 ## Notes-koKR: BigWigs н”Њлџ¬к·ёмќё
-## Notes-ruRU: РњРѕРґСѓР»СЊ BigWigs РџР»Р°РіРёРЅС‹
+## Notes-ruRU: Модуль BigWigs Плагины
 ## Notes-ptBR: Plugins principais do BigWigs
 ## Notes-esES: Plugins del nГєcleo de BigWigs.
 ## Notes-esMX: Plugins del nГєcleo de BigWigs.

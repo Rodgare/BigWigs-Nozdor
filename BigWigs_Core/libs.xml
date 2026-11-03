@@ -3,5 +3,9 @@
 <Include file="Libs\AceDB-3.0\AceDB-3.0.xml"/>
 <Script file="Libs\LibDualSpec-1.0\LibDualSpec-1.0.lua"/>
 <Include file="Libs\AceTimer-3.0\AceTimer-3.0.xml"/>
-<Include file="Libs\LibChatAnims\LibChatAnims.xml"/>
+<!-- LibChatAnims is NOT loaded: it registers as "LibChatAnims" (minor 4) while
+     ElvUI ships its own "LibChatAnims" (minor 1). Bumping the same LibStub
+     major replaced ElvUI's copy, overriding the global FCF_StartAlertFlash /
+     FCF_StopAlertFlash handlers ElvUI uses, which broke ElvUI's chat and text
+     rendering. Nothing in BigWigs actually consumes this library. -->
 </Ui>

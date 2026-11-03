@@ -233,6 +233,15 @@ local function onControlEnter(self)
 end
 local function onControlLeave() GameTooltip:Hide() end
 
+local PROX_FONT_FALLBACK = "Interface\\AddOns\\BigWigs\\Media\\Fonts\\Noto.ttf"
+local function setProximityTextFont()
+	if not proxAnchor.text then return end
+	proxAnchor.text:SetFont(media:Fetch(FONT, db.fontName) or PROX_FONT_FALLBACK, db.fontSize)
+	if not proxAnchor.text:GetFont() then
+		proxAnchor.text:SetFont(PROX_FONT_FALLBACK, db.fontSize)
+	end
+end
+
 function plugin:RestyleWindow()
 	if not proxAnchor then return end
 
@@ -246,7 +255,7 @@ function plugin:RestyleWindow()
 			end
 		end
 	end
-	proxAnchor.text:SetFont(media:Fetch(FONT, db.fontName), db.fontSize)
+	setProximityTextFont()
 	if db.lock then
 		locked = nil
 		lockDisplay()
@@ -936,6 +945,7 @@ do
 		text:SetShadowOffset(1, -1)
 		text:SetAllPoints(proxAnchor)
 		proxAnchor.text = text
+		setProximityTextFont()
 
 		local rangePulse = proxAnchor:CreateTexture(nil, "ARTWORK")
 		rangePulse:SetPoint("CENTER")

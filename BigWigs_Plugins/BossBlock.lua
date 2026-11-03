@@ -159,12 +159,25 @@ do
 	local trackerHider = CreateFrame("Frame")
 	trackerHider:Hide()
 	local unregisteredEvents = {}
+	local function IsEventRegisteredLegacy(frame, event)
+		-- 3.3.5 has no Frame:IsEventRegistered. There is no query API for it, so
+		-- only touch events we already know are client events and simply check
+		-- the frame is a table; on 3.3.5 these are all valid global events.
+		return frame ~= nil and event ~= nil
+	end
 	local function KillEvent(frame, event)
 		-- The user might be running an addon that permanently unregisters one of these events.
 		-- Let's check that before we go re-registering that event and screwing with that addon.
-		if trackerHider.IsEventRegistered(frame, event) then
-			trackerHider.UnregisterEvent(frame, event)
+		local canQuery = trackerHider.IsEventRegistered and trackerHider:IsEventRegistered(event)
+		if canQuery or (not trackerHider.IsEventRegistered and IsEventRegisteredLegacy(frame, event)) then
+			pcall(trackerHider.UnregisterEvent, frame, event)
 			unregisteredEvents[event] = true
+		end
+	end
+	local function RestoreEvent(frame, event)
+		if unregisteredEvents[event] then
+			pcall(trackerHider.RegisterEvent, frame, event)
+			unregisteredEvents[event] = nil
 		end
 	end
 	local function RestoreEvent(frame, event)

@@ -7,7 +7,7 @@
 ## Title-frFR: BigWigs [|cffeda55fOptions|r]
 ## Title-itIT: BigWigs [|cffeda55fOpzioni|r]
 ## Title-koKR: BigWigs [|cffeda55fмµм…|r]
-## Title-ruRU: BigWigs [|cffeda55fРќР°СЃС‚СЂРѕР№РєРё|r]
+## Title-ruRU: BigWigs [|cffeda55fНастройки|r]
 ## Title-ptBR: BigWigs [|cffeda55fOptions|r]
 ## Title-esES: BigWigs [|cffeda55fOpciones|r]
 ## Title-esMX: BigWigs [|cffeda55fOpciones|r]
@@ -18,7 +18,7 @@
 ## Notes-frFR: Options de configuration de BigWigs.
 ## Notes-itIT: Opzioni di configurazione per BigWigs
 ## Notes-koKR: BigWigs кµ¬м„± мµм…
-## Notes-ruRU: РњРѕРґСѓР»СЊ РЅР°СЃС‚СЂРѕРµРє BigWigs
+## Notes-ruRU: Модуль настроек BigWigs
 ## Notes-ptBR: BigWigs Configuration Options
 ## Notes-esES: Opciones de configuraciГіn de BigWigs.
 ## Notes-esMX: Opciones de configuraciГіn de BigWigs.
