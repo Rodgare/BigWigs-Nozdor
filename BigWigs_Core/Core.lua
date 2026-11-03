@@ -51,6 +51,23 @@ do
 
 	local eventMap = {}
 	local bwUtilityFrame = CreateFrame("Frame")
+
+	-- Nozdor 3.3.5: the client predates modern events (ENCOUNTER_START,
+	-- ENCOUNTER_END, NAME_PLATE_UNIT_ADDED, UPDATE_UI_WIDGET, ...). Frame
+	-- RegisterEvent throws on an unknown event name, which aborted core:Enable
+	-- inside BigWigs:Enable and left the addon permanently disabled. Probe each
+	-- event name once on a throwaway frame and skip the unsupported ones.
+	local supportedEvents = {}
+	local probeFrame
+	local function isEventSupported(event)
+		if supportedEvents[event] ~= nil then return supportedEvents[event] end
+		if not probeFrame then probeFrame = CreateFrame("Frame") end
+		local ok = pcall(probeFrame.RegisterEvent, probeFrame, event)
+		if ok then pcall(probeFrame.UnregisterEvent, probeFrame, event) end
+		supportedEvents[event] = ok
+		return ok
+	end
+
 	bwUtilityFrame:SetScript("OnEvent", function(_, event, ...)
 		for k,v in next, eventMap[event] do
 			if type(v) == "function" then
@@ -64,6 +81,7 @@ do
 	function core:RegisterEvent(event, func)
 		if type(event) ~= "string" then error((noEvent):format(self.moduleName)) end
 		if (not func and not self[event]) or (type(func) == "string" and not self[func]) then error((noFunc):format(self.moduleName or "?", func or event)) end
+		if not isEventSupported(event) then return end
 		if not eventMap[event] then eventMap[event] = {} end
 		eventMap[event][self] = func or event
 		bwUtilityFrame:RegisterEvent(event)
@@ -128,7 +146,8 @@ end
 local function shouldReallyEnable(unit, moduleName, mobId, sync)
 	local module = bosses[moduleName]
 	if not module or module.enabled then return end
-	if (not module.VerifyEnable or module:VerifyEnable(unit, mobId, GetBestMapForUnit("player"))) then
+	local mapId = GetBestMapForUnit and GetBestMapForUnit("player")
+	if (not module.VerifyEnable or module:VerifyEnable(unit, mobId, mapId)) then
 		enableBossModule(module, sync)
 	end
 end
@@ -161,7 +180,7 @@ end
 local function zoneChanged()
 	local _, instanceType, _, _, _, _, _, id = GetInstanceInfo()
 	if instanceType == "none" then
-		local mapId = GetBestMapForUnit("player")
+		local mapId = GetBestMapForUnit and GetBestMapForUnit("player")
 		if mapId then
 			id = -mapId
 		end
@@ -676,8 +695,8 @@ do
 
 		core:SendMessage("BigWigs_BossModuleRegistered", module.moduleName, module)
 
-		local id = module.instanceId or -(module.mapId)
-		if not enablezones[id] then
+		local id = module.instanceId or (module.mapId and -module.mapId)
+		if id and not enablezones[id] then
 			enablezones[id] = true
 		end
 	end

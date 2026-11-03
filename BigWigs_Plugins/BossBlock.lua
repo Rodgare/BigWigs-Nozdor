@@ -216,10 +216,13 @@ do
 		CheckElv(self)
 		-- Never hide when tracking achievements or in Mythic+
 		local _, _, diff = GetInstanceInfo()
-		if self.db.profile.blockObjectiveTracker and not GetTrackedAchievements() and diff ~= 8 and not trackerHider.IsProtected(ObjectiveTrackerFrame) then
-			restoreObjectiveTracker = trackerHider.GetParent(ObjectiveTrackerFrame)
+		-- 3.3.5 has no ObjectiveTrackerFrame (the quest tracker is WatchFrame),
+		-- and calling frame methods on nil aborted BigWigs_OnBossEngage.
+		local tracker = ObjectiveTrackerFrame
+		if tracker and self.db.profile.blockObjectiveTracker and not (GetTrackedAchievements and GetTrackedAchievements()) and diff ~= 8 and not trackerHider.IsProtected(tracker) then
+			restoreObjectiveTracker = trackerHider.GetParent(tracker)
 			if restoreObjectiveTracker then
-				trackerHider.SetParent(ObjectiveTrackerFrame, trackerHider)
+				trackerHider.SetParent(tracker, trackerHider)
 			end
 		end
 	end

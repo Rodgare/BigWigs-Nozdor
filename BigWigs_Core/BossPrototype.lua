@@ -30,7 +30,15 @@ local UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitIsConnected
 -- Nozdor 3.3.5: C_EncounterJournal may be absent (no dungeon journal API); guard.
 local C_EncounterJournal_GetSectionInfo = C_EncounterJournal and C_EncounterJournal.GetSectionInfo
 local GetSpellInfo, GetSpellTexture, GetTime, IsSpellKnown = GetSpellInfo, GetSpellTexture, GetTime, IsSpellKnown
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+-- Nozdor 3.3.5: UnitGroupRolesAssigned does not exist. There is no role API
+-- on this client, so report "NONE" (BigWigs treats it as unknown) instead of
+-- erroring on every boss module enable.
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned or function(unit)
+	if GetPartyAssignment and GetPartyAssignment("MAINTANK", unit) then
+		return "TANK"
+	end
+	return "NONE"
+end
 local SendChatMessage, GetInstanceInfo, Timer = BigWigsLoader.SendChatMessage, BigWigsLoader.GetInstanceInfo, BigWigsLoader.CTimerAfter
 local format, find, gsub, band, tremove, wipe = string.format, string.find, string.gsub, bit.band, table.remove, table.wipe
 local select, type, next, tonumber = select, type, next, tonumber
@@ -51,8 +59,13 @@ local updateData = function(module)
 	myGUID = UnitGUID("player")
 	hasVoice = BigWigsAPI:HasVoicePack()
 
-	local tree = GetSpecialization()
-	if tree then
+	-- 3.3.5 has no GetSpecialization / GetSpecializationRole; fall back to
+	-- the group role assignment so role checks still work in dungeons/raids.
+	local tree
+	if GetSpecialization then
+		tree = GetSpecialization()
+	end
+	if tree and GetSpecializationRole then
 		myRole = GetSpecializationRole(tree)
 		myDamagerRole = nil
 		if myRole == "DAMAGER" then
@@ -1155,7 +1168,7 @@ do
 			end
 			local t1, t2, t3, t4, t5
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HELPFUL")
+				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HELPFUL")
 
 				if name == spell then
 					if not blacklist[spellId] then
@@ -1171,7 +1184,7 @@ do
 			end
 		else
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HELPFUL")
+				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HELPFUL")
 
 				if not spellId then
 					return
@@ -1196,7 +1209,7 @@ do
 			end
 			local t1, t2, t3, t4, t5
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HARMFUL")
+				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HARMFUL")
 
 				if name == spell then
 					if not blacklist[spellId] then
@@ -1212,7 +1225,7 @@ do
 			end
 		else
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HARMFUL")
+				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HARMFUL")
 
 				if not spellId then
 					return
@@ -1913,7 +1926,7 @@ do
 		"|T137007:0|t",
 		"|T137008:0|t",
 	}
-	local comma = (GetLocale() == "zhTW" or GetLocale() == "zhCN") and "，" or ", "
+	local comma = (GetLocale() == "zhTW" or GetLocale() == "zhCN") and "пјЊ" or ", "
 	local tconcat = table.concat
 	local function printTargets(self, key, playerTable, color, text, icon, markers)
 		local playersInTable = #playerTable

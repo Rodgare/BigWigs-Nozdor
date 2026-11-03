@@ -309,3 +309,94 @@ if not EJ_GetTierInfo then
 		return tierNames[tier]
 	end
 end
+
+--------------------------------------------------------------------------------
+-- Nozdor 3.3.5 group / role / spec API shims.
+-- 3.3.5 predates GetNumGroupMembers, IsInRaid, IsInGroup, UnitGroupRolesAssigned
+-- and GetSpecialization. BigWigs calls all of them from the boss-enable path
+-- (Core.lua, BossPrototype.lua IterateGroup), so a single missing global made
+-- every encounter throw before any bar could be created -> no indicators.
+--------------------------------------------------------------------------------
+
+if not GetNumGroupMembers then
+	GetNumGroupMembers = function()
+		if GetNumRaidMembers and GetNumRaidMembers() > 0 then
+			return GetNumRaidMembers()
+		end
+		if GetNumPartyMembers then
+			return GetNumPartyMembers() + 1
+		end
+		return 0
+	end
+end
+
+if not IsInRaid then
+	IsInRaid = function()
+		return (GetNumRaidMembers and GetNumRaidMembers() > 0) and true or false
+	end
+end
+
+if not IsInGroup then
+	IsInGroup = function()
+		if GetNumRaidMembers and GetNumRaidMembers() > 0 then return true end
+		if GetNumPartyMembers and GetNumPartyMembers() > 0 then return true end
+		return false
+	end
+end
+
+if not UnitGroupRolesAssigned then
+	UnitGroupRolesAssigned = function(unit)
+		local symbol = "MAINTANK"
+		if GetPartyAssignment and GetPartyAssignment(symbol, unit) then
+			return "TANK"
+		end
+		return "NONE"
+	end
+end
+
+if not GetSpecialization then
+	GetSpecialization = function() return nil end
+end
+if not GetSpecializationRole then
+	GetSpecializationRole = function() return nil end
+end
+
+-- IsLoggedIn is 4.x+. core:Enable() calls it unconditionally, and a nil call
+-- there aborted the enable sequence, leaving BigWigs disabled forever.
+if not IsLoggedIn then
+	IsLoggedIn = function() return true end
+end
+if not IsEncounterInProgress then
+	IsEncounterInProgress = function() return (UnitAffectingCombat and UnitAffectingCombat("player")) and true or false end
+end
+
+-- 3.3.5 frames have no IsEventRegistered (added in MoP). Plugins such as
+-- BossBlock call it on every boss engage, and a nil call there threw inside
+-- BigWigs_OnBossEngage, killing all boss indicators. Track registrations in a
+-- side table so the compatibility shim answers correctly.
+do
+	local registered = setmetatable({}, { __mode = "k" })
+	local originalRegister = Frame.RegisterEvent
+	local originalUnregister = Frame.UnregisterEvent
+	local originalUnregisterAll = Frame.UnregisterAllEvents
+	Frame.RegisterEvent = function(self, event)
+		if registered[self] == nil then registered[self] = {} end
+		registered[self][event] = true
+		return originalRegister(self, event)
+	end
+	Frame.UnregisterEvent = function(self, event)
+		if registered[self] then registered[self][event] = nil end
+		return originalUnregister(self, event)
+	end
+	Frame.UnregisterAllEvents = function(self)
+		registered[self] = nil
+		if originalUnregisterAll then
+			return originalUnregisterAll(self)
+		end
+	end
+	if not Frame.IsEventRegistered then
+		Frame.IsEventRegistered = function(self, event)
+			return (registered[self] and registered[self][event]) and true or false
+		end
+	end
+end

@@ -85,12 +85,65 @@ end
 
 local tooltipFunctions = {}
 local next, tonumber, strsplit = next, tonumber, strsplit
-local SendAddonMessage, CTimerAfter, CTimerNewTicker = C_ChatInfo.SendAddonMessage, C_Timer.After, C_Timer.NewTicker
+-- 3.3.5 (Nozdor) has none of C_ChatInfo / C_Timer / C_Map; guard every access
+-- so a missing namespace can never abort this file at load time.
+local CChatInfo = C_ChatInfo or {}
+local CTimer = C_Timer or {}
+local CMap = C_Map or {}
+
+local function CompatSendAddonMessage(prefix, msg, channel)
+	if CChatInfo.SendAddonMessage then
+		return CChatInfo.SendAddonMessage(prefix, msg, channel)
+	end
+	if SendAddonMessage then
+		return SendAddonMessage(prefix, msg, channel)
+	end
+end
+local SendAddonMessage = CompatSendAddonMessage
+
+local function CompatNewTicker(interval, func, iterations)
+	if CTimer.NewTicker then
+		return CTimer.NewTicker(interval, func, iterations)
+	end
+	-- Minimal 3.3.5 ticker: a hidden frame driven by OnUpdate.
+	local f = CreateFrame("Frame")
+	local elapsed, ticks = 0, 0
+	local obj = {}
+	function obj:Cancel()
+		f:SetScript("OnUpdate", nil)
+		f:Hide()
+	end
+	f:SetScript("OnUpdate", function(self, dt)
+		elapsed = elapsed + (dt or 0)
+		while elapsed >= interval do
+			elapsed = elapsed - interval
+			ticks = ticks + 1
+			func()
+			if iterations and ticks >= iterations then
+				obj:Cancel()
+				return
+			end
+		end
+	end)
+	f:Show()
+	return obj
+end
+local CTimerNewTicker = CompatNewTicker
+
+local function CompatAfter(delay, func)
+	if CTimer.After then
+		return CTimer.After(delay, func)
+	end
+	return CTimerNewTicker(delay, func, 1)
+end
+local CTimerAfter = CompatAfter
+
 local function Ambiguate(name)
+	if not name then return "" end
 	local fullname, realm = strsplit("-", name)
 	return realm and fullname or name
 end
-local GetInstanceInfo, GetBestMapForUnit, GetMapInfo = GetInstanceInfo, C_Map.GetBestMapForUnit, C_Map.GetMapInfo
+local GetInstanceInfo, GetBestMapForUnit, GetMapInfo = GetInstanceInfo, CMap.GetBestMapForUnit, CMap.GetMapInfo
 local UnitName = UnitName
 
 -- Try to grab unhooked copies of critical funcs (hooked by some crappy addons)
@@ -774,8 +827,13 @@ function mod:ADDON_LOADED(addon)
 	end
 
 	bwFrame:RegisterEvent("CHAT_MSG_ADDON")
-	C_ChatInfo.RegisterAddonMessagePrefix("BigWigs")
-	C_ChatInfo.RegisterAddonMessagePrefix("D4") -- DBM
+	if CChatInfo.RegisterAddonMessagePrefix then
+		CChatInfo.RegisterAddonMessagePrefix("BigWigs")
+		CChatInfo.RegisterAddonMessagePrefix("D4") -- DBM
+	elseif RegisterAddonMessagePrefix then
+		RegisterAddonMessagePrefix("BigWigs")
+		RegisterAddonMessagePrefix("D4") -- DBM
+	end
 
 	-- LibDBIcon setup
 	if type(BigWigsIconDB) ~= "table" then
@@ -849,7 +907,8 @@ function mod:ADDON_LOADED(addon)
 	end
 	self:BigWigs_CoreOptionToggled(nil, "fakeDBMVersion", self.isFakingDBM)
 
-	if self.isSoundOn ~= false then -- Only if sounds are enabled
+	-- 3.3.5 has no C_CVar; its GetCVar/SetCVar reject the "64" value anyway.
+	if self.isSoundOn ~= false and C_CVar and C_CVar.GetCVar and C_CVar.SetCVar then
 		local num = tonumber(C_CVar.GetCVar("Sound_NumChannels")) or 0
 		if num < 64 then
 			C_CVar.SetCVar("Sound_NumChannels", "64") -- Blizzard keeps screwing with addon sound priority so we force this minimum
@@ -863,7 +922,8 @@ end
 -- We can't do our addon loading in ADDON_LOADED as the target addons may be registering that
 -- which would break that event for those addons. Use this event instead.
 function mod:UPDATE_FLOATING_CHAT_WINDOWS()
-	bwFrame:UnregisterEvent("UPDATE_FLOATING_CHAT_WINDOWS")
+	pcall(bwFrame.UnregisterEvent, bwFrame, "UPDATE_FLOATING_CHAT_WINDOWS")
+	pcall(bwFrame.UnregisterEvent, bwFrame, "PLAYER_LOGIN")
 	self.UPDATE_FLOATING_CHAT_WINDOWS = nil
 
 	self:GROUP_ROSTER_UPDATE()
@@ -1138,7 +1198,21 @@ bwFrame:SetScript("OnEvent", function(_, event, ...)
 	mod[event](mod, ...)
 end)
 bwFrame:RegisterEvent("ADDON_LOADED")
-bwFrame:RegisterEvent("UPDATE_FLOATING_CHAT_WINDOWS")
+
+-- Nozdor 3.3.5: UPDATE_FLOATING_CHAT_WINDOWS does not exist on this client and
+-- registering it throws, aborting the loader before any event handler is set up.
+-- PLAYER_LOGIN is the 3.3.5-safe "everything else has loaded" hook for the same
+-- post-load work (module pack scan + zone check).
+local probeFrame = CreateFrame("Frame")
+if pcall(probeFrame.RegisterEvent, probeFrame, "UPDATE_FLOATING_CHAT_WINDOWS") then
+	bwFrame:RegisterEvent("UPDATE_FLOATING_CHAT_WINDOWS")
+else
+	function mod:PLAYER_LOGIN()
+		bwFrame:UnregisterEvent("PLAYER_LOGIN")
+		self:UPDATE_FLOATING_CHAT_WINDOWS()
+	end
+	bwFrame:RegisterEvent("PLAYER_LOGIN")
+end
 
 do
 	-- Role Updating
@@ -1399,7 +1473,7 @@ do
 		-- Zone checking
 		local _, instanceType, _, _, _, _, _, id = GetInstanceInfo()
 		if instanceType == "none" then
-			local mapId = GetBestMapForUnit("player")
+			local mapId = GetBestMapForUnit and GetBestMapForUnit("player")
 			if mapId then
 				id = -mapId -- Use map id for world bosses
 			end
