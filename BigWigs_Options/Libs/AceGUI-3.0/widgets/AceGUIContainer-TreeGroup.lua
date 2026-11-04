@@ -83,10 +83,16 @@ local function UpdateButton(button, treeline, selected, canExpand, isExpanded)
 		button:SetNormalFontObject(_G["GameFontNormal"])
 		button:SetHighlightFontObject(_G["GameFontHighlight"])
 		button.text:SetPoint("LEFT", (icon and 16 or 0) + 8, 2)
+		if button.isFallback then
+			button.text:SetFontObject(_G["GameFontNormal"])
+		end
 	else
 		button:SetNormalFontObject(_G["GameFontHighlightSmall"])
 		button:SetHighlightFontObject(_G["GameFontHighlightSmall"])
 		button.text:SetPoint("LEFT", (icon and 16 or 0) + 8 * level, 2)
+		if button.isFallback then
+			button.text:SetFontObject(_G["GameFontHighlightSmall"])
+		end
 	end
 
 	if disabled then
@@ -324,38 +330,46 @@ local methods = {
 
 	["CreateButton"] = function(self)
 		local num = AceGUI:GetNextWidgetNum("TreeGroupButton")
-		-- 3.3.5 has no "OptionsListButtonTemplate" (MoP+). Creating a button
-		-- from it yields a bare frame without .text/.toggle, so every tree
-		-- entry rendered blank. Build the children explicitly instead.
-		local button = CreateFrame("Button", ("AceGUI30TreeButton%d"):format(num), self.treeframe)
+		local name = ("AceGUI30TreeButton%d"):format(num)
+		-- This client ships the stock 3.3.5 "OptionsListButtonTemplate"
+		-- (toggle on the right, ButtonText, highlight). Use it so the tree
+		-- rows and their expand/collapse buttons sit exactly like Blizzard's
+		-- options list. Fall back to a manual build if the template or its
+		-- OnLoad (OptionsListButton_OnLoad) is unavailable.
+		local button = CreateFrame("Button", name, self.treeframe, "OptionsListButtonTemplate")
 		button.obj = self
-		button:SetHeight(16)
-		button:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestTitleHighlight", "ADD")
-
-		local text = button:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-		text:SetJustifyH("LEFT")
-		text:SetJustifyV("MIDDLE")
+		local text = _G[name .. "Text"]
+		local toggle = button.toggle
+		if not text or not toggle then
+			button:SetHeight(18)
+			button:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestLogTitleHighlight", "ADD")
+			text = button:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+			text:SetJustifyH("LEFT")
+			text:SetJustifyV("MIDDLE")
+			button.text = text
+			toggle = CreateFrame("Button", nil, button)
+			toggle:SetWidth(14)
+			toggle:SetHeight(14)
+			toggle:SetPoint("TOPRIGHT", -6, -1)
+			toggle:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+			button.toggle = toggle
+			text:SetPoint("RIGHT", toggle, "LEFT", -2, 0)
+			button.isFallback = true
+		end
 		text:SetHeight(14) -- Prevents text wrapping
-		button.text = text
 
 		local icon = button:CreateTexture(nil, "OVERLAY")
 		icon:SetWidth(14)
 		icon:SetHeight(14)
 		button.icon = icon
 
-		local toggle = CreateFrame("Button", nil, button)
-		toggle:SetWidth(16)
-		toggle:SetHeight(16)
-		toggle:SetPoint("LEFT", -16, 0)
-		button.toggle = toggle
-
 		button:SetScript("OnClick",Button_OnClick)
 		button:SetScript("OnDoubleClick", Button_OnDoubleClick)
 		button:SetScript("OnEnter",Button_OnEnter)
 		button:SetScript("OnLeave",Button_OnLeave)
 
-		button.toggle.button = button
-		button.toggle:SetScript("OnClick",Expand_OnClick)
+		toggle.button = button
+		toggle:SetScript("OnClick",Expand_OnClick)
 
 		return button
 	end,

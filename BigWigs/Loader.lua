@@ -190,6 +190,7 @@ do
 	local lw_c = "LittleWigs_Classic"
 	local lw_bc = "LittleWigs_BurningCrusade"
 	local lw_wotlk = "LittleWigs_WrathOfTheLichKing"
+	local lw_hp = "LittleWigs_HeroicPlus"
 	local lw_cata = "LittleWigs_Cataclysm"
 	local lw_mop = "LittleWigs_MistsOfPandaria"
 	local lw_wod = "LittleWigs_WarlordsOfDraenor"
