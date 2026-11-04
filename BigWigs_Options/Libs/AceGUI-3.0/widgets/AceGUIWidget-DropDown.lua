@@ -741,6 +741,11 @@ do
 		text:ClearAllPoints()
 		text:SetPoint("RIGHT", right, "RIGHT" ,-43, 2)
 		text:SetPoint("LEFT", left, "LEFT", 25, 2)
+		if text.SetFontObject then
+			text:SetFontObject(GameFontHighlightSmall)
+		elseif GameFontHighlightSmall then
+			text:SetFont(GameFontHighlightSmall:GetFont())
+		end
 
 		local label = frame:CreateFontString(nil,"OVERLAY","GameFontNormalSmall")
 		label:SetPoint("TOPLEFT",frame,"TOPLEFT",0,0)
@@ -749,6 +754,9 @@ do
 		label:SetHeight(18)
 		label:Hide()
 		self.label = label
+		if label.SetFontObject and GameFontNormalSmall then
+			label:SetFontObject(GameFontNormalSmall)
+		end
 
 		AceGUI:RegisterAsWidget(self)
 		return self
