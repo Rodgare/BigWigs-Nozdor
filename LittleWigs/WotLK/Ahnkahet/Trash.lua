@@ -1,79 +1,158 @@
---------------------------------------------------------------------------------
--- Module Declaration
---
-
-local mod, CL = BigWigs:NewBoss("Ahn'kahet Trash", 619)
-if not mod then return end
-mod.displayName = CL.trash
-mod:RegisterEnableMob(
-	30278, -- Ahn'kahar Spell Flinger
-	30285, -- Eye of Taldaram
-	30319 -- Twilight Darkcaster
-)
-
---------------------------------------------------------------------------------
--- Localization
---
-
-local L = mod:GetLocale()
-if L then
-	L.spellflinger = "Ahn'kahar Spell Flinger"
-	L.eye = "Eye of Taldaram"
-	L.darkcaster = "Twilight Darkcaster"
-end
-
---------------------------------------------------------------------------------
--- Initialization
---
-
-function mod:GetOptions()
-	return {
-		--[[ Ahn'kahar Spell Flinger ]]--
-		59102, -- Shadow Blast
-
-		--[[ Eye of Taldaram ]]--
-		56728, -- Eyes in the Dark
-
-		--[[ Twilight Darkcaster ]]--
-		13338, -- Curse of Tongues
-	}, {
-		[59102] = L.spellflinger,
-		[56728] = L.eye,
-		[13338] = L.darkcaster,
-	}
-end
-
-function mod:OnBossEnable()
-	self:RegisterMessage("BigWigs_OnBossEngage", "Disable")
-
-	self:Log("SPELL_CAST_START", "ShadowBlast", 59102) -- does inadequate amount of damage since The Great Squish
-	self:Log("SPELL_AURA_APPLIED", "EyesInTheDark", 56728) -- 10s long debuff that can interrupt you randomly
-	self:Log("SPELL_AURA_APPLIED", "CurseOfTongues", 13338)
-end
-
---------------------------------------------------------------------------------
--- Event Handlers
---
-
-do
-	local prev = 0
-	function mod:ShadowBlast(args)
-		local t = GetTime()
-		if t-prev > 1 then
-			prev = t
-			self:Message(args.spellId, "red", self:Interrupter() and "Warning" or "Long", CL.casting:format(args.spellName))
-		end
-	end
-end
-
-function mod:EyesInTheDark(args)
-	if self:Dispeller("magic") or self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "red", "Alert", nil, nil, true)
-	end
-end
-
-function mod:CurseOfTongues(args)
-	if self:Dispeller("curse") or self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "yellow", "Alarm", nil, nil, true)
-	end
-end
+--------------------------------------------------------------------------------
+--  Module Declaration
+--
+-- Nozdor Ahn'kahet: The Old Kingdom trash. Full dump from Transcriptor.
+--------------------------------------------------------------------------------
+
+local mod, CL = BigWigs:NewBoss("Ahn'kahet Trash", 619)
+if not mod then return end
+mod.displayName = CL.trash
+mod:RegisterEnableMob(
+	30276, -- Ан'кахарский веретенщик
+	30277, -- Ан'кахарский измельчитель
+	30278, -- Ан'кахарский метатель заклинаний
+	30279, -- Ан'кахарский заклинатель
+	30282, -- Ан'кахарский страж смерти
+	30319, -- Око Талдарама
+	30414, -- Сумеречный чернокнижник
+	31406, -- Черный маг культа Сумеречного Молота
+	31408, -- Послушник культа Сумеречного Молота
+	31413, -- Глашатай Волаж
+	31584, -- Воин из клана Призрачной Луны
+	32191, -- Служитель культа Сумеречного Молота
+	32909, -- Теневой разбойник
+	33417  -- Страж-скелет
+)
+
+--------------------------------------------------------------------------------
+--  Localization
+--
+
+local L = mod:GetLocale()
+if L then
+	L.weaver = "Ан'кахарский веретенщик"
+	L.crusher = "Ан'кахарский измельчитель"
+	L.flinger = "Ан'кахарский метатель заклинаний"
+	L.adherent = "Ан'кахарский заклинатель"
+	L.ghoul = "Ан'кахарский страж смерти"
+	L.eye = "Око Талдарама"
+	L.darkcaster = "Сумеречный чернокнижник"
+	L.twilight_mage = "Черный маг культа Сумеречного Молота"
+	L.twilight_acolyte = "Послушник культа Сумеречного Молота"
+	L.herald = "Глашатай Волаж"
+	L.shadow_hunter = "Воин из клана Призрачной Луны"
+	L.twilight_servant = "Служитель культа Сумеречного Молота"
+	L.shadow_rogue = "Теневой разбойник"
+	L.skeletal_guard = "Страж-скелет"
+end
+
+--------------------------------------------------------------------------------
+--  Initialization
+--
+
+function mod:GetOptions()
+	return {
+		190264, -- Пронзающий удар
+		190266, -- Кровавый шип
+		192792, -- Иссечение
+		190277, -- Мощный удар
+		190278, -- Глубокая рана
+		190279, -- Глубокая рана
+		190271, -- Ледяной выстрел
+		190274, -- Ледяной заряд
+		190275, -- Ледяной заряд
+		190276, -- Ледяной заряд
+		190346, -- Морозный всполох
+		1604,   -- Рунный доспех
+		190308, -- Удар в спину
+		190309, -- Удар в спину
+		190312, -- Резня
+		190313, -- Призыв скелета
+		190315, -- Призывное проклятие
+		190317, -- Пытка разума
+		190318, -- Метка Бездны
+		190320, -- Метка Бездны
+		190321, -- Метка Бездны
+		190342, -- Пытка разума
+		190359, -- Телекинетический удар
+		190360, -- Порча разума
+		190361, -- Порча разума
+		59974,  -- Пытка разума
+		192712, -- Порыв
+		191137, -- Волна предков
+		191138, -- Тотем вязкой земли
+		191170, -- Молния
+		72898,  -- Рывок
+		190286, -- Резкий прыжок
+		190289, -- Удар с небес
+		190344, -- Потрясающий удар
+	}, {
+		[190264] = L.weaver, [190266] = L.weaver, [192792] = L.weaver,
+		[190277] = L.crusher, [190278] = L.crusher, [190279] = L.crusher,
+		[190271] = L.flinger, [190274] = L.flinger, [190275] = L.flinger, [190276] = L.flinger, [190346] = L.flinger,
+		[1604]   = L.adherent,
+		[190308] = L.ghoul, [190309] = L.ghoul, [190312] = L.ghoul,
+		[190313] = L.adherent, [190315] = L.adherent,
+		[190317] = L.darkcaster, [190318] = L.darkcaster, [190320] = L.darkcaster, [190321] = L.darkcaster, [190342] = L.darkcaster,
+		[190359] = L.eye, [190360] = L.eye, [190361] = L.eye,
+		[59974]  = L.twilight_mage,
+		[192712] = L.shadow_hunter,
+		[191137] = L.adherent, [191138] = L.adherent, [191170] = L.adherent,
+		[72898]  = L.ghoul,
+		[190286] = L.flinger, [190289] = L.flinger, [190344] = L.flinger,
+	}
+end
+
+function mod:OnBossEnable()
+	self:RegisterMessage("BigWigs_OnBossEngage", "Disable")
+
+	self:Log("SPELL_CAST_START", "Cast",
+		190264, 190266, 190277, 190278, 190279,
+		190271, 190274, 190275, 190276, 190346,
+		190313, 190315,
+		190308, 190309, 190312,
+		190317, 190318, 190320, 190321, 190342,
+		190359, 190360, 190361,
+		59974, 1604, 192792,
+		192712, 191137, 191138, 191170,
+		72898, 190286, 190289, 190344
+	)
+	self:Log("SPELL_CAST_SUCCESS", "Cast",
+		190264, 190266, 190277, 190278, 190279,
+		190271, 190274, 190275, 190276, 190346,
+		190313, 190315,
+		190308, 190309, 190312,
+		190317, 190318, 190320, 190321, 190342,
+		190359, 190360, 190361,
+		59974, 1604, 192792,
+		192712, 191137, 191138, 191170,
+		72898, 190286, 190289, 190344
+	)
+	self:Log("SPELL_AURA_APPLIED", "Cast",
+		190264, 190266, 190277, 190278, 190279,
+		190271, 190274, 190275, 190276, 190346,
+		190313, 190315,
+		190308, 190309, 190312,
+		190317, 190318, 190320, 190321, 190342,
+		190359, 190360, 190361,
+		59974, 1604, 192792,
+		192712, 191137, 191138, 191170,
+		72898, 190286, 190289, 190344
+	)
+end
+
+--------------------------------------------------------------------------------
+--  Event Handlers
+--
+
+local throttle = {}
+function mod:Cast(args)
+	local t = GetTime()
+	local id = args.spellId
+	if throttle[id] and t - throttle[id] < 2 then return end
+	throttle[id] = t
+	self:Message(id, "orange", "Alarm", CL.casting:format(args.spellName))
+end
+
+
+

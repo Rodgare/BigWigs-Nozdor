@@ -1,15 +1,29 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
 
+<!-- Nozdor Heroic+ -->
+<Include file="HeroicPlus\Ahnkahet\modules.xml"/>
+<Include file="HeroicPlus\Ahnkahet\locales.xml"/>
+<Include file="HeroicPlus\AzjolNerub\modules.xml"/>
+<Include file="HeroicPlus\HallsOfLightning\modules.xml"/>
+<Include file="HeroicPlus\HallsOfLightning\locales.xml"/>
+<Include file="HeroicPlus\HallsOfStone\modules.xml"/>
+<Include file="HeroicPlus\HallsOfStone\locales.xml"/>
+<Include file="HeroicPlus\TheNexus\modules.xml"/>
+<Include file="HeroicPlus\TheNexus\locales.xml"/>
+<Include file="HeroicPlus\UtgardeKeep\modules.xml"/>
+<Include file="HeroicPlus\UtgardePinnacle\modules.xml"/>
+<Include file="HeroicPlus\UtgardePinnacle\locales.xml"/>
+
 <!-- Classic -->
 
-<!-- <Include file="Classic\Deadmines\modules.xml"/>
+<Include file="Classic\Deadmines\modules.xml"/>
 <Include file="Classic\ShadowfangKeep\modules.xml"/>
-<Include file="Classic\ShadowfangKeep\locales.xml"/> -->
+<Include file="Classic\ShadowfangKeep\locales.xml"/>
 
 <!-- The Burning Crusade -->
 
-<!-- <Include file="TBC\AuchenaiCrypts\modules.xml"/>
+<Include file="TBC\AuchenaiCrypts\modules.xml"/>
 <Include file="TBC\HellfireRamparts\modules.xml"/>
 <Include file="TBC\MagistersTerrace\modules.xml"/>
 <Include file="TBC\MagistersTerrace\locales.xml"/>
@@ -32,7 +46,7 @@
 <Include file="TBC\TheSlavePens\locales.xml"/>
 <Include file="TBC\TheSteamvault\modules.xml"/>
 <Include file="TBC\TheSteamvault\locales.xml"/>
-<Include file="TBC\TheUnderbog\modules.xml"/> -->
+<Include file="TBC\TheUnderbog\modules.xml"/>
 
 <!-- Wrath of the Lich King -->
 
