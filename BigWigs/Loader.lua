@@ -155,8 +155,11 @@ local zoneNameToId
 -- DIFFERENT namespace from the standard BigWigs instance ids (e.g. Azjol-Nerub
 -- uiMapID is 534 while the module instanceId is 601). Map those uiMapIDs to the
 -- real instance ids as a fallback for when the localized name lookup misses.
--- Values mirror DBM's X-DBM-Mod-MapID for WotLK dungeons.
+-- Values are taken from the installed DBM modules' X-DBM-Mod-MapID metadata,
+-- which this DBM port uses to match GetCurrentMapAreaID() on this client, so
+-- they are the authoritative uiMapID -> instance mapping for raids and dungeons.
 local mapAreaIdToInstanceId = {
+	-- WotLK dungeons (DBM-Party-WotLK)
 	[523] = 619, -- Ahn'Kahet: The Old Kingdom
 	[534] = 601, -- Azjol-Nerub
 	[522] = 595, -- The Culling of Stratholme
@@ -169,17 +172,43 @@ local mapAreaIdToInstanceId = {
 	[524] = 574, -- Utgarde Keep
 	[525] = 575, -- Utgarde Pinnacle
 	[537] = 608, -- Violet Hold
-	[603] = 650, -- Trial of the Champion
+	[603] = 650, -- Trial of the Champion (uiMapID 603 is shared with Ulduar; see GetInstanceInfo for the raid disambiguation)
 	[602] = 632, -- The Forge of Souls
 	[604] = 658, -- Pit of Saron
 	[543] = 668, -- Halls of Reflection
+	-- Classic dungeons (DBM-Party-Classic) - only the ones LittleWigs ships
+	[700] = 36, -- The Deadmines
+	[691] = 33, -- Shadowfang Keep
+	-- WotLK raids (DBM raid addons)
+	[536] = 533, -- Naxxramas
+	[528] = 616, -- The Eye of Eternity
+	[532] = 615, -- The Obsidian Sanctum
+	[610] = 724, -- The Ruby Sanctum
+	[533] = 624, -- Vault of Archavon
+	[544] = 649, -- Trial of the Crusader
+	[605] = 631, -- Icecrown Citadel
+	[719] = 249, -- Onyxia's Lair
+	-- TBC raids (DBM raid addons)
+	[863] = 548, -- Coilfang: Serpentshrine Cavern
+	-- Classic raids (DBM raid addons)
+	[718] = 509, -- Ruins of Ahn'Qiraj
+	[767] = 531, -- Ahn'Qiraj Temple
+	[756] = 469, -- Blackwing Lair
 }
 local rawGetInstanceInfo = GetInstanceInfo
 local function GetInstanceInfo()
 	local name, instanceType, difficultyIndex, difficultyName, maxPlayers, playerDifficulty, isDynamicInstance, instanceID = rawGetInstanceInfo()
 	if (not instanceID or instanceID <= 0) and instanceType and instanceType ~= "none" then
-		instanceID = (zoneNameToId and zoneNameToId[name])
-			or (GetCurrentMapAreaID and mapAreaIdToInstanceId[GetCurrentMapAreaID()])
+		instanceID = zoneNameToId and zoneNameToId[name]
+		if not instanceID then
+			local mapID = GetCurrentMapAreaID and GetCurrentMapAreaID()
+			instanceID = mapAreaIdToInstanceId[mapID]
+			-- uiMapID 603 is shared by Ulduar (raid) and Trial of the Champion
+			-- (5-man), two separate instances on the same physical map area.
+			if mapID == 603 and instanceType == "raid" then
+				instanceID = 603 -- Ulduar
+			end
+		end
 	end
 	return name, instanceType, difficultyIndex, difficultyName, maxPlayers, playerDifficulty, isDynamicInstance, instanceID
 end
