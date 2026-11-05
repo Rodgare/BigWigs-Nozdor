@@ -188,6 +188,8 @@ local mapAreaIdToInstanceId = {
 	[544] = 649, -- Trial of the Crusader
 	[605] = 631, -- Icecrown Citadel
 	[719] = 249, -- Onyxia's Lair
+	-- Nozdor custom raid (verified via /bwdbg zone in-game: GetCurrentMapAreaID() == 961)
+	[961] = 961, -- Siege of Dalaran / Осада Даларана
 	-- TBC raids (DBM raid addons)
 	[863] = 548, -- Coilfang: Serpentshrine Cavern
 	-- Classic raids (DBM raid addons)
