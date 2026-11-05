@@ -258,7 +258,7 @@ do
 
 	local function Constructor()
 		local count = AceGUI:GetNextWidgetNum(widgetType)
-		local frame = CreateFrame("Frame", "AceGUI30Pullout"..count, UIParent)
+		local frame = CreateFrame("Frame", "BWAceGUI30Pullout"..count, UIParent)
 		local self = {}
 		self.count = count
 		self.type = widgetType
@@ -317,7 +317,7 @@ do
 		scrollFrame.obj = self
 		itemFrame.obj = self
 
-		local slider = CreateFrame("Slider", "AceGUI30PulloutScrollbar"..count, scrollFrame)
+		local slider = CreateFrame("Slider", "BWAceGUI30PulloutScrollbar"..count, scrollFrame)
 		slider:SetOrientation("VERTICAL")
 		slider:SetHitRectInsets(0, 0, -10, 0)
 		if slider.SetBackdrop then slider:SetBackdrop(sliderBackdrop) end
@@ -671,7 +671,7 @@ do
 	local function Constructor()
 		local count = AceGUI:GetNextWidgetNum(widgetType)
 		local frame = CreateFrame("Frame", nil, UIParent)
-		local dropdown = CreateFrame("Frame", "AceGUI30DropDown"..count, frame, "UIDropDownMenuTemplate")
+		local dropdown = CreateFrame("Frame", "BWAceGUI30DropDown"..count, frame, "UIDropDownMenuTemplate")
 
 		local self = {}
 		self.type = widgetType

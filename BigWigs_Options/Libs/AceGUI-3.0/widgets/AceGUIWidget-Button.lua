@@ -73,7 +73,7 @@ local methods = {
 Constructor
 -------------------------------------------------------------------------------]]
 local function Constructor()
-	local name = "AceGUI30Button" .. AceGUI:GetNextWidgetNum(Type)
+	local name = "BWAceGUI30Button" .. AceGUI:GetNextWidgetNum(Type)
 	local frame = CreateFrame("Button", name, UIParent, "UIPanelButtonTemplate")
 	frame:Hide()
 

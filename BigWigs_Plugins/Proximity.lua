@@ -233,7 +233,7 @@ local function onControlEnter(self)
 end
 local function onControlLeave() GameTooltip:Hide() end
 
-local PROX_FONT_FALLBACK = "Interface\\AddOns\\BigWigs\\Media\\Fonts\\Noto.ttf"
+local PROX_FONT_FALLBACK = STANDARD_FONT or "Fonts\\FRIZQT__.TTF"
 local function setProximityTextFont()
 	if not proxAnchor.text then return end
 	proxAnchor.text:SetFont(media:Fetch(FONT, db.fontName) or PROX_FONT_FALLBACK, db.fontSize)

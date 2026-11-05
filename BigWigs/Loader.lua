@@ -143,7 +143,46 @@ local function Ambiguate(name)
 	local fullname, realm = strsplit("-", name)
 	return realm and fullname or name
 end
-local GetInstanceInfo, GetBestMapForUnit, GetMapInfo = GetInstanceInfo, CMap.GetBestMapForUnit, CMap.GetMapInfo
+local GetBestMapForUnit, GetMapInfo = CMap.GetBestMapForUnit, CMap.GetMapInfo
+-- Nozdor 3.3.5: GetInstanceInfo() returns only 7 values on this client and has
+-- no instanceID (the 8th) return. UnitPosition is absent and GetRealZoneText(id)
+-- ignores the id, so the only reliable identifier is the localized instance name.
+-- zoneNameToId is built below from public.zoneNames and lets us resolve the id
+-- from GetInstanceInfo()'s name. Without this the loader never matched the
+-- current instance and modules never loaded/enabled inside dungeons and raids.
+local zoneNameToId
+-- Nozdor 3.3.5: GetCurrentMapAreaID() returns the client's uiMapID, which is a
+-- DIFFERENT namespace from the standard BigWigs instance ids (e.g. Azjol-Nerub
+-- uiMapID is 534 while the module instanceId is 601). Map those uiMapIDs to the
+-- real instance ids as a fallback for when the localized name lookup misses.
+-- Values mirror DBM's X-DBM-Mod-MapID for WotLK dungeons.
+local mapAreaIdToInstanceId = {
+	[523] = 619, -- Ahn'Kahet: The Old Kingdom
+	[534] = 601, -- Azjol-Nerub
+	[522] = 595, -- The Culling of Stratholme
+	[535] = 600, -- Drak'Tharon Keep
+	[531] = 604, -- Gundrak
+	[526] = 602, -- Halls of Lightning
+	[527] = 599, -- Halls of Stone
+	[521] = 576, -- The Nexus
+	[529] = 578, -- The Oculus
+	[524] = 574, -- Utgarde Keep
+	[525] = 575, -- Utgarde Pinnacle
+	[537] = 608, -- Violet Hold
+	[603] = 650, -- Trial of the Champion
+	[602] = 632, -- The Forge of Souls
+	[604] = 658, -- Pit of Saron
+	[543] = 668, -- Halls of Reflection
+}
+local rawGetInstanceInfo = GetInstanceInfo
+local function GetInstanceInfo()
+	local name, instanceType, difficultyIndex, difficultyName, maxPlayers, playerDifficulty, isDynamicInstance, instanceID = rawGetInstanceInfo()
+	if (not instanceID or instanceID <= 0) and instanceType and instanceType ~= "none" then
+		instanceID = (zoneNameToId and zoneNameToId[name])
+			or (GetCurrentMapAreaID and mapAreaIdToInstanceId[GetCurrentMapAreaID()])
+	end
+	return name, instanceType, difficultyIndex, difficultyName, maxPlayers, playerDifficulty, isDynamicInstance, instanceID
+end
 local UnitName = UnitName
 
 -- Try to grab unhooked copies of critical funcs (hooked by some crappy addons)
@@ -283,19 +322,19 @@ do
 		[560] = lw_bc, -- The Escape from Durnholde
 		[585] = lw_bc, -- Magister's Terrace
 		--[[ LittleWigs: Wrath of the Lich King ]]--
-		[576] = lw_wotlk, -- The Nexus
+		[576] = lw_hp, -- The Nexus
 		[578] = lw_wotlk, -- The Oculus
 		[608] = lw_wotlk, -- Violet Hold
 		[595] = lw_wotlk, -- The Culling of Stratholme
-		[619] = lw_wotlk, -- Ahn'kahet: The Old Kingdom
+		[619] = lw_hp, -- Ahn'kahet: The Old Kingdom
 		[604] = lw_wotlk, -- Gundrak
-		[574] = lw_wotlk, -- Utgarde Keep
-		[575] = lw_wotlk, -- Utgarde Pinnacle
-		[602] = lw_wotlk, -- Halls of Lightning
-		[601] = lw_wotlk, -- Azjol-Nerub
+		[574] = lw_hp, -- Utgarde Keep
+		[575] = lw_hp, -- Utgarde Pinnacle
+		[602] = lw_hp, -- Halls of Lightning
+		[601] = lw_hp, -- Azjol-Nerub
 		[658] = lw_wotlk, -- Pit of Saron
-		[599] = lw_wotlk, -- Halls of Stone
-		[600] = lw_wotlk, -- Drak'Tharon Keep
+		[599] = lw_hp, -- Halls of Stone
+		[600] = lw_hp, -- Drak'Tharon Keep
 		[650] = lw_wotlk, -- Trial of the Champion
 		[668] = lw_wotlk, -- Halls of Reflection
 		[632] = lw_wotlk, -- The Forge of Souls
@@ -378,6 +417,73 @@ do
 		[-630] = -619, [-634] = -619, [-641] = -619, [-650] = -619, [-680] = -619, -- Broken Isles
 		[-942] = -947, -- Azeroth/BfA
 	}
+
+	-- Nozdor 3.3.5: instance id -> localized instance name. GetRealZoneText(id)
+	-- ignores the id on this client, so this static table is the single source of
+	-- truth for zone names (used by the options tree) AND for resolving the
+	-- current instance id from GetInstanceInfo()'s name (see GetInstanceInfo above).
+		public.zoneNames = {
+		[249] = "Логово Ониксии",
+		[533] = "Наксрамас",
+		[603] = "Ульдуар",
+		[615] = "Обсидиановое святилище",
+		[616] = "Око Вечности",
+		[624] = "Склеп Аркавона",
+		[631] = "Цитадель Ледяной Короны",
+		[649] = "Испытание крестоносца",
+		[724] = "Рубиновое святилище",
+		[961] = "Осада Даларана",
+		[574] = "Крепость Утгард",
+		[575] = "Вершина Утгард",
+		[576] = "Нексус",
+		[578] = "Окулус",
+		[595] = "Очищение Стратхольма",
+		[599] = "Чертоги Камня",
+		[600] = "Крепость Драк'Тарон",
+		[601] = "Азжол-Неруб",
+		[602] = "Чертоги Молний",
+		[604] = "Гундрак",
+		[608] = "Аметистовая крепость",
+		[619] = "Ан'кахет: Старое Королевство",
+		[632] = "Кузня Душ",
+		[650] = "Испытание чемпиона",
+		[658] = "Яма Сарона",
+		[668] = "Залы Отражений",
+		[409] = "Огненные Недра",
+		[469] = "Логово Крыла Тьмы",
+		[509] = "Руины Ан'Киража",
+		[531] = "Ан'Кираж",
+		[33] = "Крепость Темного Клыка",
+		[36] = "Мертвые копи",
+		[565] = "Логово Груула",
+		[532] = "Каражан",
+		[548] = "Змеиное святилище",
+		[550] = "Крепость Бурь",
+		[544] = "Логово Магтеридона",
+		[534] = "Вершина Хиджала",
+		[564] = "Черный храм",
+		[540] = "Цитадель Адского Пламени",
+		[542] = "Кузня Крови",
+		[543] = "Бастионы Адского Пламени",
+		[546] = "Нижетопь",
+		[545] = "Паровое подземелье",
+		[547] = "Узилище",
+		[553] = "Ботаника",
+		[554] = "Механар",
+		[552] = "Аркатрац",
+		[556] = "Сетеккские залы",
+		[555] = "Темный лабиринт",
+		[557] = "Гробницы Маны",
+		[558] = "Аукенайские гробницы",
+		[269] = "Черные топи",
+		[560] = "Старые предгорья Хилсбрада",
+		[585] = "Терраса Магистров",
+	}
+
+	zoneNameToId = {}
+	for id, nm in next, public.zoneNames do
+		zoneNameToId[nm] = id
+	end
 end
 
 -- GLOBALS: _G, ADDON_LOAD_FAILED, BigWigs, BigWigs3DB, BigWigsIconDB, BigWigsLoader, BigWigsOptions, ChatFrame_ImportAllListsToHash, ChatTypeInfo, CreateFrame, CUSTOM_CLASS_COLORS, DEFAULT_CHAT_FRAME, error

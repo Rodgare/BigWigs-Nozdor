@@ -77,22 +77,18 @@ local function UpdateButton(button, treeline, selected, canExpand, isExpanded)
 	end
 	button.level = level
 	if ( level == 1 ) then
-		-- 3.3.5: SetNormalFontObject needs a Font object, not a name string.
-		-- Passing "GameFontNormal" left every tree node without a font, so the
-		-- whole BigWigs menu rendered as empty rows.
+		-- 3.3.5: set the font on the FontString directly. Button:SetNormalFontObject
+		-- only drives the template's normal text, which is unreliable here and
+		-- left the tree rows blank.
 		button:SetNormalFontObject(_G["GameFontNormal"])
 		button:SetHighlightFontObject(_G["GameFontHighlight"])
 		button.text:SetPoint("LEFT", (icon and 16 or 0) + 8, 2)
-		if button.isFallback then
-			button.text:SetFontObject(_G["GameFontNormal"])
-		end
+		button.text:SetFontObject(_G["GameFontNormal"])
 	else
 		button:SetNormalFontObject(_G["GameFontHighlightSmall"])
 		button:SetHighlightFontObject(_G["GameFontHighlightSmall"])
 		button.text:SetPoint("LEFT", (icon and 16 or 0) + 8 * level, 2)
-		if button.isFallback then
-			button.text:SetFontObject(_G["GameFontHighlightSmall"])
-		end
+		button.text:SetFontObject(_G["GameFontHighlightSmall"])
 	end
 
 	if disabled then
@@ -330,38 +326,52 @@ local methods = {
 
 	["CreateButton"] = function(self)
 		local num = AceGUI:GetNextWidgetNum("TreeGroupButton")
-		local name = ("AceGUI30TreeButton%d"):format(num)
-		-- This client ships the stock 3.3.5 "OptionsListButtonTemplate"
-		-- (toggle on the right, ButtonText, highlight). Use it so the tree
-		-- rows and their expand/collapse buttons sit exactly like Blizzard's
-		-- options list. Fall back to a manual build if the template or its
-		-- OnLoad (OptionsListButton_OnLoad) is unavailable.
+		-- Nozdor 3.3.5: unique prefix. ElvUI_OptionsUI embeds the standard
+		-- AceGUI-3.0 which also names tree buttons "AceGUI30TreeButtonN".
+		-- Global frame names collided between the two addons, so _G[name.."Text"]
+		-- resolved to the wrong addon's fontstring and tree labels came out
+		-- blank. Keep BigWigs' frames in their own namespace.
+		local name = ("BWAceGUI30TreeButton%d"):format(num)
+		-- This client ships the stock 3.3.5 "OptionsListButtonTemplate".
+		-- Do NOT rely on its OnLoad (OptionsListButton_OnLoad) — on this
+		-- client it does not reliably run, leaving button.text/toggle nil and
+		-- the tree rows blank. Wire text/toggle explicitly in every case.
 		local button = CreateFrame("Button", name, self.treeframe, "OptionsListButtonTemplate")
 		button.obj = self
+
 		local text = _G[name .. "Text"]
-		local toggle = button.toggle
-		if not text or not toggle then
-			button:SetHeight(18)
-			button:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestLogTitleHighlight", "ADD")
+		if not text then
 			text = button:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 			text:SetJustifyH("LEFT")
 			text:SetJustifyV("MIDDLE")
-			button.text = text
+			button.isFallback = true
+		end
+		local toggle = button.toggle or _G[name .. "Toggle"]
+		if not toggle then
 			toggle = CreateFrame("Button", nil, button)
 			toggle:SetWidth(14)
 			toggle:SetHeight(14)
 			toggle:SetPoint("TOPRIGHT", -6, -1)
-			toggle:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-			button.toggle = toggle
-			text:SetPoint("RIGHT", toggle, "LEFT", -2, 0)
 			button.isFallback = true
 		end
+		button.text = text
+		button.toggle = toggle
+
 		text:SetHeight(14) -- Prevents text wrapping
+		-- Anchor the right edge to the toggle so the label can size itself
+		-- (the template OnLoad normally does this, but it may not have run).
+		text:SetPoint("RIGHT", toggle, "LEFT", -2, 0)
+		text:SetFontObject(_G["GameFontHighlightSmall"])
 
 		local icon = button:CreateTexture(nil, "OVERLAY")
 		icon:SetWidth(14)
 		icon:SetHeight(14)
 		button.icon = icon
+
+		if not button:GetHighlightTexture() then
+			button:SetHighlightTexture("Interface\\QuestFrame\\UI-QuestLogTitleHighlight", "ADD")
+		end
+		button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 
 		button:SetScript("OnClick",Button_OnClick)
 		button:SetScript("OnDoubleClick", Button_OnDoubleClick)
@@ -369,6 +379,7 @@ local methods = {
 		button:SetScript("OnLeave",Button_OnLeave)
 
 		toggle.button = button
+		toggle:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 		toggle:SetScript("OnClick",Expand_OnClick)
 
 		return button

@@ -41,6 +41,11 @@ end
 -- Fonts
 do
 	local FONT = media.MediaType and media.MediaType.FONT or "font"
-	media:Register(FONT, "Noto Sans Regular", "Interface\\AddOns\\BigWigs\\Media\\Fonts\\Noto.ttf", 130) -- 130 latin + cyr
-	media:Register(FONT, "Noto Sans SemiCondensed", "Interface\\AddOns\\BigWigs\\Media\\Fonts\\NotoSans-SemiCondensed.ttf", 130) -- 130 latin + cyr
+	-- Nozdor 3.3.5: loading the large full-Unicode Noto TTFs makes the
+	-- client's text renderer flaky — random fontstrings (in BigWigs and
+	-- ElvUI menus alike) stop rendering until /reload clears the font cache.
+	-- Point the Noto keys at the stock client font so Noto is never fetched.
+	local stockFont = STANDARD_FONT or "Fonts\\FRIZQT__.TTF"
+	media:Register(FONT, "Noto Sans Regular", stockFont, 130) -- 130 latin + cyr
+	media:Register(FONT, "Noto Sans SemiCondensed", stockFont, 130) -- 130 latin + cyr
 end

@@ -1106,12 +1106,12 @@ do
 		"Classic",
 		"BurningCrusade",
 		"WrathOfTheLichKing",
-		"Cataclysm",
-		"MistsOfPandaria",
-		"WarlordsOfDraenor",
-		"Legion",
-		"BattleForAzeroth",
-		"Shadowlands"
+		"HeroicPlus",
+		-- "MistsOfPandaria",
+		-- "WarlordsOfDraenor",
+		-- "Legion",
+		-- "BattleForAzeroth",
+		-- "Shadowlands"
 	}
 
 	-- Nozdor 3.3.5 compat: pick the default expansion header from the client's
@@ -1202,10 +1202,10 @@ do
 			local defaultHeader
 			if value == "bigwigs" then
 				defaultHeader = "BigWigs_" .. currentExpansion(toc)
-				for i = 1, toc > 90000 and 9 or 8 do -- XXX Fix after Beta
+				for i = 1, #expansionHeader do
 					local value = "BigWigs_" .. expansionHeader[i]
 					treeTbl[i] = {
-						text = EJ_GetTierInfo(i),
+						text = (expansionHeader[i] == "HeroicPlus" and "Heroic+" or EJ_GetTierInfo(i)),
 						value = value,
 						enabled = (value == defaultHeader or GetAddOnEnableState(playerName, value) > 0),
 					}
@@ -1214,10 +1214,10 @@ do
 			elseif value == "littlewigs" then
 				defaultHeader = "LittleWigs_" .. currentExpansion(toc)
 				local enabled = GetAddOnEnableState(playerName, "LittleWigs") > 0
-				for i = 1, toc > 90000 and 9 or 8 do -- XXX Fix after Beta
+				for i = 1, #expansionHeader do
 					local value = "LittleWigs_" .. expansionHeader[i]
 					treeTbl[i] = {
-						text = EJ_GetTierInfo(i),
+						text = (expansionHeader[i] == "HeroicPlus" and "Heroic+" or EJ_GetTierInfo(i)),
 						value = value,
 						enabled = enabled,
 					}
@@ -1245,69 +1245,7 @@ else
 					-- zone, so look the WotLK raids AND 5-man dungeons up from a
 					-- static table instead. (Classic/TBC ids fall back to
 					-- GetRealZoneText and are only shown if it cooperates.)
-					zone = ({
-						-- Raids
-						[249] = "Логово Ониксии",          -- Onyxia's Lair
-						[533] = "Наксрамас",               -- Naxxramas
-						[603] = "Ульдуар",                 -- Ulduar
-						[615] = "Обсидиановое святилище",  -- Obsidian Sanctum
-						[616] = "Око Вечности",            -- Eye of Eternity
-						[624] = "Хранилище Аркавона",      -- Vault of Archavon
-						[631] = "Цитадель Ледяной Короны", -- Icecrown Citadel
-						[649] = "Испытание крестоносца",   -- Trial of the Crusader
-						[724] = "Рубиновое святилище",     -- Ruby Sanctum
-						[961] = "Осада Даларана",          -- Siege of Dalaran (Nozdor custom)
-						-- WotLK 5-man dungeons
-						[574] = "Крепость Утгард",         -- Utgarde Keep
-						[575] = "Вершина Утгард",          -- Utgarde Pinnacle
-						[576] = "Сеть",                    -- The Nexus
-						[578] = "Окулус",                  -- The Oculus
-						[595] = "Очищение Стратхольма",    -- The Culling of Stratholme
-						[599] = "Чертоги Камня",           -- Halls of Stone
-						[600] = "Крепость Драк'Тарон",     -- Drak'Tharon Keep
-						[601] = "Азжол-Неруб",             -- Azjol-Nerub
-						[602] = "Чертоги Молний",          -- Halls of Lightning
-						[604] = "Гундрак",                 -- Gundrak
-						[608] = "Лиловый застенок",        -- Violet Hold
-						[619] = "Ан'кахет: Старое королевство", -- Ahn'kahet: The Old Kingdom
-						[632] = "Кузница Душ",             -- The Forge of Souls
-						[650] = "Испытание Чемпиона",      -- Trial of the Champion
-						[658] = "Мясорубка Саррона",       -- Pit of Saron
-						[668] = "Залы Отражений",          -- Halls of Reflection
-						-- Classic raids
-						[409] = "Огненные Недра",          -- Molten Core
-						[469] = "Логово Крыла Тьмы",       -- Blackwing Lair
-						[509] = "Руины Ан'киража",          -- Ruins of Ahn'Qiraj
-						[531] = "Храм Ан'киража",           -- Temple of Ahn'Qiraj
-						-- Classic 5-man dungeons
-						[33] = "Темнокаменка",             -- Shadowfang Keep
-						[36] = "Мертвые копи",             -- Deadmines
-						-- TBC raids
-						[565] = "Логово Груула",           -- Gruul's Lair
-						[532] = "Каражан",                 -- Karazhan
-						[548] = "Змеиное Святилище",       -- Serpentshrine Cavern
-						[550] = "Крепость Бурь",           -- Tempest Keep
-						[544] = "Логово Магтеридона",      -- Magtheridon's Lair
-						[534] = "Битва за гору Хиджал",    -- The Battle for Mount Hyjal
-						[564] = "Черный Храм",             -- Black Temple
-						-- TBC 5-man dungeons
-						[540] = "Разрушенные залы",        -- The Shattered Halls
-						[542] = "Кузня Крови",             -- The Blood Furnace
-						[543] = "Бастион Адского Пламени", -- Hellfire Ramparts
-						[546] = "Топь",                    -- Coilfang: The Underbog
-						[545] = "Акватон",                 -- Coilfang: The Steamvault
-						[547] = "Отстойник",               -- Coilfang: The Slave Pens
-						[553] = "Ботаника",                -- Tempest Keep: The Botanica
-						[554] = "Механар",                 -- Tempest Keep: The Mechanar
-						[552] = "Аркатрац",                -- Tempest Keep: The Arcatraz
-						[556] = "Залы Сетекков",           -- Auchindoun: Sethekk Halls
-						[555] = "Теневой Лабиринт",        -- Auchindoun: Shadow Labyrinth
-						[557] = "Гробницы Маны",           -- Auchindoun: Mana-Tombs
-						[558] = "Аукенайские Склепы",      -- Auchindoun: Auchenai Crypts
-						[269] = "Черное болото",           -- Opening of the Dark Portal
-						[560] = "Побег из Дурнхольда",     -- The Escape from Durnholde
-						[585] = "Терраса Магистров",       -- Magister's Terrace
-					})[id] or GetRealZoneText(id)
+					zone = loader.zoneNames[id] or GetRealZoneText(id)
 				end
 					if zone and zone ~= "" then -- Protect live client from beta client ids
 						local addon = loader.zoneTbl[id]
