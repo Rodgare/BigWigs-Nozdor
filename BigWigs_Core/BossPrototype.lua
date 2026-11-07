@@ -258,6 +258,84 @@ function boss:LocalMessage(key, text, color, icon, sound)
 	self:Message(key, color or "yellow", sound, text, icon)
 end
 
+-- Older WotLK/LittleWigs modules still use the *Old message method names.
+-- Signatures match the current API; forward them instead of erroring mid-fight.
+function boss:MessageOld(...)
+	return self:Message(...)
+end
+
+function boss:TargetMessageOld(...)
+	return self:TargetMessage(...)
+end
+
+function boss:StackMessageOld(...)
+	return self:StackMessage(...)
+end
+
+function boss:TargetsMessageOld(...)
+	return self:TargetsMessage(...)
+end
+
+-- Remaining helpers that were removed after the versions these WotLK modules
+-- were written for. They are still called from active module code.
+function boss:BossYell(...)
+	return self:Yell(...)
+end
+
+function boss:GetHealth(unit)
+	local max = UnitHealthMax(unit)
+	if not max or max == 0 then return 0 end
+	return UnitHealth(unit) / max * 100
+end
+
+function boss:Classic()
+	return false
+end
+
+function boss:Player(flags)
+	return bit.band(flags or 0, 0x400) ~= 0 -- COMBATLOG_OBJECT_TYPE_PLAYER
+end
+
+function boss:GetStage()
+	return self.stage or 0
+end
+
+function boss:StopBerserk(text)
+	self:StopBar(text or spells[26662])
+end
+
+function boss:GetIcon(raidFlags)
+	local flags = tonumber(raidFlags) or 0
+	for i = 1, 8 do
+		if bit.band(flags, bit.lshift(1, i - 1)) ~= 0 then
+			return i
+		end
+	end
+end
+
+function boss:GetIconTexture(icon)
+	if not icon then return nil end
+	return format("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:15|t", icon)
+end
+
+function boss:UnitIsInteractable(unit)
+	return UnitExists(unit) and not UnitIsDeadOrGhost(unit) and UnitIsConnected(unit) and true or false
+end
+
+function boss:CustomIcon()
+	-- Legacy marker helper; marking is optional and no longer part of the core.
+end
+
+function boss:PlaySoundFile(path)
+	if PlaySoundFile and path then
+		PlaySoundFile(path, "Master")
+	end
+end
+
+function boss:UnitGUID(unit)
+	return UnitGUID(unit)
+end
+
 --- The initial stage, as set by `SetStage`.
 -- @within Enable triggers
 function boss:SetStage(n)

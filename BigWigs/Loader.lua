@@ -40,11 +40,9 @@ local ldbi = LibStub("LibDBIcon-1.0")
 -- Generate our version variables
 --
 
-local BIGWIGS_VERSION = 184
 local BIGWIGS_RELEASE_STRING, BIGWIGS_VERSION_STRING = "", ""
-local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
--- Nozdor: the displayed addon version comes from the TOC (## Version: v1.0.0)
+-- Nozdor: the displayed addon version comes from the TOC (## Version: v1.0.0).
 -- instead of the hardcoded sync revision above. On 3.3.5 GetAddOnMetadata by
 -- name is unreliable, so fall back to looking the addon up by index.
 local function getAddonVersion()
@@ -103,9 +101,6 @@ do
 	end
 	BIGWIGS_RELEASE_STRING = releaseString
 	BIGWIGS_VERSION_STRING = ADDON_VERSION
-	-- Format is "V:version-hash"
-	versionQueryString = versionQueryString:format(BIGWIGS_VERSION, myGitHash)
-	versionResponseString = versionResponseString:format(BIGWIGS_VERSION, myGitHash)
 	-- END: MAGIC PACKAGER VOODOO VERSION STUFF
 end
 
@@ -544,6 +539,10 @@ do
 	for id, nm in next, public.zoneNames do
 		zoneNameToId[nm] = id
 	end
+	-- Nozdor custom raid: GetInstanceInfo() can return the subzone ("Вечерняя
+	-- Заря") instead of the parent zone name, which would skip the 961 mapping.
+	zoneNameToId["Вечерняя Заря"] = 961
+	zoneNameToId["Siege of Dalaran"] = 961
 end
 
 -- GLOBALS: _G, ADDON_LOAD_FAILED, BigWigs, BigWigs3DB, BigWigsIconDB, BigWigsLoader, BigWigsOptions, ChatFrame_ImportAllListsToHash, ChatTypeInfo, CreateFrame, CUSTOM_CLASS_COLORS, DEFAULT_CHAT_FRAME, error
@@ -1006,6 +1005,49 @@ do
 					end
 					if not present then
 						list[#list + 1] = littleWigsIndex
+					end
+					if not menus[id] and not blockedMenus[id] then
+						menus[id] = true
+					end
+				end
+			end
+		end
+	end
+
+	-- Nozdor 3.3.5: same fallback for the Wrath raid pack. If its
+	-- X-BigWigs-LoadOn-InstanceId metadata is dropped by this client's TOC
+	-- parser, zone 961 (Siege of Dalaran) loads the BigWigs core but never the
+	-- pack, so nothing shows up in the raid. Seed every Wrath instance from
+	-- zoneTbl against the real addon index, deduped against the metadata pass.
+	do
+		local wrathIndex
+		for i = 1, GetNumAddOns() do
+			if GetAddOnInfo(i) == "BigWigs_WrathOfTheLichKing" then
+				wrathIndex = i
+				break
+			end
+		end
+		if wrathIndex then
+			if not IsAddOnEnabled(wrathIndex) then
+				EnableAddOn(wrathIndex)
+			end
+			for id, pack in next, public.zoneTbl do
+				if pack == "BigWigs_WrathOfTheLichKing" then
+					enableZones[id] = true
+					local list = loadOnZone[id]
+					if not list then
+						list = {}
+						loadOnZone[id] = list
+					end
+					local present = false
+					for j = 1, #list do
+						if list[j] == wrathIndex then
+							present = true
+							break
+						end
+					end
+					if not present then
+						list[#list + 1] = wrathIndex
 					end
 					if not menus[id] and not blockedMenus[id] then
 						menus[id] = true
@@ -1535,9 +1577,7 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 	elseif prefix == "BigWigs" then
 		local bwPrefix, bwMsg, extra = strsplit("^", msg)
 		sender = Ambiguate(sender, "none")
-		if bwPrefix == "V" or bwPrefix == "Q" then
-			self:VersionCheck(bwPrefix, bwMsg, extra, sender)
-		elseif bwPrefix == "B" then
+		if bwPrefix == "B" then
 			public:SendMessage("BigWigs_BossComm", bwMsg, extra, sender)
 		elseif bwPrefix == "P" then
 			if bwMsg == "Pull" then
@@ -1575,30 +1615,6 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 				loadAndEnableCore() -- Force enable the core when receiving a break timer.
 			end
 			public:SendMessage("DBM_AddonMessage", sender, dbmPrefix, arg1, arg2, arg3, arg4)
-		end
-	end
-end
-
-do
-	local timer = nil
-	local function sendMsg()
-		if IsInGroup() then
-			SendAddonMessage("BigWigs", versionResponseString, IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- LE_PARTY_CATEGORY_INSTANCE = 2
-		end
-		timer = nil
-	end
-
-	function mod:VersionCheck(prefix, verString, hash, sender)
-		if prefix == "Q" then
-			if timer then timer:Cancel() end
-			timer = CTimerNewTicker(3, sendMsg, 1)
-		end
-		if prefix == "V" or prefix == "Q" then -- V = version response, Q = version query
-			local version = tonumber(verString)
-			if version and version > 0 then -- Allow addons to query BigWigs versions by using a version of 0, but don't add them to the user list.
-				usersVersion[sender] = version
-				usersHash[sender] = hash
-			end
 		end
 	end
 end
@@ -1701,7 +1717,6 @@ do
 		local groupType = (IsInGroup(2) and 3) or (IsInRaid() and 2) or (IsInGroup() and 1) -- LE_PARTY_CATEGORY_INSTANCE = 2
 		if (not grouped and groupType) or (grouped and groupType and grouped ~= groupType) then
 			grouped = groupType
-			SendAddonMessage("BigWigs", versionQueryString, groupType == 3 and "INSTANCE_CHAT" or "RAID")
 			SendAddonMessage("D4", "H\t", groupType == 3 and "INSTANCE_CHAT" or "RAID") -- Also request DBM versions
 			self:ZONE_CHANGED_NEW_AREA()
 			self:ACTIVE_TALENT_GROUP_CHANGED() -- Force role check
@@ -1732,10 +1747,9 @@ public.RegisterMessage(mod, "BigWigs_BossModuleRegistered")
 function mod:BigWigs_CoreEnabled()
 	dataBroker.icon = "Interface\\AddOns\\BigWigs\\Media\\Textures\\icons\\core-enabled"
 
-	-- Send a version query on enable, should fix issues with joining a group then zoning into an instance,
+	-- Send a DBM version request on enable, should fix issues with joining a group then zoning into an instance,
 	-- which kills your ability to receive addon comms during the loading process.
 	if IsInGroup() then
-		SendAddonMessage("BigWigs", versionQueryString, IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 		SendAddonMessage("D4", "H\t", IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- Also request DBM versions
 	end
 
