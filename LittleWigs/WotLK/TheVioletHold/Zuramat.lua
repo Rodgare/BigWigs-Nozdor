@@ -1,7 +1,6 @@
 local mod = BigWigs:NewBoss("Zuramat the Obliterator", 608)
 if not mod then return end
 mod.partyContent = true
-mod.otherMenu = "Dalaran"
 mod:RegisterEnableMob(29314, 32230)
 mod.toggleOptions = {
 	{54361, "FLASH"}, -- Void Shift

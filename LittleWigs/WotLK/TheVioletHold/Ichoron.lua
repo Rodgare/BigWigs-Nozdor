@@ -1,7 +1,6 @@
 local mod = BigWigs:NewBoss("Ichoron", 608)
 if not mod then return end
 mod.partyContent = true
-mod.otherMenu = "Dalaran"
 mod:RegisterEnableMob(29313, 32234)
 mod.toggleOptions = {
 	54306, -- Bubble

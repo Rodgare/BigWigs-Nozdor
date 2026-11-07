@@ -519,9 +519,23 @@ do
 	end
 
 	local args = {}
-	local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-	bossUtilityFrame:SetScript("OnEvent", function()
-		local time, event, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, _, extraSpellId, amount = CombatLogGetCurrentEventInfo()
+	local CLEU = CombatLogGetCurrentEventInfo
+	local hasEventInfo = type(CLEU) == "function"
+	bossUtilityFrame:SetScript("OnEvent", function(_, event, ...)
+		local sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, spellId, spellName, extraSpellId, amount, time
+		if hasEventInfo then
+			time, event, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, _, extraSpellId, amount = CLEU()
+		else
+			-- 3.3.5 has no CombatLogGetCurrentEventInfo: the payload is passed
+			-- directly to the OnEvent handler. 3.3.5 also omits the source and
+			-- destination raid flag arguments, which are unused here anyway.
+			local t, subevent, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, id, name, _, primary, secondary = ...
+			time, event = t, subevent
+			sourceGUID, sourceName, sourceFlags = srcGUID, srcName, srcFlags
+			destGUID, destName, destFlags = dstGUID, dstName, dstFlags
+			spellId, spellName = id, name
+			extraSpellId, amount = primary, secondary
+		end
 		if allowedEvents[event] then
 			if event == "UNIT_DIED" then
 				local mobId = guidToMobId(destGUID)

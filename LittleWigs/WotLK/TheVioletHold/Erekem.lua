@@ -1,7 +1,6 @@
 local mod, CL = BigWigs:NewBoss("Erekem", 608)
 if not mod then return end
 mod.partyContent = true
-mod.otherMenu = "Dalaran"
 mod:RegisterEnableMob(29315, 32226)
 mod.toggleOptions = {
 	54481, -- Chain Heal

@@ -1,7 +1,6 @@
 local mod = BigWigs:NewBoss("Xevozz", 608)
 if not mod then return end
 mod.partyContent = true
-mod.otherMenu = "Dalaran"
 mod:RegisterEnableMob(29266, 32231)
 mod.toggleOptions = {
 	54102, -- Summon Sphere

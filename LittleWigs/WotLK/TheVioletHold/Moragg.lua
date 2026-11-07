@@ -1,7 +1,6 @@
 local mod = BigWigs:NewBoss("Moragg", 608)
 if not mod then return end
 mod.partyContent = true
-mod.otherMenu = "Dalaran"
 mod:RegisterEnableMob(29316, 32235)
 mod.toggleOptions = {
 	54396, -- Optic Link

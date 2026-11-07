@@ -1230,7 +1230,9 @@ do
 				-- loader's authoritative zone table directly (id-first). The upstream
 				-- name->id->addon two-pass broke on this client (zone names no longer
 				-- round-trip through zoneToId), so raid zones never appeared in the tree.
-				for id in next, loader:GetZoneMenus() do
+				for rawId in next, loader:GetZoneMenus() do
+					local id = tonumber(rawId)
+					if id then
 					local zone
 					if id < 0 then
 						local tbl = GetMapInfo(-id)
@@ -1258,6 +1260,7 @@ else
 								text = zone,
 							})
 						end
+					end
 					end
 				end
 

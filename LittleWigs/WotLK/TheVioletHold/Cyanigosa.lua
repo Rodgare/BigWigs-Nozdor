@@ -1,7 +1,6 @@
 local mod = BigWigs:NewBoss("Cyanigosa", 608)
 if not mod then return end
 mod.partyContent = true
-mod.otherMenu = "Dalaran"
 mod:RegisterEnableMob(31134)
 mod.toggleOptions = {
 	{58693, "FLASH"}, -- Blizzard
