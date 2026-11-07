@@ -1212,7 +1212,8 @@ do
 					addonNameToHeader[value] = treeTbl[i]
 				end
 			elseif value == "littlewigs" then
-				defaultHeader = "LittleWigs_" .. currentExpansion(toc)
+				-- Nozdor: open the dungeons tree on Heroic+ by default.
+				defaultHeader = "LittleWigs_HeroicPlus"
 				local enabled = GetAddOnEnableState(playerName, "LittleWigs") > 0
 				for i = 1, #expansionHeader do
 					local value = "LittleWigs_" .. expansionHeader[i]
