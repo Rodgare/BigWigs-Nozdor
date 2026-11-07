@@ -1,7 +1,7 @@
 local L = BigWigsAPI:NewLocale("BigWigs", "ruRU")
 if not L then return end
 
-L.getNewRelease = "Ваш BigWigs устарел(/bwv), но вы можете легко его обновить с помощью Twitch Client. Также, Вы можете обновиться вручную на сайтах curseforge.com или wowinterface.com."
+L.getNewRelease = "Ваш BigWigs устарел(/bwv) [ссылка на гх]"
 L.warnTwoReleases = "Ваш BigWigs устарел на две версии! Ваша версию может содержать ошибки, меньше возможностей, а может быть и неправильные таймеры. Крайне рекомендуется обновиться."
 L.warnSeveralReleases = "|cffff0000Ваш BigWigs устарел на %d версий!! ОЧЕНЬ рекомендуется обновиться, чтобы предотвратить ошибки синхронизации с другими игроками!|r"
 
@@ -76,7 +76,7 @@ L.missingAddOn = "Обратите внимание, что эта зона тр
 L.mythic = "Эпохальный"
 L.noBossMod = "Нет аддона:"
 L.normal = "Обычный"
-L.officialRelease = "BigWigs for Nozdor %s (%s)"
+L.officialRelease = "Отправляйте баги на Coda"
 L.offline = "Не в сети"
 L.oldVersionsInGroup = "В вашей группе есть игроки с устаревшими версиями или без BigWigs. Для получения более подробной информации введите команду /bwv."
 L.outOfDate = "Устарело:"

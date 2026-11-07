@@ -44,6 +44,34 @@ local BIGWIGS_VERSION = 184
 local BIGWIGS_RELEASE_STRING, BIGWIGS_VERSION_STRING = "", ""
 local versionQueryString, versionResponseString = "Q^%d^%s", "V^%d^%s"
 
+-- Nozdor: the displayed addon version comes from the TOC (## Version: v1.0.0)
+-- instead of the hardcoded sync revision above. On 3.3.5 GetAddOnMetadata by
+-- name is unreliable, so fall back to looking the addon up by index.
+local function getAddonVersion()
+	local version
+	local function readVersion(target)
+		if not GetAddOnMetadata then return end
+		local ok, value = pcall(GetAddOnMetadata, target, "Version")
+		if ok and type(value) == "string" and value ~= "" then
+			version = value
+		end
+	end
+	readVersion("BigWigs")
+	if not version and GetNumAddOns and GetAddOnInfo then
+		for i = 1, GetNumAddOns() do
+			if GetAddOnInfo(i) == "BigWigs" then
+				readVersion(i)
+				break
+			end
+		end
+	end
+	version = (tostring(version or "1.0.0"):gsub("^%s+", ""):gsub("%s+$", ""))
+	if version == "" or version == "nil" then version = "1.0.0" end
+	if version:sub(1, 1):lower() ~= "v" then version = "v" .. version end
+	return version
+end
+local ADDON_VERSION = getAddonVersion()
+
 do
 	-- START: MAGIC PACKAGER VOODOO VERSION STUFF
 	local REPO = "REPO"
@@ -65,14 +93,16 @@ do
 	end
 
 	if releaseType == REPO then
-		releaseString = L.sourceCheckout:format(BIGWIGS_VERSION)
+		releaseString = L.sourceCheckout:format(ADDON_VERSION)
 	elseif releaseType == RELEASE then
-		releaseString = L.officialRelease:format(BIGWIGS_VERSION, myGitHash)
+		-- Nozdor: always "v1.0.0 <localized note>", e.g. "v1.0.0 Отправляйте баги на Coda".
+		local note = L.officialRelease or ""
+		releaseString = ADDON_VERSION .. (note ~= "" and (" " .. note) or "")
 	elseif releaseType == ALPHA then
-		releaseString = L.alphaRelease:format(BIGWIGS_VERSION, myGitHash)
+		releaseString = L.alphaRelease:format(ADDON_VERSION, myGitHash)
 	end
 	BIGWIGS_RELEASE_STRING = releaseString
-	BIGWIGS_VERSION_STRING = ("%d-%s"):format(BIGWIGS_VERSION, myGitHash)
+	BIGWIGS_VERSION_STRING = ADDON_VERSION
 	-- Format is "V:version-hash"
 	versionQueryString = versionQueryString:format(BIGWIGS_VERSION, myGitHash)
 	versionResponseString = versionResponseString:format(BIGWIGS_VERSION, myGitHash)
@@ -228,8 +258,7 @@ public.CTimerNewTicker = CTimerNewTicker
 -- Version
 local usersHash = {}
 local usersVersion = {}
-local usersDBM = {}
-local highestFoundVersion = BIGWIGS_VERSION
+
 
 -- Loading
 local loadOnCoreEnabled = {} -- BigWigs modulepacks that should load when a hostile zone is entered or the core is manually enabled, this would be the default plugins Bars, Messages etc
@@ -650,23 +679,6 @@ end
 -----------------------------------------------------------------------
 -- Version listing functions
 --
-
-tooltipFunctions[#tooltipFunctions+1] = function(tt)
-	local add, i = false, 0
-	for _, version in next, usersVersion do
-		i = i + 1
-		if version < highestFoundVersion then
-			add = true
-			break
-		end
-	end
-	if not add and i ~= GetNumGroupMembers() then
-		add = true
-	end
-	if add then
-		tt:AddLine(L.oldVersionsInGroup, 1, 0, 0, 1)
-	end
-end
 
 -----------------------------------------------------------------------
 -- Loader initialization
@@ -1567,7 +1579,6 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 	end
 end
 
-local ResetVersionWarning
 do
 	local timer = nil
 	local function sendMsg()
@@ -1575,57 +1586,6 @@ do
 			SendAddonMessage("BigWigs", versionResponseString, IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- LE_PARTY_CATEGORY_INSTANCE = 2
 		end
 		timer = nil
-	end
-
-	local hasWarned = 0
-	local verTimer = nil
-	function ResetVersionWarning()
-		hasWarned = 0
-		if verTimer then verTimer:Cancel() end -- We may have left the group whilst a warning is about to show
-		verTimer = nil
-	end
-
-	local function printOutOfDate(tbl)
-		if hasWarned == 3 then return end
-		local warnedOutOfDate, warnedReallyOutOfDate, warnedExtremelyOutOfDate = 0, 0, 0
-		for k,v in next, tbl do
-			if v > BIGWIGS_VERSION then
-				warnedOutOfDate = warnedOutOfDate + 1
-				if (v - 1) > BIGWIGS_VERSION then -- 2+ releases
-					warnedReallyOutOfDate = warnedReallyOutOfDate + 1
-					if (v - 2) > BIGWIGS_VERSION then -- 3+ releases
-						warnedExtremelyOutOfDate = warnedExtremelyOutOfDate + 1
-					end
-				end
-			end
-		end
-		if warnedExtremelyOutOfDate > 1 then
-			if verTimer then verTimer:Cancel() end
-			verTimer = CTimerNewTicker(3, function()
-				hasWarned = 3
-				verTimer = nil
-				local diff = highestFoundVersion - BIGWIGS_VERSION
-				local msg = L.warnSeveralReleases:format(diff)
-				sysprint(msg)
-				Popup(msg)
-				RaidNotice_AddMessage(RaidWarningFrame, msg, {r=1,g=1,b=1}, 40)
-			end, 1)
-		elseif warnedReallyOutOfDate > 1 and hasWarned < 2 then
-			if verTimer then verTimer:Cancel() end
-			verTimer = CTimerNewTicker(3, function()
-				hasWarned = 2
-				verTimer = nil
-				sysprint(L.warnTwoReleases)
-				RaidNotice_AddMessage(RaidWarningFrame, L.warnTwoReleases, {r=1,g=1,b=1}, 20)
-			end, 1)
-		elseif warnedOutOfDate > 1 and hasWarned < 1 then
-			if verTimer then verTimer:Cancel() end
-			verTimer = CTimerNewTicker(3, function()
-				hasWarned = 1
-				verTimer = nil
-				sysprint(L.getNewRelease)
-			end, 1)
-		end
 	end
 
 	function mod:VersionCheck(prefix, verString, hash, sender)
@@ -1638,10 +1598,6 @@ do
 			if version and version > 0 then -- Allow addons to query BigWigs versions by using a version of 0, but don't add them to the user list.
 				usersVersion[sender] = version
 				usersHash[sender] = hash
-				if version > highestFoundVersion then highestFoundVersion = version end
-				if version > BIGWIGS_VERSION then
-					printOutOfDate(usersVersion)
-				end
 			end
 		end
 	end
@@ -1751,7 +1707,6 @@ do
 			self:ACTIVE_TALENT_GROUP_CHANGED() -- Force role check
 		elseif grouped and not groupType then
 			grouped = nil
-			ResetVersionWarning()
 			wipe(usersVersion)
 			wipe(usersHash)
 			self:ZONE_CHANGED_NEW_AREA()
@@ -1867,8 +1822,7 @@ SlashCmdList.BigWigsVersion = function()
 		if n then list[#list+1] = n end
 	end
 
-	local good = {} -- highest release users
-	local ugly = {} -- old version users
+	local known = {} -- BigWigs users
 	local bad = {} -- no boss mod
 	local crazy = {} -- DBM users
 
@@ -1876,11 +1830,7 @@ SlashCmdList.BigWigsVersion = function()
 		local player = list[i]
 		local usesBossMod = nil
 		if usersVersion[player] then
-			if usersVersion[player] < highestFoundVersion then
-				ugly[#ugly + 1] = coloredNameVersion(player, usersVersion[player], usersHash[player])
-			else
-				good[#good + 1] = coloredNameVersion(player, usersVersion[player], usersHash[player])
-			end
+			known[#known + 1] = coloredNameVersion(player, usersVersion[player], usersHash[player])
 			usesBossMod = true
 		end
 		if usersDBM[player] then
@@ -1892,8 +1842,7 @@ SlashCmdList.BigWigsVersion = function()
 		end
 	end
 
-	if #good > 0 then print(L.upToDate, unpack(good)) end
-	if #ugly > 0 then print(L.outOfDate, unpack(ugly)) end
+	if #known > 0 then print("BigWigs:", unpack(known)) end
 	if #crazy > 0 then print(L.dbmUsers, unpack(crazy)) end
 	if #bad > 0 then print(L.noBossMod, unpack(bad)) end
 end
