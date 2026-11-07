@@ -54,6 +54,21 @@ local difficulty = 0
 local UpdateDispelStatus, UpdateInterruptStatus = nil, nil
 local myGUID, myRole, myDamagerRole = nil, nil, nil
 local myGroupGUIDs = {}
+
+-- Nozdor 3.3.5: UnitGUID() returns "0xF130006D3900001A" instead of the retail
+-- "Creature-0-....-27961" format, so the old dash split returned nil (-> 1) and
+-- neither engage checks nor Death()/MobId() filters could ever match a mob.
+local function guidToMobId(guid)
+	if not guid then return nil end
+	local _, _, _, _, _, id = strsplit("-", guid)
+	if id then return tonumber(id) end
+	local prefix = guid:sub(3, 5):lower()
+	if prefix == "f13" or prefix == "f14" or prefix == "f15" then
+		local entry = tonumber(guid:sub(5, 12), 16)
+		if entry then return entry % 65536 end
+	end
+	return nil
+end
 local solo = false
 local updateData = function(module)
 	myGUID = UnitGUID("player")
@@ -218,7 +233,12 @@ end
 -- @within Enable triggers
 function boss:SetEncounterID(id)
 	self.encounterID = id
-	if id then self.journalId = id end
+	if id then
+		self.journalId = id
+		-- On this 3.3.5 client ENCOUNTER_START never fires, so engageId is what
+		-- makes boss:Enable() subscribe to INSTANCE_ENCOUNTER_ENGAGE_UNIT.
+		self.engageId = id
+	end
 end
 
 --- The respawn time in seconds, as set by `SetRespawnTime`.
@@ -290,8 +310,12 @@ function boss:Enable(isWipe)
 		if self.SetupOptions then self:SetupOptions() end
 		if type(self.OnBossEnable) == "function" then self:OnBossEnable() end
 
-		if IsEncounterInProgress() and not isWiping then -- Safety. ENCOUNTER_END might fire whilst IsEncounterInProgress is still true and engage a module.
-			self:CheckForEncounterEngage("NoEngage") -- Prevent engaging if enabling during a boss fight (after a DC)
+		-- Nozdor 3.3.5: IsEncounterInProgress() is a stub returning false on this
+		-- client, so the old guard never engaged a module enabled at pull time.
+		-- Checking boss units directly is safe: if this module's mobs are not
+		-- among boss1..boss5 it just disables itself again.
+		if not isWiping then
+			self:CheckForEncounterEngage()
 		end
 
 		if not isWiping then
@@ -489,8 +513,7 @@ do
 		local time, event, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, _, extraSpellId, amount = CombatLogGetCurrentEventInfo()
 		if allowedEvents[event] then
 			if event == "UNIT_DIED" then
-				local _, _, _, _, _, id = strsplit("-", destGUID)
-				local mobId = tonumber(id)
+				local mobId = guidToMobId(destGUID)
 				if mobId then
 					for i = #enabledModules, 1, -1 do
 						local self = enabledModules[i]
@@ -716,23 +739,27 @@ do
 	function boss:CheckForEncounterEngage(noEngage)
 		local hasBoss = UnitHealth("boss1") > 0 or UnitHealth("boss2") > 0 or UnitHealth("boss3") > 0 or UnitHealth("boss4") > 0 or UnitHealth("boss5") > 0
 		if not self:IsEngaged() and hasBoss then
-			local guid = UnitGUID("boss1") or UnitGUID("boss2") or UnitGUID("boss3") or UnitGUID("boss4") or UnitGUID("boss5")
-			local module = core:GetEnableMobs()[self:MobId(guid)]
-			local modType = type(module)
-			if modType == "string" then
-				if module == self.moduleName then
-					self:Engage(noEngage == "NoEngage" and noEngage)
-				else
-					self:Disable()
-				end
-			elseif modType == "table" then
-				for i = 1, #module do
-					if module[i] == self.moduleName then
-						self:Engage(noEngage == "NoEngage" and noEngage)
-						break
+			-- Nozdor 3.3.5: a boss is not always boss1 (custom encounters can put
+			-- adds in boss1 and the real boss in boss2..boss5), so scan them all
+			-- instead of only the first non-nil boss unit.
+			local matched = false
+			for i = 1, 5 do
+				local mobId = guidToMobId(UnitGUID("boss" .. i))
+				local module = mobId and core:GetEnableMobs()[mobId]
+				local modType = type(module)
+				if modType == "string" and module == self.moduleName then
+					matched = true
+				elseif modType == "table" then
+					for j = 1, #module do
+						if module[j] == self.moduleName then matched = true break end
 					end
 				end
-				if not self:IsEngaged() then self:Disable() end
+				if matched then break end
+			end
+			if matched then
+				self:Engage(noEngage == "NoEngage" and noEngage)
+			else
+				self:Disable()
 			end
 		end
 	end
@@ -1108,8 +1135,7 @@ end
 -- @return mob/npc id
 function boss:MobId(guid)
 	if not guid then return 1 end
-	local _, _, _, _, _, id = strsplit("-", guid)
-	return tonumber(id) or 1
+	return guidToMobId(guid) or 1
 end
 
 --- Get a localized name from an id. Positive ids for spells (GetSpellInfo) and negative ids for journal entries (C_EncounterJournal.GetSectionInfo).

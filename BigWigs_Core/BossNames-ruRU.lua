@@ -190,5 +190,7 @@ BigWigs_BossNames_ruRU = {
 	["Zuramat the Obliterator"] = "Зурамат Уничтожитель",
 
 	["Hogan Death Herald"] = "Вестник смерти Хоган",
+	["Overseer Malkren"] = "Надзиратель Малкрен",
+	["Kamnerev the Living Earth"] = "Камнерев Живая Земля",
 	["Siege of Dalaran"] = "Осада Даларана",
 }

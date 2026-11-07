@@ -165,8 +165,17 @@ end
 
 local function targetCheck(unit, sync)
 	if not UnitName(unit) or UnitIsCorpse(unit) or UnitIsDead(unit) or UnitPlayerControlled(unit) then return end
-	local _, _, _, _, _, mobId = strsplit("-", (UnitGUID(unit)))
-	local id = tonumber(mobId)
+	-- Nozdor 3.3.5: UnitGUID() is "0xF130006D3900001A", not retail "Creature-...-id".
+	local guid = UnitGUID(unit)
+	local _, _, _, _, _, retailId = strsplit("-", guid or "")
+	local id = tonumber(retailId)
+	if not id and guid then
+		local prefix = guid:sub(3, 5):lower()
+		if prefix == "f13" or prefix == "f14" or prefix == "f15" then
+			local entry = tonumber(guid:sub(5, 12), 16)
+			if entry then id = entry % 65536 end
+		end
+	end
 	if id and enablemobs[id] then
 		targetSeen(unit, enablemobs[id], id, sync)
 	end
@@ -175,6 +184,13 @@ end
 local function updateMouseover() targetCheck("mouseover", true) end
 local function unitTargetChanged(event, target)
 	targetCheck(target .. "target")
+end
+-- Nozdor 3.3.5: ENCOUNTER_START does not exist, so use the boss unit engage
+-- event to run the target based module enabling at pull time. Without this a
+-- module only enabled when someone happened to target/mouseover the boss
+-- before the pull, which looked like BigWigs "not working" in raids.
+local function engageUnitCheck()
+	for i = 1, 5 do targetCheck("boss" .. i) end
 end
 
 local function zoneChanged()
@@ -384,6 +400,7 @@ do
 
 			loader.RegisterMessage(mod, "BigWigs_BossComm", bossComm)
 			core.RegisterEvent(mod, "ZONE_CHANGED_NEW_AREA", zoneChanged)
+			core.RegisterEvent(mod, "INSTANCE_ENCOUNTER_ENGAGE_UNIT", engageUnitCheck)
 			core.RegisterEvent(mod, "ENCOUNTER_START")
 			core.RegisterEvent(mod, "RAID_BOSS_WHISPER")
 
@@ -414,6 +431,7 @@ do
 
 			loader.UnregisterMessage(mod, "BigWigs_BossComm")
 			core.UnregisterEvent(mod, "ZONE_CHANGED_NEW_AREA")
+			core.UnregisterEvent(mod, "INSTANCE_ENCOUNTER_ENGAGE_UNIT")
 			core.UnregisterEvent(mod, "ENCOUNTER_START")
 			core.UnregisterEvent(mod, "RAID_BOSS_WHISPER")
 
@@ -507,6 +525,15 @@ do
 
 			if journalId then
 				m.journalId = journalId
+			end
+			-- Nozdor 3.3.5: ENCOUNTER_START/END are not available on this client
+			-- (see the supportedEvents probe below), so the only engage source is
+			-- INSTANCE_ENCOUNTER_ENGAGE_UNIT, which boss:Enable() registers only
+			-- when engageId is set. Derive it from the module's journal id so
+			-- modules (including custom ones that never call SetEncounterID)
+			-- actually engage on pull.
+			if journalId and not m.engageId then
+				m.engageId = journalId
 			end
 			-- Nozdor 3.3.5 RU-only fork: EJ_GetEncounterInfo (retail Encounter-Journal
 			-- API) is absent/nil here, so boss names would always fall back to the

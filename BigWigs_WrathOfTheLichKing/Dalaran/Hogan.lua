@@ -22,7 +22,7 @@ if L then
     L[87005] = "Восстаньте" -- +
     L[87027] = "Погребение Даларана" -- +
     L[87038] = "Метка гнили" -- +
-    -- L[87022] = "Оскверненная душа"
+    L[87022] = "Оскверненная душа"
     L[87001] = "Погребальный знак" --+
     L[87017] = "Похищение души" -- +
     L[87020] = "Разрыв души" --+
@@ -49,7 +49,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "PersonalAuraApplied", 87017)
 	self:Log("SPELL_AURA_APPLIED", "PersonalAuraApplied", 87020)
 
-    self:Death("NodeDied", 53004)
+    self:Death("NodeDied", 53016)
 
     self:Death("Win", 53000)
 end
@@ -60,6 +60,7 @@ function mod:OnEngage()
 	self:Berserk(481)
     self:Bar(87005, 44, L.rise_bar)
     self:RegisterEvent("UNIT_HEALTH", "CheckPhaseHP")
+    self:RegisterEvent("PLAYER_REGEN_ENABLED", "CheckForWipe")
 end
 
 function mod:PersonalAuraApplied(args)
@@ -103,7 +104,9 @@ function mod:GraveyardStart(args)
     self:StopBar(L.rise_bar)
     
     self:Bar(87027, 36, L.nodes_start)
-    self:Bar(87027, 1e9, string.format(L.nodes_bar, nodesRemaining), 87027)
+    if self.nodesText then self:StopBar(self.nodesText) end
+    self.nodesText = string.format(L.nodes_bar, nodesRemaining)
+    self:Bar(87027, 1e9, self.nodesText, 87027)
 
     self:Message(args.spellId, "cyan", nil, L.nodes_start)
     self:PlaySound(args.spellId, "long")
@@ -112,10 +115,12 @@ end
 function mod:NodeDied(args)
     if self.phase ~= 2 then return end
     nodesRemaining = nodesRemaining - 1
+    if self.nodesText then self:StopBar(self.nodesText) end
     if nodesRemaining > 0 then
-        self:Bar(87027, 1e9, string.format(L.nodes_bar, nodesRemaining), 87027)
+        self.nodesText = string.format(L.nodes_bar, nodesRemaining)
+        self:Bar(87027, 1e9, self.nodesText, 87027)
     else
-        self:StopBar(string.format(L.nodes_bar, 1))
+        self.nodesText = nil
     end
 end
 
@@ -124,7 +129,10 @@ function mod:GraveyardEnd(args)
     self.phase = 3
     
     self:StopBar(L.nodes_start)
-    self:StopBar(string.format(L.nodes_bar, nodesRemaining))
+    if self.nodesText then
+        self:StopBar(self.nodesText)
+        self.nodesText = nil
+    end
     
     self:Message(args.spellId, "green", nil, L.nodes_end)
     self:Bar(87005, 48, L.rise_bar)
