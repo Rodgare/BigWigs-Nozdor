@@ -96,6 +96,20 @@ UNITCAST_RE = re.compile(
     r"\[\[(?P<mode>[^:\]]*):")
 
 BAD_NAMES = {"?", "??", "nil", "", "Неизвестно", "Unknown"}
+# Fallback instance ids for archives whose header zone is unknown ("?").
+# Keyed by the zone name reported by ZONE_CHANGED* inside the archive.
+ZONE_NAME_IDS = {
+    "нексус": 576, "the nexus": 576,
+    "азжол-неруб": 601, "azjol-nerub": 601,
+    "ан'кахет: старое королевство": 619, "ahn'kahet: the old kingdom": 619,
+    "зал высшего прародителя": 599, "halls of stone": 599,
+    "крепость драк'тарон": 600, "drak'tharon keep": 600,
+    "гундрак": 604, "gundrak": 604,
+    "чертоги отражений": 668, "halls of reflection": 668,
+    "кузня душ": 632, "the forge of souls": 632,
+    "яма сарона": 658, "pit of saron": 658,
+    "осада даларана": 961,
+}
 BOSS_CLASSES = {"elite", "worldboss", "rareelite", "rare", "boss"}
 
 KIND_MAP = {
@@ -490,6 +504,8 @@ class Collector(object):
 
     def on_archive_end(self, info):
         if self.sess is not None:
+            if self.sess.archive["display"] in BAD_NAMES and self.sess.zones:
+                self.sess.archive["display"] = self.sess.zones[0][1]
             self._build_pulls(self.sess)
             self.sess = None
 
@@ -572,7 +588,7 @@ class Collector(object):
                 sess.boss_names.add(npc)
             if text:
                 sess.talk.append((t, kind, npc, text.replace("%s", npc)))
-        elif event in ("ZONE_CHANGED_NEW_AREA", "ZONE_CHANGED"):
+        elif event in ("ZONE_CHANGED_NEW_AREA", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS"):
             parts = rest.split("#")
             zone = clean(parts[0])
             if zone:
@@ -749,7 +765,7 @@ class Collector(object):
                     break
             p.zone = zone
             p.zone_id = sess.archive["zoneId"] if zone in (
-                sess.archive["display"], sess.archive["zoneName"], sess.archive["subzone"]) else 0
+                sess.archive["display"], sess.archive["zoneName"], sess.archive["subzone"]) else ZONE_NAME_IDS.get(zone.lower(), 0)
             # servants / adds whose src name was unknown get the resolved name
             mob_names = {u["mob"]: u["name"] for u in p.units.values()}
             p.events = [

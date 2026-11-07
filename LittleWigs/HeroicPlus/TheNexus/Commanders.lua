@@ -13,14 +13,28 @@ mod:RegisterEnableMob(26798, 26796) -- Commander Kolurg, Commander Stoutbeard
 
 function mod:GetOptions()
 	return {
-		38618, -- Whirlwind
+		192503, -- Whirlwind
+		192504, -- Whirlwind (aura)
+		192500, -- Charge
+		192506, -- Intimidating Shout
+		192507, -- Battle Shout
+		38618, -- Whirlwind (3.3.5 spell id)
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_START", "Whirlwind", 38618)
+	self:Log("SPELL_CAST_START", "Whirlwind", 192503, 38618)
+	self:Log("SPELL_AURA_APPLIED", "WhirlwindAura", 192504)
+	self:Log("SPELL_CAST_START", "Charge", 192500)
+	self:Log("SPELL_CAST_START", "IntimidatingShout", 192506)
+	self:Log("SPELL_CAST_START", "BattleShout", 192507)
 
 	self:Death("Win", 26798, 26796)
+end
+
+function mod:OnEngage()
+	self:CDBar(192507, 3) -- Battle Shout
+	self:CDBar(192503, 12) -- Whirlwind
 end
 
 --------------------------------------------------------------------------------
@@ -29,6 +43,22 @@ end
 
 function mod:Whirlwind(args)
 	self:Message(args.spellId, "orange", "Info")
-	self:CDBar(args.spellId, 14.5)
+	self:CDBar(192503, 24)
 end
 
+function mod:WhirlwindAura(args)
+	self:TargetMessage(args.spellId, args.destName, "orange", "Alarm")
+end
+
+function mod:Charge(args)
+	self:Message(args.spellId, "yellow")
+end
+
+function mod:IntimidatingShout(args)
+	self:Message(args.spellId, "red", "Warning")
+end
+
+function mod:BattleShout(args)
+	self:Message(args.spellId, "yellow")
+	self:CDBar(192507, 24)
+end

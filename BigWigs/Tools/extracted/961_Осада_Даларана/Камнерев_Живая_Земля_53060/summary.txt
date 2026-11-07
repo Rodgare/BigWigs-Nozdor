@@ -2,6 +2,7 @@
  BOSS: Камнерев Живая Земля   mob=53060
  zone: Осада Даларана (961)  difficulty: 10 Normal  type: raid
  pulls: 1   combat time: 88.8s
+ module: Kamnerev the Living Earth   encounterId: 53060   (Kamnerev.lua)
  source: engage
  sources: 2026-11-04 18:50:03
 ==============================================================================

@@ -524,17 +524,19 @@ do
 	bossUtilityFrame:SetScript("OnEvent", function(_, event, ...)
 		local sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, spellId, spellName, extraSpellId, amount, time
 		if hasEventInfo then
-			time, event, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, _, extraSpellId, amount = CLEU()
+			local primary
+			time, event, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, _, primary = CLEU()
+			extraSpellId, amount = primary, primary
 		else
 			-- 3.3.5 has no CombatLogGetCurrentEventInfo: the payload is passed
 			-- directly to the OnEvent handler. 3.3.5 also omits the source and
 			-- destination raid flag arguments, which are unused here anyway.
-			local t, subevent, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, id, name, _, primary, secondary = ...
+			local t, subevent, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, id, name, _, primary = ...
 			time, event = t, subevent
 			sourceGUID, sourceName, sourceFlags = srcGUID, srcName, srcFlags
 			destGUID, destName, destFlags = dstGUID, dstName, dstFlags
 			spellId, spellName = id, name
-			extraSpellId, amount = primary, secondary
+			extraSpellId, amount = primary, primary
 		end
 		if allowedEvents[event] then
 			if event == "UNIT_DIED" then

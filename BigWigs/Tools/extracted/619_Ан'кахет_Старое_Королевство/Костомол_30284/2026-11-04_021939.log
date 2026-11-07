@@ -1,0 +1,15 @@
+# Костомол  mob=30284  Ан'кахет: Старое Королевство  ?  ?  duration=17.5s
+# pull start: 2026-11-04 02:19:39
+# source: guess
+# units: Костомол(30284)
+# legend: CAST_START/CAST_OK = CLEU, U_START/U_SUCCEEDED = UNIT_SPELLCAST, AURA+/AURA-/AURA~, SUMMON, DIED, YELL/SAY/EMOTE/BOSS_EMOTE
+
+    0.05  Таракан                        DIED                                                 1  
+    3.05  Костомол                       CAST_START  Костяной обвал (190291)                  1  
+    3.05  Костомол                       AURA+       Костяной обвал (190292)                  1  Крути
+    4.05  Костомол                       AURA+       Костяной обвал (190292)                  1  Кляча
+    5.05  Костомол                       AURA-       Костяной обвал (190292)                  2  Кляча
+    5.05  Костомол                       U_INTERRUPT Костяной обвал                           2  target
+    5.05  Костомол                       U_STOP      Костяной обвал                           1  target
+    8.05  Черная крыса                   DIED                                                 1  
+   17.05  Костомол                       DIED                                                 1  

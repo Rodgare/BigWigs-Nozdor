@@ -13,21 +13,37 @@ mod:RegisterEnableMob(26723)
 
 function mod:GetOptions()
 	return {
-		48095, -- Intense Cold
-		48179, -- Crystallize (Heroic mode aoe root)
-		50997, -- Crystal Chains (Normal mode single target root)
-		8599, -- Enrage
+		192550, -- Intense Cold
+		192553, -- Crystalline Breath
+		192555, -- Tail Sweep
+		192557, -- Crystallize
+		192558, -- Crystallize (aura)
+		192559, -- Enrage
+		48095, -- Intense Cold (3.3.5 spell id)
+		48179, -- Crystallize (3.3.5 spell id)
+		50997, -- Crystal Chains
+		8599, -- Enrage (3.3.5 spell id)
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_AURA_APPLIED_DOSE", "IntenseCold", 48095)
+	self:Log("SPELL_AURA_APPLIED_DOSE", "IntenseCold", 192550, 48095)
+	self:Log("SPELL_CAST_START", "CrystallineBreath", 192553)
+	self:Log("SPELL_CAST_START", "TailSweep", 192555)
+	self:Log("SPELL_CAST_START", "Crystallize", 192557)
 	self:Log("SPELL_CAST_SUCCESS", "Crystallize", 48179)
+	self:Log("SPELL_AURA_APPLIED", "CrystallizeAura", 192558)
+	self:Log("SPELL_AURA_REMOVED", "CrystallizeAuraRemoved", 192558)
 	self:Log("SPELL_AURA_APPLIED", "CrystalChains", 50997)
 	self:Log("SPELL_AURA_REMOVED", "CrystalChainsRemoved", 50997)
-	self:Log("SPELL_CAST_SUCCESS", "Enrage", 8599)
+	self:Log("SPELL_AURA_APPLIED", "Enrage", 192559, 8599)
+	self:Log("SPELL_CAST_SUCCESS", "Enrage", 192559, 8599)
 
 	self:Death("Win", 26723)
+end
+
+function mod:OnEngage()
+	self:CDBar(192553, 25) -- Crystalline Breath
 end
 
 --------------------------------------------------------------------------------
@@ -40,8 +56,28 @@ function mod:IntenseCold(args)
 	end
 end
 
+function mod:CrystallineBreath(args)
+	self:Message(args.spellId, "orange", "Alert")
+	self:CDBar(args.spellId, 20)
+end
+
+function mod:TailSweep(args)
+	self:Message(args.spellId, "yellow", self:Melee() and "Alarm")
+	self:CDBar(args.spellId, 20)
+end
+
 function mod:Crystallize(args)
-	self:Message(args.spellId, "orange")
+	self:Message(args.spellId, "red", "Warning")
+	self:CDBar(192557, 20)
+end
+
+function mod:CrystallizeAura(args)
+	self:TargetMessage(args.spellId, args.destName, "orange", "Alarm")
+	self:TargetBar(args.spellId, 8, args.destName)
+end
+
+function mod:CrystallizeAuraRemoved(args)
+	self:StopBar(args.spellName, args.destName)
 end
 
 function mod:CrystalChains(args)
@@ -54,6 +90,5 @@ function mod:CrystalChainsRemoved(args)
 end
 
 function mod:Enrage(args)
-	self:Message(args.spellId, "red", self:Dispeller("enrage", true) and "Info", CL.percent:format(25, args.spellName))
+	self:Message(args.spellId, "red", "Warning", CL.percent:format(20, self:SpellName(args.spellId)))
 end
-

@@ -1,6 +1,6 @@
 ==============================================================================
  BOSS: Кристаллус   mob=27977
- zone: Зал Высшего Прародителя (527)  difficulty: ?  type: ?
+ zone: Чертоги Камня (599)  difficulty: ?  type: ?
  pulls: 1   combat time: 64.7s
  module: Krystallus   encounterId: 604   (Krystallus.lua)
  source: bigwigs

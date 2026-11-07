@@ -7,6 +7,7 @@
 <Script file="Ormorok.lua"/>
 <Script file="Keristrasza.lua"/>
 <Script file="Trash.lua"/>
+<Script file="Affixes.lua"/>
 
 <Include file="Options\options.xml"/>
 

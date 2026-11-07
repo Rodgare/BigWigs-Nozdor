@@ -1,6 +1,6 @@
 # Камнерев Живая Земля  mob=53060  Осада Даларана  10 Normal  raid  duration=88.8s
 # pull start: 2026-11-04 19:22:54
-# source: engage
+# source: engage   module: Kamnerev the Living Earth (encounter 53060, Kamnerev.lua)
 # units: Камнерев Живая Земля(53060)
 # legend: CAST_START/CAST_OK = CLEU, U_START/U_SUCCEEDED = UNIT_SPELLCAST, AURA+/AURA-/AURA~, SUMMON, DIED, YELL/SAY/EMOTE/BOSS_EMOTE
 

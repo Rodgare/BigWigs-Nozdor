@@ -1,6 +1,6 @@
 ==============================================================================
  BOSS: Дева Скорби   mob=27975
- zone: Зал Высшего Прародителя (527)  difficulty: ?  type: ?
+ zone: Чертоги Камня (599)  difficulty: ?  type: ?
  pulls: 1   combat time: 74.0s
  module: Maiden of Grief   encounterId: 605   (MaidenOfGrief.lua)
  source: bigwigs
