@@ -534,6 +534,20 @@ local function IsAddOnEnabled(addon)
 	return select(4, GetAddOnInfo(addon)) or 0
 end
 
+-- Nozdor 3.3.5: GetAddOnMetadata is picky about whether it receives an addon
+-- index or an addon name depending on the client build. Resolve the folder
+-- name first (works everywhere) and only fall back to the raw value.
+local function GetAddOnMetadataCompat(addon, field)
+	if type(addon) == "string" then
+		return GetAddOnMetadata(addon, field)
+	end
+	local name = GetAddOnInfo(addon)
+	if name then
+		return GetAddOnMetadata(name, field)
+	end
+	return GetAddOnMetadata(addon, field)
+end
+
 local function sysprint(msg)
 	print("|cFF33FF99BigWigs|r: "..msg)
 end
@@ -684,11 +698,11 @@ do
 		-- Any addon that declares instance zones is treated as enabled here; loading
 		-- still happens via loadZone when the player actually enters the zone.
 		local bwEnabled = IsAddOnEnabled(i)
-		if not bwEnabled and GetAddOnMetadata(i, "X-BigWigs-LoadOn-InstanceId") then
+		if not bwEnabled and GetAddOnMetadataCompat(i, "X-BigWigs-LoadOn-InstanceId") then
 			bwEnabled = true
 		end
 		if bwEnabled then
-			local meta = GetAddOnMetadata(i, "X-BigWigs-LoadOn-CoreEnabled")
+			local meta = GetAddOnMetadataCompat(i, "X-BigWigs-LoadOn-CoreEnabled")
 			if meta then
 				if name == "BigWigs_Plugins" then -- Always first
 					table.insert(loadOnCoreEnabled, 1, i)
@@ -696,23 +710,23 @@ do
 					loadOnCoreEnabled[#loadOnCoreEnabled + 1] = i
 				end
 			end
-			meta = GetAddOnMetadata(i, "X-BigWigs-LoadOn-InstanceId")
+			meta = GetAddOnMetadataCompat(i, "X-BigWigs-LoadOn-InstanceId")
 			if meta then
 				loadOnInstanceAddons[#loadOnInstanceAddons + 1] = i
 			end
-			meta = GetAddOnMetadata(i, "X-BigWigs-ExtraMenu")
+			meta = GetAddOnMetadataCompat(i, "X-BigWigs-ExtraMenu")
 			if meta then
 				extraMenus[#extraMenus + 1] = i
 			end
-			meta = GetAddOnMetadata(i, "X-BigWigs-NoMenu")
+			meta = GetAddOnMetadataCompat(i, "X-BigWigs-NoMenu")
 			if meta then
 				noMenus[#noMenus + 1] = i
 			end
-			meta = GetAddOnMetadata(i, "X-BigWigs-LoadOn-WorldBoss")
+			meta = GetAddOnMetadataCompat(i, "X-BigWigs-LoadOn-WorldBoss")
 			if meta then
 				loadOnWorldBoss[#loadOnWorldBoss + 1] = i
 			end
-			meta = GetAddOnMetadata(i, "X-BigWigs-LoadOn-Slash")
+			meta = GetAddOnMetadataCompat(i, "X-BigWigs-LoadOn-Slash")
 			if meta then
 				loadOnSlash[i] = {}
 				local tbl = {strsplit(",", meta)}
@@ -778,7 +792,7 @@ do
 				end
 			end
 		else
-			local meta = GetAddOnMetadata(i, "X-BigWigs-LoadOn-InstanceId")
+			local meta = GetAddOnMetadataCompat(i, "X-BigWigs-LoadOn-InstanceId")
 			if meta then -- Disabled content
 				for j = 1, select("#", strsplit(",", meta)) do
 					local rawId = select(j, strsplit(",", meta))
@@ -919,7 +933,7 @@ do
 
 	for i = 1, #extraMenus do
 		local index = extraMenus[i]
-		local data = GetAddOnMetadata(index, "X-BigWigs-ExtraMenu")
+		local data = GetAddOnMetadataCompat(index, "X-BigWigs-ExtraMenu")
 		if data then
 			addExtraMenus(index, strsplit(",", data))
 		end
@@ -927,7 +941,7 @@ do
 
 	for i = 1, #noMenus do
 		local index = noMenus[i]
-		local data = GetAddOnMetadata(index, "X-BigWigs-NoMenu")
+		local data = GetAddOnMetadataCompat(index, "X-BigWigs-NoMenu")
 		if data then
 			blockMenus(index, strsplit(",", data))
 		end
@@ -935,15 +949,57 @@ do
 
 	for i = 1, #loadOnInstanceAddons do
 		local index = loadOnInstanceAddons[i]
-		local instancesIds = GetAddOnMetadata(index, "X-BigWigs-LoadOn-InstanceId")
+		local instancesIds = GetAddOnMetadataCompat(index, "X-BigWigs-LoadOn-InstanceId")
 		if instancesIds then
 			iterateInstanceIds(index, strsplit(",", instancesIds))
 		end
 	end
 
+	-- Nozdor 3.3.5: LittleWigs lists ~90 instance ids in a single
+	-- X-BigWigs-LoadOn-InstanceId directive. Some 3.3.5 TOC parsers drop long
+	-- metadata values, which left LittleWigs with no zones at all: entering any
+	-- dungeon loaded the BigWigs core but never the LittleWigs module pack, so
+	-- there were no bars/messages and no errors. Seed every LittleWigs dungeon
+	-- from zoneTbl directly against the real addon index as a fallback (deduped,
+	-- so it is harmless when the metadata did parse).
+	do
+		local littleWigsIndex
+		for i = 1, GetNumAddOns() do
+			if GetAddOnInfo(i) == "LittleWigs" then
+				littleWigsIndex = i
+				break
+			end
+		end
+		if littleWigsIndex then
+			for id, pack in next, public.zoneTbl do
+				if type(pack) == "string" and pack:find("^LittleWigs_") then
+					enableZones[id] = true
+					local list = loadOnZone[id]
+					if not list then
+						list = {}
+						loadOnZone[id] = list
+					end
+					local present = false
+					for j = 1, #list do
+						if list[j] == littleWigsIndex then
+							present = true
+							break
+						end
+					end
+					if not present then
+						list[#list + 1] = littleWigsIndex
+					end
+					if not menus[id] and not blockedMenus[id] then
+						menus[id] = true
+					end
+				end
+			end
+		end
+	end
+
 	for i = 1, #loadOnWorldBoss do
 		local index = loadOnWorldBoss[i]
-		local zones = GetAddOnMetadata(index, "X-BigWigs-LoadOn-WorldBoss")
+		local zones = GetAddOnMetadataCompat(index, "X-BigWigs-LoadOn-WorldBoss")
 		if zones then
 			iterateWorldBosses(index, strsplit(",", zones))
 		end
@@ -1650,6 +1706,15 @@ do
 				warnedThisZone[id] = true
 				disabledZones[id] = nil
 			end
+		end
+
+		-- Nozdor 3.3.5 diagnostics: this zone has LittleWigs content, so the pack
+		-- must end up loaded. If it is still missing after the loading branch,
+		-- say so explicitly instead of failing silently with no bars/messages.
+		local expectedPack = public.zoneTbl[id]
+		if expectedPack and expectedPack:find("^LittleWigs_") and id > 0 and not warnedThisZone[id] and not IsAddOnLoaded("LittleWigs") then
+			warnedThisZone[id] = true
+			sysprint(("no LittleWigs for zone %d (%s): addon not loaded, check that it is enabled in the addon list"):format(id, tostring(expectedPack)))
 		end
 
 		-- Lacking zone modules
