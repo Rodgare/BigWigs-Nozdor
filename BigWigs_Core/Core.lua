@@ -532,8 +532,11 @@ do
 			-- when engageId is set. Derive it from the module's journal id so
 			-- modules (including custom ones that never call SetEncounterID)
 			-- actually engage on pull.
-			if journalId and not m.engageId then
-				m.engageId = journalId
+			if not m.engageId then
+				-- -1 is a sentinel for modules without a journal id (trash
+				-- modules); boss:Enable only checks for a truthy engageId and
+				-- CheckForEncounterEngage matches by mob id, not by this value.
+				m.engageId = journalId or -1
 			end
 			-- Nozdor 3.3.5 RU-only fork: EJ_GetEncounterInfo (retail Encounter-Journal
 			-- API) is absent/nil here, so boss names would always fall back to the

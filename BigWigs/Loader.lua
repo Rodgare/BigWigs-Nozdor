@@ -971,6 +971,12 @@ do
 			end
 		end
 		if littleWigsIndex then
+			-- LoadAddOn fails for a load-on-demand pack that is unchecked in the
+			-- addon list, which also looked like "LittleWigs never loads". The
+			-- BigWigs core packs are force-enabled for the same reason.
+			if not IsAddOnEnabled(littleWigsIndex) then
+				EnableAddOn(littleWigsIndex)
+			end
 			for id, pack in next, public.zoneTbl do
 				if type(pack) == "string" and pack:find("^LittleWigs_") then
 					enableZones[id] = true

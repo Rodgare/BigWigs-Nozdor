@@ -247,6 +247,17 @@ function boss:SetRespawnTime(t)
 	self.respawnTime = t
 end
 
+--- Nozdor: older LittleWigs/WotLK modules still call these two methods that
+-- were removed from newer BigWigs cores. Map them onto the current API so
+-- those modules do not error at runtime.
+function boss:FlashShake(key, icon)
+	self:Flash(key, icon)
+end
+
+function boss:LocalMessage(key, text, color, icon, sound)
+	self:Message(key, color or "yellow", sound, text, icon)
+end
+
 --- The initial stage, as set by `SetStage`.
 -- @within Enable triggers
 function boss:SetStage(n)
@@ -609,6 +620,34 @@ do
 	local noFunc = "Module %q tried to register a unit event with the function '%s' which doesn't exist in the module."
 
 	local frameTbl = {}
+	-- Nozdor 3.3.5: Frame:RegisterUnitEvent and several modern UNIT_* events do
+	-- not exist on this client. Register the plain event instead (eventFunc
+	-- already filters by the unit argument) and alias events that only changed
+	-- name. Silently drop events that have no 3.3.5 equivalent, otherwise
+	-- modules error in OnBossEnable and never enable at all.
+	local eventAliases = {
+		UNIT_HEALTH_FREQUENT = "UNIT_HEALTH",
+		-- Added after 3.3.5; closest equivalent is the flag change event, and
+		-- handlers guard with UnitCanAttack(unit).
+		UNIT_TARGETABLE_CHANGED = "UNIT_FLAGS",
+	}
+	local supportedUnitEvents = {}
+	local unitEventProbe
+	local supportsUnitEvents = type(CreateFrame("Frame").RegisterUnitEvent) == "function"
+	local sharedFrame
+	local function resolveUnitEvent(event)
+		local actual = eventAliases[event]
+		if actual == false then return nil end
+		actual = actual or event
+		if supportedUnitEvents[actual] == nil then
+			if not unitEventProbe then unitEventProbe = CreateFrame("Frame") end
+			local ok = pcall(unitEventProbe.RegisterEvent, unitEventProbe, actual)
+			if ok then pcall(unitEventProbe.UnregisterEvent, unitEventProbe, actual) end
+			supportedUnitEvents[actual] = ok
+		end
+		if not supportedUnitEvents[actual] then return nil end
+		return actual
+	end
 	local eventFunc = function(_, event, unit, ...)
 		for i = #enabledModules, 1, -1 do
 			local self = enabledModules[i]
@@ -619,6 +658,24 @@ do
 		end
 	end
 
+	local function eventFrame(unit)
+		if supportsUnitEvents then
+			if not frameTbl[unit] then
+				frameTbl[unit] = CreateFrame("Frame")
+				frameTbl[unit]:SetScript("OnEvent", eventFunc)
+			end
+			return frameTbl[unit]
+		end
+		-- 3.3.5 has no Frame:RegisterUnitEvent: use one frame for all units.
+		-- One frame per unit would fire the same plain event once per frame and
+		-- duplicate every handler call.
+		if not sharedFrame then
+			sharedFrame = CreateFrame("Frame")
+			sharedFrame:SetScript("OnEvent", eventFunc)
+		end
+		return sharedFrame
+	end
+
 	--- Register a callback for a UNIT_* event for the specified units.
 	-- @string event the event to register for
 	-- @param func callback function, passed (unit, eventargs...)
@@ -627,16 +684,19 @@ do
 		if type(event) ~= "string" then core:Print(format(noEvent, self.moduleName)) return end
 		if not ... then core:Print(format(noUnit, self.moduleName)) return end
 		if (not func and not self[event]) or (func and not self[func]) then core:Print(format(noFunc, self.moduleName, func or event)) return end
-		if not unitEventMap[self][event] then unitEventMap[self][event] = {} end
+		local actual = resolveUnitEvent(event)
+		if not actual then return end
+		if not unitEventMap[self][actual] then unitEventMap[self][actual] = {} end
 		for i = 1, select("#", ...) do
 			local unit = select(i, ...)
-			if not frameTbl[unit] then
-				frameTbl[unit] = CreateFrame("Frame")
-				frameTbl[unit]:SetScript("OnEvent", eventFunc)
+			local frame = eventFrame(unit)
+			unitEventMap[self][actual][unit] = func or event
+			if supportsUnitEvents then
+				frame:RegisterUnitEvent(actual, unit)
+			else
+				frame:RegisterEvent(actual)
 			end
-			unitEventMap[self][event][unit] = func or event
-			frameTbl[unit]:RegisterUnitEvent(event, unit)
-			if debug then dbg(self, "Adding: "..event..", "..unit) end
+			if debug then dbg(self, "Adding: "..actual..", "..unit) end
 		end
 	end
 	--- Unregister a callback for unit bound events.
@@ -645,20 +705,28 @@ do
 	function boss:UnregisterUnitEvent(event, ...)
 		if type(event) ~= "string" then core:Print(format(noEvent, self.moduleName)) return end
 		if not ... then core:Print(format(noUnit, self.moduleName)) return end
-		if not unitEventMap[self][event] then return end
+		if eventAliases[event] == false then return end
+		local actual = resolveUnitEvent(event) or eventAliases[event] or event
+		if not unitEventMap[self][actual] then return end
 		for i = 1, select("#", ...) do
 			local unit = select(i, ...)
-			unitEventMap[self][event][unit] = nil
+			unitEventMap[self][actual][unit] = nil
 			local keepRegistered
 			for j = #enabledModules, 1, -1 do
-				local m = unitEventMap[enabledModules[j]][event]
-				if m and m[unit] then
-					keepRegistered = true
+				local m = unitEventMap[enabledModules[j]][actual]
+				if m then
+					if supportsUnitEvents then
+						if m[unit] then keepRegistered = true end
+					elseif next(m) then
+						-- One shared frame carries the plain event for every unit.
+						keepRegistered = true
+					end
 				end
 			end
 			if not keepRegistered then
-				if debug then dbg(self, "Removing: "..event..", "..unit) end
-				frameTbl[unit]:UnregisterEvent(event)
+				if debug then dbg(self, "Removing: "..actual..", "..unit) end
+				local frame = supportsUnitEvents and frameTbl[unit] or sharedFrame
+				if frame then frame:UnregisterEvent(actual) end
 			end
 		end
 	end
