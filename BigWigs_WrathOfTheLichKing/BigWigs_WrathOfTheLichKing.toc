@@ -78,6 +78,7 @@ RubySanctum\Trash.lua
 Dalaran\Hogan.lua
 Dalaran\Malkren.lua
 Dalaran\Kamnerev.lua
+Dalaran\Darin.lua
 
 !Locales\ruRU.lua
 !Options.lua

@@ -5,10 +5,17 @@ mod:SetEncounterID(53046)
 
 mod.toggleOptions = {
 	87058, -- Пламенные цепи
+	87431, -- Пламенные цепи (усиленные)
 	87050, -- Осадное клеймо
 	{87051, "ME_ONLY", "FLASH"}, -- Кара печати
 	87066, -- Осадный барьер
 	87067, -- Жертвоприношение
+	87091, -- Жертвоприношение (щит)
+	87063, -- Взрыв колодца душ
+	87064, -- Горящая душа
+	87083, -- Защита Кирин-Тора
+	87420, -- Рунический обстрел
+	87133, -- Коллапс стихий
 	87137, -- Ритуальный разлом
 	87071, -- Ритуальный снаряд
 	87419, -- Ритуальный след
@@ -24,10 +31,17 @@ mod.toggleOptions = {
 local L = mod:NewLocale("enUS", true)
 if L then
 	L[87058] = "Пламенные цепи"
+	L[87431] = "Пламенные цепи"
 	L[87050] = "Осадное клеймо"
 	L[87051] = "Кара печати"
 	L[87066] = "Осадный барьер"
 	L[87067] = "Жертвоприношение"
+	L[87091] = "Жертвоприношение"
+	L[87063] = "Взрыв колодца душ"
+	L[87064] = "Горящая душа"
+	L[87083] = "Защита Кирин-Тора"
+	L[87420] = "Рунический обстрел"
+	L[87133] = "Коллапс стихий"
 	L[87137] = "Ритуальный разлом"
 	L[87071] = "Ритуальный снаряд"
 	L[87419] = "Ритуальный след"
@@ -77,20 +91,25 @@ function mod:FlushTargets(key, batch)
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_START", "Chains", 87058)
+	self:Log("SPELL_CAST_START", "Chains", 87058, 87431)
 	self:Log("SPELL_AURA_APPLIED", "Seal", 87050)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Seal", 87050)
 	self:Log("SPELL_AURA_APPLIED", "Punishment", 87051)
 	self:Log("SPELL_AURA_APPLIED", "BarrierUp", 87066)
 	self:Log("SPELL_AURA_REMOVED", "BarrierDown", 87066)
-	self:Log("SPELL_AURA_APPLIED", "SacrificeStart", 87067)
-	self:Log("SPELL_AURA_REMOVED", "SacrificeEnd", 87067)
+	self:Log("SPELL_AURA_APPLIED", "SacrificeStart", 87067, 87091)
+	self:Log("SPELL_AURA_REMOVED", "SacrificeEnd", 87067, 87091)
 	self:Log("SPELL_AURA_APPLIED", "Rift", 87137)
 	self:Log("SPELL_AURA_APPLIED", "Missile", 87071)
 	self:Log("SPELL_AURA_APPLIED", "Trail", 87419)
 	self:Log("SPELL_AURA_APPLIED", "RuneViolet", 87124)
 	self:Log("SPELL_AURA_APPLIED", "RuneOrange", 87125)
 	self:Log("SPELL_AURA_APPLIED", "Enrage", 87065)
+	self:Log("SPELL_AURA_APPLIED", "WellExplosion", 87063)
+	self:Log("SPELL_AURA_APPLIED", "BurningSoul", 87064)
+	self:Log("SPELL_AURA_APPLIED", "KirinTorShield", 87083)
+	self:Log("SPELL_AURA_APPLIED", "RunicBarrage", 87420)
+	self:Log("SPELL_CAST_START", "ElementalCollapse", 87133)
 
 	self:Death("ChainsDown", 53030)
 	self:Death("Win", 53046)
@@ -169,6 +188,31 @@ end
 
 function mod:Missile(args)
 	self:TargetMessage(args.spellId, args.destName, "red", "alert")
+end
+
+function mod:WellExplosion(args)
+	self:Message(args.spellId, "red", "alarm")
+end
+
+function mod:BurningSoul(args)
+	if self:Me(args.destGUID) then
+		self:TargetMessage(args.spellId, args.destName, "orange", "alert")
+		self:TargetBar(args.spellId, 2, args.destName)
+	end
+end
+
+function mod:KirinTorShield(args)
+	self:Message(args.spellId, "yellow")
+end
+
+function mod:RunicBarrage(args)
+	if self:Me(args.destGUID) then
+		self:TargetMessage(args.spellId, args.destName, "orange", "alert")
+	end
+end
+
+function mod:ElementalCollapse(args)
+	self:Message(args.spellId, "red", "warning")
 end
 
 function mod:Enrage(args)

@@ -1,0 +1,13 @@
+# Воскреситель Культа Проклятых  mob=60811  Осада Даларана  10 Normal  raid  duration=18.1s
+# pull start: 2026-11-07 19:11:55
+# source: guess
+# units: Воскреситель Культа Проклятых(60811), Темный ревнитель(60812)
+# legend: CAST_START/CAST_OK = CLEU, U_START/U_SUCCEEDED = UNIT_SPELLCAST, AURA+/AURA-/AURA~, SUMMON, DIED, YELL/SAY/EMOTE/BOSS_EMOTE
+
+    2.66  Воскреситель Культа Проклятых  DIED                                                 1  
+    4.66  Воскреситель Культа Проклятых  DIED                                                 1  
+    5.66  Воскреситель Культа Проклятых  DIED                                                 1  
+    7.66  Воскреситель Культа Проклятых  DIED                                                 1  
+   15.66  Служитель сектантов            DIED                                                 1  
+   15.66  Темный ревнитель               DIED                                                 1  
+   17.66  Темный ревнитель               DIED                                                 1  

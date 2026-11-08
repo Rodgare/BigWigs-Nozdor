@@ -192,5 +192,6 @@ BigWigs_BossNames_ruRU = {
 	["Hogan Death Herald"] = "Вестник смерти Хоган",
 	["Overseer Malkren"] = "Надзиратель Малкрен",
 	["Kamnerev the Living Earth"] = "Камнерев Живая Земля",
+	["High Cultist Daren"] = "Верховный сектант Дарен",
 	["Siege of Dalaran"] = "Осада Даларана",
 }

@@ -26,6 +26,9 @@ if L then
 	L[87107] = "Схватить"
 	L[87101] = "Сломанные кости"
 	L[87112] = "Уязвимость к сотрясению"
+	L[87166] = "Растоптанная земля"
+	L[87106] = "Оглушение"
+	L[87500] = "Наэлектризованность"
 	L.stages = "Фазы"
 
 	L.charge_end = "Камнерев потерял равновесие"
@@ -73,6 +76,9 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Bones", 87101)
 	self:Log("SPELL_AURA_APPLIED", "Fragile", 87112)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "Fragile", 87112)
+	self:Log("SPELL_AURA_APPLIED", "Trampled", 87166)
+	self:Log("SPELL_AURA_APPLIED", "Stunned", 87106)
+	self:Log("SPELL_AURA_APPLIED", "Electrified", 87500)
 
 	self:Death("Win", 53060)
 
@@ -85,23 +91,25 @@ function mod:OnEngage()
 	wipe(targetBatches)
 	self:Bar(87174, 13, L.stomp_bar)
 	self:CDBar(87102, 18, L.charge_bar)
+	self:CDBar(87110, 50, L.quake_warn)
 end
 
 function mod:Stomp(args)
 	self:Message(args.spellId, "orange", "alert")
 	self:CastBar(args.spellId, 2.5, L.stomp_bar)
-	self:Bar(args.spellId, 29, L.stomp_bar)
+	self:Bar(args.spellId, 31, L.stomp_bar)
 end
 
 function mod:Charge(args)
 	self:Message(args.spellId, "orange", "warning")
 	self:CastBar(args.spellId, 7, L.charge_bar)
-	self:CDBar(args.spellId, 55, L.charge_bar)
+	self:CDBar(args.spellId, 41, L.charge_bar)
 end
 
 function mod:Quake(args)
 	self:Message(args.spellId, "red", "alarm", L.quake_warn)
 	self:CastBar(args.spellId, 1.5)
+	self:Bar(args.spellId, 57)
 end
 
 function mod:HeavyStep(args)
@@ -127,6 +135,26 @@ function mod:Fragile(args)
 	local stacks = tonumber(args.amount)
 	if not stacks or stacks < 1 then stacks = 1 end
 	self:StackMessage(args.spellId, args.destName, stacks, "yellow", nil)
+end
+
+function mod:Trampled(args)
+	if self:Me(args.destGUID) then
+		self:TargetMessage(args.spellId, args.destName, "orange", "alert")
+		self:TargetBar(args.spellId, 3, args.destName)
+	end
+end
+
+function mod:Stunned(args)
+	if self:Me(args.destGUID) then
+		self:TargetMessage(args.spellId, args.destName, "red", "warning")
+		self:TargetBar(args.spellId, 6, args.destName)
+	end
+end
+
+function mod:Electrified(args)
+	if self:Me(args.destGUID) then
+		self:TargetMessage(args.spellId, args.destName, "yellow")
+	end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
