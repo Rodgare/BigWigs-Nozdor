@@ -13,15 +13,16 @@ mod:RegisterEnableMob(28586)
 
 function mod:GetOptions()
 	return {
-		16856, -- Mortal Strike
-		41107, -- Berserker Aura
+		191773, -- Mighty Blow
+		191775, -- Whirlwind
+		191780, -- Steel Renewal (Stormforged Lieutenant)
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_AURA_APPLIED", "MortalStrike", 16856)
-	self:Log("SPELL_AURA_APPLIED", "BerserkerAura", 41107)
-	self:Log("SPELL_AURA_REMOVED", "BerserkerAuraRemoved", 41107)
+	self:Log("SPELL_CAST_START", "MightyBlow", 191773)
+	self:Log("SPELL_CAST_START", "Whirlwind", 191775)
+	self:Log("SPELL_CAST_START", "SteelRenewal", 191780)
 
 	self:Death("Win", 28586)
 end
@@ -30,20 +31,16 @@ end
 -- Event Handlers
 --
 
-function mod:MortalStrike(args)
-	self:TargetMessage(args.spellId, args.destName, "red")
-	self:TargetBar(args.spellId, 5, args.destName)
+function mod:MightyBlow(args)
+	self:Message(args.spellId, "red", nil, CL.casting:format(args.spellName))
+	self:CDBar(args.spellId, 10)
 end
 
-function mod:BerserkerAura(args)
-	if self:MobId(args.destGUID) == 28586 then -- Boss only
-		self:Message(args.spellId, "orange")
-	end
+function mod:Whirlwind(args)
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 3)
 end
 
-function mod:BerserkerAuraRemoved(args)
-	if self:MobId(args.destGUID) == 28586 then -- Boss only
-		self:Message(args.spellId, "green", nil, CL.over:format(args.spellName))
-	end
+function mod:SteelRenewal(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
 end
-

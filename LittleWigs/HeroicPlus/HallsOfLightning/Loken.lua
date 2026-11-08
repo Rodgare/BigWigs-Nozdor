@@ -13,12 +13,17 @@ mod:RegisterEnableMob(28923)
 
 function mod:GetOptions()
 	return {
-		59835, -- Lightning Nova
+		192762, -- Arc Lightning
+		192765, -- Lightning Flash
+		192760, -- Shockwave
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_START", "LightningNova", 52960, 59835) -- normal, heroic
+	self:Log("SPELL_CAST_START", "ArcLightning", 192762)
+	self:Log("SPELL_CAST_START", "LightningFlash", 192765)
+	self:Log("SPELL_DAMAGE", "Shockwave", 192760)
+	self:Log("SPELL_MISSED", "Shockwave", 192760)
 
 	self:Death("Win", 28923)
 end
@@ -27,8 +32,26 @@ end
 -- Event Handlers
 --
 
-function mod:LightningNova(args)
-	self:Message(59835, "orange", "Alert")
-	self:Bar(59835, args.spellId == 59835 and 4 or 5)
+function mod:ArcLightning(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CDBar(args.spellId, 24)
 end
 
+function mod:LightningFlash(args)
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 5)
+	self:CDBar(args.spellId, 24)
+end
+
+do
+	local prev = 0
+	function mod:Shockwave(args)
+		if self:Me(args.destGUID) or self:Tank() then
+			local t = GetTime()
+			if t - prev > 8 then
+				prev = t
+				self:Message(args.spellId, "orange", "Alert")
+			end
+		end
+	end
+end

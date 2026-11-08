@@ -15,33 +15,45 @@ mod.respawnTime = 30
 
 function mod:GetOptions()
 	return {
-		{59322, "SAY"}, -- Whirlwind
+		192606, -- Smash
+		192607, -- Poisoned Dart
+		192609, -- Whirlwind
+		192610, -- Whirlwind (aura)
+		192611, -- Whirlwind (damage)
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_AURA_APPLIED", "Whirlwind", 59322, 50228)
-	self:Log("SPELL_DAMAGE", "WhirlwindDamage", 59323, 50229)
-	self:Log("SPELL_MISSED", "WhirlwindDamage", 59323, 50229)
+	self:Log("SPELL_CAST_START", "Smash", 192606)
+	self:Log("SPELL_CAST_START", "PoisonedDart", 192607)
+	self:Log("SPELL_CAST_START", "Whirlwind", 192609)
+	self:Log("SPELL_AURA_APPLIED", "WhirlwindAura", 192610)
+	self:Log("SPELL_DAMAGE", "WhirlwindDamage", 192611)
+	self:Log("SPELL_MISSED", "WhirlwindDamage", 192611)
 end
 
 --------------------------------------------------------------------------------
 -- Event Handlers
 --
 
-do
-	local function printTarget(self, player, guid)
-		self:TargetMessage(59322, player, "orange", "Info", nil, nil, true)
-		if self:Me(guid) then
-			self:Say(59322)
-		end
-	end
+function mod:Smash(args)
+	self:Message(args.spellId, "orange", "Alert", CL.casting:format(args.spellName))
+	self:CDBar(args.spellId, 10)
+end
 
-	function mod:Whirlwind(args)
-		self:GetBossTarget(printTarget, 0.4, args.sourceGUID)
-		self:Bar(59322, 10, CL.cast:format(args.spellName))
-		self:CDBar(59322, 23)
-	end
+function mod:PoisonedDart(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CDBar(args.spellId, 19)
+end
+
+function mod:Whirlwind(args)
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 24)
+end
+
+function mod:WhirlwindAura(args)
+	self:Message(args.spellId, "yellow")
 end
 
 do
@@ -49,9 +61,9 @@ do
 	function mod:WhirlwindDamage(args)
 		if self:Me(args.destGUID) then
 			local t = GetTime()
-			if t-prev > 1.5 then
+			if t - prev > 1.5 then
 				prev = t
-				self:Message(59322, "blue", "Alarm", CL.underyou:format(args.spellName))
+				self:Message(192609, "blue", "Alarm", CL.underyou:format(args.spellName))
 			end
 		end
 	end

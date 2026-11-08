@@ -13,15 +13,14 @@ mod:RegisterEnableMob(28546)
 
 function mod:GetOptions()
 	return {
-		{59795, "SAY", "FLASH", "PROXIMITY"}, -- Static Overload
-		52770, -- Disperse
+		192750, -- Ball Lightning
+		192754, -- Disperse
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_AURA_APPLIED", "StaticOverload", 52658, 59795) -- normal, heroic
-	self:Log("SPELL_AURA_REMOVED", "StaticOverloadRemoved", 52658, 59795)
-	self:Log("SPELL_CAST_START", "Disperse", 52770)
+	self:Log("SPELL_CAST_START", "BallLightning", 192750)
+	self:Log("SPELL_CAST_START", "Disperse", 192754)
 
 	self:Death("Win", 28546)
 end
@@ -30,24 +29,12 @@ end
 -- Event Handlers
 --
 
-function mod:StaticOverload(args)
-	self:TargetMessage(59795, args.destName, "yellow", "Alarm")
-	self:TargetBar(59795, 10, args.destName)
-	if self:Me(args.destGUID) then
-		self:Say(59795)
-		self:OpenProximity(59795, 10)
-		self:Flash(59795)
-	end
-end
-
-function mod:StaticOverloadRemoved(args)
-	self:StopBar(args.spellName, args.destName)
-	if self:Me(args.destGUID) then
-		self:CloseProximity(59795)
-	end
+function mod:BallLightning(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 3)
 end
 
 function mod:Disperse(args)
-	self:Message(args.spellId, "orange", "Info")
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 3)
 end
-
