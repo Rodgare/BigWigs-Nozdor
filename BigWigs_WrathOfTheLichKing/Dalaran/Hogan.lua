@@ -11,6 +11,7 @@ mod.toggleOptions = {
     {87020, "ME_ONLY", "FLASH"},
     87262,
     87019,
+    87269,
     "berserk"
 }
 mod.defaultDB = {
@@ -19,15 +20,16 @@ mod.defaultDB = {
 
 local L = mod:NewLocale("enUS", true)
 if L then
-    L[87005] = "Восстаньте" -- +
-    L[87027] = "Погребение Даларана" -- +
-    L[87038] = "Метка гнили" -- +
+    L[87005] = "Восстаньте"
+    L[87027] = "Погребение Даларана"
+    L[87038] = "Метка гнили"
     L[87022] = "Оскверненная душа"
-    L[87001] = "Погребальный знак" --+
-    L[87017] = "Похищение души" -- +
-    L[87020] = "Разрыв души" --+
+    L[87001] = "Погребальный знак"
+    L[87017] = "Похищение души"
+    L[87020] = "Разрыв души"
     L[87262] = "Сгустки крови"
     L[87019] = "Якорь души"
+    L[87269] = "Впитанная кровь"
 
     L.rise_bar = "Восстаньте"
     L.nodes_warn = "Скоро перефаза"
@@ -48,6 +50,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "RotMark", 87001)
 	self:Log("SPELL_AURA_APPLIED", "PersonalAuraApplied", 87017)
 	self:Log("SPELL_AURA_APPLIED", "PersonalAuraApplied", 87020)
+    self:Log("SPELL_AURA_APPLIED", "PersonalAuraApplied", 87269)
 
     self:Death("NodeDied", 53016)
 
@@ -66,14 +69,12 @@ end
 function mod:PersonalAuraApplied(args)
     if self:Me(args.destGUID) then
         self:PersonalMessage(args.spellId)
-        self:PlaySound(args.spellId, "alarm")
     end
 end
 
 function mod:RotMark(args)
     if self:Me(args.destGUID) then
         self:PersonalMessage(args.spellId)
-        self:PlaySound(args.spellId, "alarm")
     end
     
     self:TargetMessage(args.spellId, args.destName, "orange", "alert")
