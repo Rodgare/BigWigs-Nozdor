@@ -47,7 +47,7 @@ function mod:Whirlwind(args)
 end
 
 function mod:WhirlwindAura(args)
-	self:TargetMessage(args.spellId, args.destName, "orange", "Alarm")
+	self:Message(args.spellId, "yellow")
 end
 
 function mod:Charge(args)

@@ -27,6 +27,7 @@ function mod:GetOptions()
 end
 
 function mod:OnBossEnable()
+	self:Log("SPELL_AURA_APPLIED", "IntenseCold", 192550, 48095)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "IntenseCold", 192550, 48095)
 	self:Log("SPELL_CAST_START", "CrystallineBreath", 192553)
 	self:Log("SPELL_CAST_START", "TailSweep", 192555)
@@ -52,7 +53,8 @@ end
 
 function mod:IntenseCold(args)
 	if self:Me(args.destGUID) then
-		self:StackMessage(args.spellId, args.destName, args.amount, "blue", args.amount > 3 and "Alarm")
+		local stacks = args.amount or 1
+		self:StackMessage(args.spellId, args.destName, stacks, "blue", stacks > 3 and "Alarm")
 	end
 end
 
