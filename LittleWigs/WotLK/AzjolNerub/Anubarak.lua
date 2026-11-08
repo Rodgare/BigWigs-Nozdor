@@ -20,7 +20,9 @@ local nextSubmergeWarning = 80
 
 function mod:GetOptions()
 	return {
-		53472, -- Pound
+		192480, -- Pound
+		192482, -- Carrion Beetles
+		192484, -- Carrion Eaters
 		-6359, -- Submerge
 	}
 end
@@ -29,11 +31,14 @@ function mod:OnBossEnable()
 	self:RegisterUnitEvent("UNIT_HEALTH_FREQUENT", nil, "boss1")
 	self:RegisterUnitEvent("UNIT_TARGETABLE_CHANGED", nil, "boss1")
 
-	self:Log("SPELL_CAST_START", "Pound", 53472, 59433) -- normal, heroic
+	self:Log("SPELL_CAST_START", "Pound", 192480)
+	self:Log("SPELL_CAST_SUCCESS", "CarrionBeetles", 192482)
+	self:Log("SPELL_CAST_START", "CarrionEaters", 192484)
 end
 
 function mod:OnEngage()
 	nextSubmergeWarning = 80 -- 75%, 50% and 25%
+	self:CDBar(192480, 8)
 end
 
 -------------------------------------------------------------------------------
@@ -41,8 +46,19 @@ end
 --
 
 function mod:Pound(args)
-	self:CastBar(53472, 3.2)
-	self:Message(53472, "yellow", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 3)
+	self:Message(args.spellId, "yellow", "Warning", CL.casting:format(args.spellName))
+	self:CDBar(args.spellId, 50)
+end
+
+function mod:CarrionBeetles(args)
+	self:Message(args.spellId, "red", "Alert", args.spellName)
+	self:Bar(args.spellId, 2)
+end
+
+function mod:CarrionEaters(args)
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
 end
 
 function mod:UNIT_TARGETABLE_CHANGED(_, unit)

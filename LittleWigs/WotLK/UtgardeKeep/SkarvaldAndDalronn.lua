@@ -9,7 +9,6 @@ mod.respawnTime = 10
 
 -------------------------------------------------------------------------------
 --  Locals
---
 
 local deaths = 0
 
@@ -19,25 +18,57 @@ local deaths = 0
 function mod:GetOptions()
 	return {
 		"stages",
-		43650, -- Debilitate
+		192413, -- Stone Strike
+		192410, -- Charge
+		192414, -- Enrage
+		192415, -- Shadow Bolt
+		192416, -- Debilitate
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_AURA_APPLIED", "Debilitate", 43650)
+	self:Log("SPELL_CAST_START", "StoneStrike", 192413)
+	self:Log("SPELL_CAST_START", "Charge", 192410)
+	self:Log("SPELL_AURA_APPLIED", "Enrage", 192414)
+	self:Log("SPELL_CAST_START", "ShadowBolt", 192415, 192420)
+	self:Log("SPELL_CAST_START", "Debilitate", 192416)
 	self:Death("Deaths", 24200, 24201)
 end
 
 function mod:OnEngage()
 	deaths = 0
+	self:CDBar(192413, 10)
+	self:CDBar(192415, 5)
 end
 
 -------------------------------------------------------------------------------
 --  Event Handlers
 
+function mod:StoneStrike(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 10)
+end
+
+function mod:Charge(args)
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 37)
+end
+
+function mod:Enrage(args)
+	self:Message(args.spellId, "red", "Warning")
+end
+
+function mod:ShadowBolt(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 1)
+	self:CDBar(args.spellId, 5)
+end
+
 function mod:Debilitate(args)
-	self:TargetMessage(args.spellId, args.destName, "yellow")
-	self:TargetBar(args.spellId, 8, args.destName)
+	self:Message(args.spellId, "orange", "Alert", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
 end
 
 function mod:Deaths(args)

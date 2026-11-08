@@ -2,6 +2,7 @@
 ..\FrameXML\UI.xsd">
 
 <!-- Nozdor Heroic+ -->
+<Script file="HeroicPlus\Affixes.lua"/>
 <Include file="HeroicPlus\Ahnkahet\modules.xml"/>
 <Include file="HeroicPlus\Ahnkahet\locales.xml"/>
 <Include file="HeroicPlus\AzjolNerub\modules.xml"/>

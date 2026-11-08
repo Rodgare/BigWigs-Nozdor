@@ -4,6 +4,7 @@
 <Script file="Krikthir.lua"/>
 <Script file="Hadronox.lua"/>
 <Script file="Anubarak.lua"/>
+<Script file="Trash.lua"/>
 
 <Include file="Options\options.xml"/>
 

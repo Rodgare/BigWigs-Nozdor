@@ -4,6 +4,7 @@
 <Script file="Keleseth.lua"/>
 <Script file="SkarvaldAndDalronn.lua"/>
 <Script file="Ingvar.lua"/>
+<Script file="Trash.lua"/>
 
 <Include file="Options\options.xml"/>
 

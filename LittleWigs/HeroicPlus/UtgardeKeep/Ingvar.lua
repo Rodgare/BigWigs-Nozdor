@@ -1,6 +1,5 @@
 -------------------------------------------------------------------------------
 --  Module Declaration
---
 
 local mod, CL = BigWigs:NewBoss("Ingvar the Plunderer", 574, 640)
 if not mod then return end
@@ -10,33 +9,34 @@ mod:RegisterEnableMob(23954)
 
 -------------------------------------------------------------------------------
 --  Locals
---
 
 local deaths = 0
 
 -------------------------------------------------------------------------------
 --  Initialization
---
 
 function mod:GetOptions()
 	return {
 		"stages",
-		42669, -- Smash
-		42708, -- Staggering Roar
-		42730, -- Woe Strike
-	}, {
-		[42669] = "general",
-		[42730] = CL.stage:format(2),
+		192427, -- Smash
+		192429, -- Staggering Roar
+		192430, -- Enrage
+		192431, -- Woe Strike
+		192432, -- Dark Smash
+		192434, -- Dreadful Roar
 	}
 end
 
 function mod:OnBossEnable()
 	self:RegisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT", "CheckBossStatus")
 
-	self:Log("SPELL_CAST_START", "Smash", 42723, 42669, 59706) -- Dark Smash; normal / heroic Smash
-	self:Log("SPELL_CAST_START", "Roar", 42708, 42729, 59708, 59734) -- Staggering Roar, Dreadful Roar on normal / heroic
-	self:Log("SPELL_AURA_APPLIED", "WoeStrike", 42730, 59735) -- normal / heroic
-	self:Log("SPELL_AURA_REMOVED", "WoeStrikeRemoved", 42730, 59735)
+	self:Log("SPELL_CAST_START", "Smash", 192427)
+	self:Log("SPELL_CAST_START", "Roar", 192429)
+	self:Log("SPELL_AURA_APPLIED", "Enrage", 192430)
+	self:Log("SPELL_CAST_START", "DarkSmash", 192432)
+	self:Log("SPELL_AURA_APPLIED", "WoeStrike", 192431)
+	self:Log("SPELL_AURA_REMOVED", "WoeStrikeRemoved", 192431)
+	self:Log("SPELL_CAST_START", "DreadfulRoar", 192434)
 
 	self:Death("Deaths", 23954)
 end
@@ -44,31 +44,49 @@ end
 function mod:OnEngage()
 	deaths = 0
 	self:Message("stages", "cyan", nil, CL.stage:format(1), false)
+	self:CDBar(192427, 7)
 end
 
 -------------------------------------------------------------------------------
 --  Event Handlers
---
 
 function mod:Smash(args)
-	self:Message(42669, "yellow", nil, CL.casting:format(args.spellName))
-	self:CastBar(42669, 3, args.spellId)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 3)
+	self:CDBar(args.spellId, 16)
 end
 
 function mod:Roar(args)
-	self:Message(42708, "red", self:Ranged() and "Warning", CL.casting:format(args.spellName), args.spellId)
-	self:CastBar(42708, 2, args.spellId)
+	self:Message(args.spellId, "red", self:Ranged() and "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 20)
+end
+
+function mod:Enrage(args)
+	self:Message(args.spellId, "red", "Warning")
+end
+
+function mod:DarkSmash(args)
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2.5)
+	self:CDBar(args.spellId, 18)
 end
 
 function mod:WoeStrike(args)
 	if self:Me(args.destGUID) or self:Healer() or self:Dispeller("curse") then
-		self:TargetMessage(42730, args.destName, "orange", "Alarm", nil, nil, true)
-		self:TargetBar(42730, 10, args.destName)
+		self:TargetMessage(args.spellId, args.destName, "orange", "Alarm", nil, nil, true)
+		self:TargetBar(args.spellId, 8, args.destName)
 	end
+	self:CDBar(args.spellId, 13)
 end
 
 function mod:WoeStrikeRemoved(args)
 	self:StopBar(args.spellName, args.destName)
+end
+
+function mod:DreadfulRoar(args)
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2.5)
 end
 
 function mod:Deaths()
@@ -76,9 +94,9 @@ function mod:Deaths()
 	if deaths == 2 then
 		self:Win()
 	else
-		self:StopBar(42669) -- Smash
-		self:StopBar(42708) -- Staggering Roar
-		self:Bar("stages", 25.4, CL.stage:format(2), "spell_shadow_raisedead")
-		self:DelayedMessage("stages", 25.4, "cyan", CL.stage:format(2))
+		self:StopBar(192427) -- Smash
+		self:StopBar(192429) -- Staggering Roar
+		self:Bar("stages", 20, CL.stage:format(2), "spell_shadow_raisedead")
+		self:DelayedMessage("stages", 20, "cyan", CL.stage:format(2))
 	end
 end

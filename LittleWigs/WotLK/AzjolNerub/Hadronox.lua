@@ -11,24 +11,47 @@ mod:RegisterEnableMob(28921)
 
 function mod:GetOptions()
 	return {
-		53400, -- Acid Cloud
-		53030, -- Leech Poison
+		192470, -- Pierced Armor
+		192471, -- Acid Cloud
+		192473, -- Leech Poison
+		192476, -- Web Grab
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_SUCCESS", "AcidCloud", 53400, 59419) -- normal, heroic
-	self:Log("SPELL_CAST_SUCCESS", "LeechPoison", 53030, 59417) -- normal, heroic
+	self:Log("SPELL_CAST_START", "PiercedArmor", 192470)
+	self:Log("SPELL_CAST_START", "AcidCloud", 192471)
+	self:Log("SPELL_CAST_START", "LeechPoison", 192473)
+	self:Log("SPELL_CAST_START", "WebGrab", 192476)
 	self:Death("Win", 28921)
+end
+
+function mod:OnEngage()
+	self:CDBar(192470, 18)
+	self:CDBar(192471, 22)
 end
 
 -------------------------------------------------------------------------------
 --  Event Handlers
 
-function mod:AcidCloud()
-	self:Message(53400, "yellow")
+function mod:PiercedArmor(args)
+	self:Message(args.spellId, "red", nil, CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 20)
 end
 
-function mod:LeechPoison()
-	self:Message(53030, "orange")
+function mod:AcidCloud(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 20)
+end
+
+function mod:LeechPoison(args)
+	self:Message(args.spellId, "orange", "Alert", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+end
+
+function mod:WebGrab(args)
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
 end
