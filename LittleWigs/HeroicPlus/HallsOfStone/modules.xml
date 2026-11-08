@@ -5,6 +5,7 @@
 <Script file="MaidenOfGrief.lua"/>
 <Script file="TribunalOfAges.lua"/>
 <Script file="SjonnirTheIronshaper.lua"/>
+<Script file="Trash.lua"/>
 
 <Include file="Options\options.xml"/>
 

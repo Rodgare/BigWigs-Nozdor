@@ -19,6 +19,9 @@ if L then
 	L.necrotic = "Necrotic Plague"
 	L.wretched = "Wretched Soul"
 	L.cry = "Cry of the Wretched Soul"
+	L.disembodied = "Disembodied"
+	L.destabilization = "Destabilization"
+	L.incorporeal = "Incorporeal"
 end
 
 --------------------------------------------------------------------------------
@@ -47,10 +50,16 @@ function mod:GetOptions()
 		83646, -- Necrotic Plague
 		192115, -- Wretched Soul (affix debuff)
 		192110, -- Cry of the Wretched Soul
+		192095, -- Disembodied
+		192096, -- Destabilization
+		192098, -- Incorporeal
 	}, {
 		[83646] = L.necrotic,
 		[192115] = L.wretched,
 		[192110] = L.cry,
+		[192095] = L.disembodied,
+		[192096] = L.destabilization,
+		[192098] = L.incorporeal,
 	}
 end
 
@@ -59,6 +68,8 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED_DOSE", "NecroticPlague", 83646)
 	self:Log("SPELL_AURA_APPLIED", "WretchedSoul", 192115)
 	self:Log("SPELL_CAST_START", "Cry", 192110)
+	self:Log("SPELL_AURA_APPLIED", "AffixAura", 192095, 192098)
+	self:Log("SPELL_CAST_START", "Destabilization", 192096)
 end
 
 --------------------------------------------------------------------------------
@@ -82,4 +93,15 @@ end
 function mod:Cry(args)
 	self:Message(args.spellId, "orange", "Alert")
 	self:CDBar(args.spellId, 30)
+end
+
+function mod:Destabilization(args)
+	self:Message(args.spellId, "orange", "Alert")
+	self:CDBar(args.spellId, 9)
+end
+
+function mod:AffixAura(args)
+	if self:Me(args.destGUID) then
+		self:TargetMessage(args.spellId, args.destName, "orange", "Alert", nil, nil, true)
+	end
 end

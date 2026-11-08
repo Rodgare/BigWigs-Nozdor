@@ -14,25 +14,40 @@ mod.engageId = 1994
 
 function mod:GetOptions()
 	return {
-		50810, -- Shatter
+		191401, -- Boulder Toss
+		191407, -- Ground Slam
+		191473, -- Shatter
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_SUCCESS", "GroundSlam", 50833)
-	self:Log("SPELL_CAST_START", "Shatter", 50810, 61546) -- normal, heroic
+	self:Log("SPELL_CAST_START", "BoulderToss", 191401)
+	self:Log("SPELL_CAST_START", "GroundSlam", 191407)
+	self:Log("SPELL_CAST_START", "Shatter", 191473)
+end
+
+function mod:OnEngage()
+	self:CDBar(191401, 3)
 end
 
 -------------------------------------------------------------------------------
 --  Event Handlers
 --
 
-function mod:GroundSlam()
-	self:CDBar(50810, 8) -- Shatter
-	self:Message(50810, "orange", nil, CL.soon:format(self:SpellName(50810)))
+function mod:BoulderToss(args)
+	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 10)
 end
 
-function mod:Shatter()
-	self:StopBar(50810)
-	self:Message(50810, "orange")
+function mod:GroundSlam(args)
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 32)
+end
+
+function mod:Shatter(args)
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:CastBar(args.spellId, 2)
+	self:CDBar(args.spellId, 32)
 end

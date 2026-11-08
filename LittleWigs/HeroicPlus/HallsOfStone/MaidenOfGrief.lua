@@ -20,15 +20,18 @@ local playersIncapacitated, shouldBeTakingDamage = 0, false
 
 function mod:GetOptions()
 	return {
-		59726, -- Shock of Sorrow
+		191427, -- Roots of Grief
+		191428, -- Shock of Sorrow
 		59772, -- Storm of Grief
 	}
 end
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_START", "ShockOfSorrow", 50760, 59726) -- normal, heroic
-	self:Log("SPELL_AURA_APPLIED", "ShockOfSorrowDebuff", 50760, 59726)
-	self:Log("SPELL_AURA_REMOVED", "ShockOfSorrowDebuffRemoved", 50760, 59726)
+	self:Log("SPELL_AURA_APPLIED", "RootsOfGrief", 191427)
+	self:Log("SPELL_AURA_REMOVED", "RootsOfGriefRemoved", 191427)
+	self:Log("SPELL_CAST_START", "ShockOfSorrow", 191428)
+	self:Log("SPELL_AURA_APPLIED", "ShockOfSorrowDebuff", 191428)
+	self:Log("SPELL_AURA_REMOVED", "ShockOfSorrowDebuffRemoved", 191428)
 	self:Log("SPELL_PERIODIC_DAMAGE", "StormOfGrief", 50752, 59772) -- normal, heroic
 	self:Log("SPELL_PERIODIC_MISSED", "StormOfGrief", 50752, 59772)
 end
@@ -41,10 +44,19 @@ end
 --  Event Handlers
 --
 
+function mod:RootsOfGrief(args)
+	self:Message(args.spellId, "orange", "Alert", CL.casting:format(args.spellName))
+	self:Bar(args.spellId, 10)
+end
+
+function mod:RootsOfGriefRemoved(args)
+	self:StopBar(args.spellName)
+end
+
 function mod:ShockOfSorrow(args)
 	shouldBeTakingDamage = true
-	self:Message(59726, "red", "Warning", CL.casting:format(args.spellName))
-	self:Bar(59726, 4, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Bar(args.spellId, 4, CL.casting:format(args.spellName))
 end
 
 do
@@ -54,8 +66,8 @@ do
 		playerList[#playerList + 1] = args.destName
 		playersIncapacitated = playersIncapacitated + 1
 		if #playerList == 1 then
-			self:ScheduleTimer("TargetMessage", 0.2, 59726, playerList, "orange")
-			self:Bar(59726, args.spellId == 59726 and 10 or 6)
+			self:ScheduleTimer("TargetMessage", 0.2, args.spellId, playerList, "orange")
+			self:Bar(args.spellId, 10)
 		end
 	end
 
