@@ -138,3 +138,12 @@ function mod:GraveyardEnd(args)
     self:Message(args.spellId, "green", nil, L.nodes_end)
     self:Bar(87005, 48, L.rise_bar)
 end
+
+function mod:OnBossDisable()
+    self:StopBar(L.nodes_start)
+    self:StopBar(L.rise_bar)
+    if self.nodesText then
+        self:StopBar(self.nodesText)
+        self.nodesText = nil
+    end
+end
