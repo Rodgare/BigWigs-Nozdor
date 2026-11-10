@@ -78,7 +78,7 @@ end
 
 function mod:NecroticPlague(args)
 	if self:Me(args.destGUID) then
-		local stacks = args.amount or 1
+		local stacks = tonumber(args.amount) or 1
 		self:StackMessage(83646, args.destName, stacks, "red", stacks >= 4 and "Warning")
 	end
 end
