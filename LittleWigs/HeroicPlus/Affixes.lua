@@ -64,6 +64,7 @@ function mod:GetOptions()
 end
 
 function mod:OnBossEnable()
+	self.soulAnnounce = nil
 	self:Log("SPELL_AURA_APPLIED", "NecroticPlague", 83646)
 	self:Log("SPELL_AURA_APPLIED_DOSE", "NecroticPlague", 83646)
 	self:Log("SPELL_AURA_APPLIED", "WretchedSoul", 192115)
@@ -84,13 +85,19 @@ function mod:NecroticPlague(args)
 end
 
 function mod:WretchedSoul(args)
-	if self:Dispeller("magic") or self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "orange", "Alert", nil, nil, true)
-		self:TargetBar(args.spellId, 4, args.destName)
-	end
+	-- Aura 192115 marks the spawn of a Wretched Soul; several souls can spawn
+	-- in one wave, so only announce the wave once.
+	if self.soulAnnounce and GetTime() - self.soulAnnounce < 10 then return end
+	self.soulAnnounce = GetTime()
+	self:Message(args.spellId, "orange", "Alert")
+	self:CDBar(args.spellId, 30)
 end
 
 function mod:Cry(args)
+	-- Cry of the Wretched Soul is cast by each soul right after the spawn
+	-- announcement, so do not announce it again for the same wave.
+	if self.soulAnnounce and GetTime() - self.soulAnnounce < 10 then return end
+	self.soulAnnounce = GetTime()
 	self:Message(args.spellId, "orange", "Alert")
 	self:CDBar(args.spellId, 30)
 end

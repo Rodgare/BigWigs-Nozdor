@@ -79,6 +79,7 @@ Dalaran\Hogan.lua
 Dalaran\Malkren.lua
 Dalaran\Kamnerev.lua
 Dalaran\Darin.lua
+Dalaran\Manabonk.lua
 
 !Locales\ruRU.lua
 !Options.lua

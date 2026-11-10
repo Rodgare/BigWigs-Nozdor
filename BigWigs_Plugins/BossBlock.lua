@@ -203,7 +203,7 @@ do
 
 	local restoreObjectiveTracker = nil
 	function plugin:BigWigs_OnBossEngage()
-		if self.db.profile.blockEmotes and not IsTestBuild() then -- Don't block emotes on WoW beta.
+		if self.db.profile.blockEmotes and not (IsTestBuild and IsTestBuild()) then -- Don't block emotes on WoW beta.
 			KillEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
 			KillEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
 		end
