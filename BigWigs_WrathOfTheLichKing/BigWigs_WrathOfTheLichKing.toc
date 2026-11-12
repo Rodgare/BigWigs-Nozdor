@@ -75,6 +75,7 @@ Northrend\Toravon.lua
 Northrend\Onyxia.lua
 RubySanctum\Halion.lua
 RubySanctum\Trash.lua
+Dalaran\DalaranCommon.lua
 Dalaran\Hogan.lua
 Dalaran\Malkren.lua
 Dalaran\Kamnerev.lua

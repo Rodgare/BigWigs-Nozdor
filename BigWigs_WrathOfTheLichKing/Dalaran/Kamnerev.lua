@@ -3,18 +3,6 @@ if not mod then return end
 mod:RegisterEnableMob(53060)
 mod:SetEncounterID(53060)
 
-mod.toggleOptions = {
-	87174, -- Сотрясение
-	87102, -- Неудержимый разбег
-	87176, -- Тяжелая поступь
-	87110, -- Землетрясение
-	87185, -- Каменный шип
-	87107, -- Схватить
-	87101, -- Сломанные кости
-	{87112, "ME_ONLY"}, -- Уязвимость к сотрясению
-	"stages",
-}
-
 local L = mod:NewLocale("enUS", true)
 if L then
 	L.boss_name = "Камнерев Живая Земля"
@@ -31,54 +19,41 @@ if L then
 	L[87500] = "Наэлектризованность"
 	L.stages = "Фазы"
 
+	L.spike_warn = "Каменный шип на вас!"
+	L.grip_warn = "Вас схватили!"
+	L.bones_text = "Сломанные кости: %d"
+	L.fragile_text = "Уязвимость к сотрясению: %d"
+	L.trampled_warn = "Растоптанная земля на вас!"
+	L.stunned_warn = "Оглушение на вас!"
+	L.electrified_warn = "Наэлектризованность на вас!"
+
 	L.charge_end = "Камнерев потерял равновесие"
+	L.charge_you = "Разбег на вас!"
 	L.heavy_warn = "Тяжелая поступь — спрячьтесь за каменными шипами!"
 	L.stomp_bar = "Сотрясение"
 	L.charge_bar = "Неудержимый разбег"
 	L.quake_warn = "Землетрясение — отбегите!"
-	L.spikes_warn = "Каменные шипы на игроках"
 end
 L = mod:GetLocale()
 mod.displayName = L.boss_name
 
-local targetBatches = {}
-
-local function pushTarget(self, key, args, expected, color, sound, text)
-	local now = args.time or GetTime()
-	local batch = targetBatches[key]
-	if not batch or now - batch.at > 0.6 then
-		batch = {list = {}, at = now, expected = expected}
-		targetBatches[key] = batch
-		self:ScheduleTimer("FlushTargets", 0.5, key, batch)
-	end
-	batch.at = now
-	batch.list[#batch.list + 1] = args.destName
-	batch.color, batch.sound, batch.text = color, sound, text
-	if #batch.list >= expected then
-		self:FlushTargets(key, batch)
-	end
-end
-
-function mod:FlushTargets(key, batch)
-	if not batch or targetBatches[key] ~= batch or #batch.list == 0 then return end
-	targetBatches[key] = nil
-	self:TargetMessage(key, batch.list, batch.color, batch.sound, batch.text)
-end
+local abilities = {
+	{ key = 87174, kind = "announce", color = "orange", sound = "alert", castBar = 2.5, bar = 31 },
+	{ key = 87102, kind = "announce", color = "orange", sound = "warning", castBar = 7, cdBar = 41 },
+	{ key = 87110, kind = "announce", color = "red", sound = "alarm", text = L.quake_warn, castBar = 1.5, bar = 57 },
+	{ key = 87176, kind = "announce", color = "red", sound = "alarm", text = L.heavy_warn, castBar = 4 },
+	{ key = 87185, kind = "personal", color = "purple", sound = "alert", text = L.spike_warn },
+	{ key = 87107, kind = "personal", color = "red", sound = "alert", text = L.grip_warn },
+	{ key = 87101, kind = "personalStack", color = "orange", sound = "warning", stackText = L.bones_text },
+	{ key = 87112, kind = "personalStack", color = "yellow", sound = "alert", stackText = L.fragile_text, flags = { "ME_ONLY" } },
+	{ key = 87166, kind = "personal", color = "orange", sound = "alert", text = L.trampled_warn, selfBar = 3 },
+	{ key = 87106, kind = "personal", color = "red", sound = "warning", text = L.stunned_warn, selfBar = 6 },
+	{ key = 87500, kind = "personal", color = "yellow", sound = "alert", text = L.electrified_warn },
+}
+DalaranFW:Setup(mod, abilities, { "stages" })
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_START", "Stomp", 87174)
-	self:Log("SPELL_CAST_START", "Charge", 87102)
-	self:Log("SPELL_CAST_START", "Quake", 87110)
-	self:Log("SPELL_CAST_START", "HeavyStep", 87176)
-	self:Log("SPELL_AURA_APPLIED", "Spike", 87185)
-	self:Log("SPELL_AURA_APPLIED", "Grip", 87107)
-	self:Log("SPELL_AURA_APPLIED", "Bones", 87101)
-	self:Log("SPELL_AURA_APPLIED_DOSE", "Bones", 87101)
-	self:Log("SPELL_AURA_APPLIED", "Fragile", 87112)
-	self:Log("SPELL_AURA_APPLIED_DOSE", "Fragile", 87112)
-	self:Log("SPELL_AURA_APPLIED", "Trampled", 87166)
-	self:Log("SPELL_AURA_APPLIED", "Stunned", 87106)
-	self:Log("SPELL_AURA_APPLIED", "Electrified", 87500)
+	DalaranFW:Enable(self)
 
 	self:Death("Win", 53060)
 
@@ -87,74 +62,11 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
+	DalaranFW:Reset(self)
 	self:SetStage(1)
-	wipe(targetBatches)
 	self:Bar(87174, 13, L.stomp_bar)
 	self:CDBar(87102, 18, L.charge_bar)
 	self:CDBar(87110, 50, L.quake_warn)
-end
-
-function mod:Stomp(args)
-	self:Message(args.spellId, "orange", "alert")
-	self:CastBar(args.spellId, 2.5, L.stomp_bar)
-	self:Bar(args.spellId, 31, L.stomp_bar)
-end
-
-function mod:Charge(args)
-	self:Message(args.spellId, "orange", "warning")
-	self:CastBar(args.spellId, 7, L.charge_bar)
-	self:CDBar(args.spellId, 41, L.charge_bar)
-end
-
-function mod:Quake(args)
-	self:Message(args.spellId, "red", "alarm", L.quake_warn)
-	self:CastBar(args.spellId, 1.5)
-	self:Bar(args.spellId, 57)
-end
-
-function mod:HeavyStep(args)
-	self:Message(args.spellId, "red", "alarm", L.heavy_warn)
-	self:CastBar(args.spellId, 4)
-end
-
-function mod:Spike(args)
-	pushTarget(self, 87185, args, 10, "purple", "alert", L.spikes_warn)
-end
-
-function mod:Grip(args)
-	self:TargetMessage(args.spellId, args.destName, "red", "alert")
-end
-
-function mod:Bones(args)
-	local stacks = tonumber(args.amount)
-	if not stacks or stacks < 1 then stacks = 1 end
-	self:StackMessage(args.spellId, args.destName, stacks, "orange", nil)
-end
-
-function mod:Fragile(args)
-	local stacks = tonumber(args.amount)
-	if not stacks or stacks < 1 then stacks = 1 end
-	self:StackMessage(args.spellId, args.destName, stacks, "yellow", nil)
-end
-
-function mod:Trampled(args)
-	if self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "orange", "alert")
-		self:TargetBar(args.spellId, 3, args.destName)
-	end
-end
-
-function mod:Stunned(args)
-	if self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "red", "warning")
-		self:TargetBar(args.spellId, 6, args.destName)
-	end
-end
-
-function mod:Electrified(args)
-	if self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "yellow")
-	end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
@@ -162,7 +74,10 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
 	if msg:find("разбегу на", nil, true) then
 		local target = msg:match("разбегу на%s+(.-)!?$")
 		if target and target ~= "" then
-			self:TargetMessage(87102, target, "orange", "alert")
+			if target == UnitName("player") then
+				self:PersonalMessage(87102, false, L.charge_you)
+				self:PlaySound(87102, "alarm")
+			end
 		else
 			self:Message(87102, "orange", "alert")
 		end
@@ -170,5 +85,3 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
 		self:Message(87102, "green", nil, L.charge_end)
 	end
 end
-
-

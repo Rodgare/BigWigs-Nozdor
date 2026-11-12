@@ -3,40 +3,13 @@ if not mod then return end
 mod:RegisterEnableMob(53046)
 mod:SetEncounterID(53046)
 
-mod.toggleOptions = {
-	87058, -- Пламенные цепи
-	87431, -- Пламенные цепи (усиленные)
-	87050, -- Осадное клеймо
-	{87051, "ME_ONLY", "FLASH"}, -- Кара печати
-	87066, -- Осадный барьер
-	87067, -- Жертвоприношение
-	87091, -- Жертвоприношение (щит)
-	87063, -- Взрыв колодца душ
-	87064, -- Горящая душа
-	87083, -- Защита Кирин-Тора
-	87420, -- Рунический обстрел
-	87133, -- Коллапс стихий
-	87137, -- Ритуальный разлом
-	87071, -- Ритуальный снаряд
-	87419, -- Ритуальный след
-	{87124, "FLASH"}, -- Фиолетовая руна
-	{87125, "FLASH"}, -- Оранжевая руна
-	87065, -- Ярость надзирателя
-	87138, -- Паника
-	"wells",
-	"runes",
-	"stages",
-}
-
 local L = mod:NewLocale("enUS", true)
 if L then
 	L[87058] = "Пламенные цепи"
-	L[87431] = "Пламенные цепи"
 	L[87050] = "Осадное клеймо"
 	L[87051] = "Кара печати"
 	L[87066] = "Осадный барьер"
 	L[87067] = "Жертвоприношение"
-	L[87091] = "Жертвоприношение"
 	L[87063] = "Взрыв колодца душ"
 	L[87064] = "Горящая душа"
 	L[87083] = "Защита Кирин-Тора"
@@ -48,7 +21,16 @@ if L then
 	L[87124] = "Фиолетовая руна"
 	L[87125] = "Оранжевая руна"
 	L[87065] = "Ярость надзирателя"
-	L[87138] = "Паника"
+
+	L.seal_text = "Осадное клеймо: %d"
+	L.punishment_warn = "Кара печати на вас!"
+	L.burning_warn = "Горящая душа на вас!"
+	L.barrage_warn = "Рунический обстрел на вас!"
+	L.rift_warn = "Ритуальный разлом на вас!"
+	L.missile_warn = "Ритуальный снаряд на вас!"
+	L.trail_warn = "Ритуальный след на вас!"
+	L.rune_violet = "Фиолетовая руна на вас — найдите пару!"
+	L.rune_orange = "Оранжевая руна на вас — найдите пару!"
 
 	L.wells = "Колодцы душ"
 	L.runes = "Парные руны"
@@ -66,50 +48,36 @@ if L then
 end
 L = mod:GetLocale()
 
-local targetBatches = {}
-
-local function pushTarget(self, key, args, expected, color, sound, text)
-	local now = args.time or GetTime()
-	local batch = targetBatches[key]
-	if not batch or now - batch.at > 0.6 then
-		batch = {list = {}, at = now, expected = expected}
-		targetBatches[key] = batch
-		self:ScheduleTimer("FlushTargets", 0.5, key, batch)
-	end
-	batch.at = now
-	batch.list[#batch.list + 1] = args.destName
-	batch.color, batch.sound, batch.text = color, sound, text
-	if #batch.list >= expected then
-		self:FlushTargets(key, batch)
-	end
-end
-
-function mod:FlushTargets(key, batch)
-	if not batch or targetBatches[key] ~= batch or #batch.list == 0 then return end
-	targetBatches[key] = nil
-	self:TargetMessage(key, batch.list, batch.color, batch.sound, batch.text)
-end
+local abilities = {
+	{ key = 87058, ids = { 87058, 87431 }, kind = "announce", castBar = 3, message = false },
+	{ key = 87050, kind = "personalStack", color = "orange", sound = "warning", stackText = L.seal_text },
+	{ key = 87051, kind = "personal", color = "red", sound = "alarm", text = L.punishment_warn },
+	{ key = 87064, kind = "personal", color = "red", sound = "alert", text = L.burning_warn, selfBar = 2 },
+	{ key = 87420, kind = "personal", color = "orange", sound = "alert", text = L.barrage_warn },
+	{ key = 87137, kind = "personal", color = "yellow", sound = "warning", text = L.rift_warn },
+	{ key = 87071, kind = "personal", color = "red", sound = "alert", text = L.missile_warn },
+	{ key = 87419, kind = "personal", color = "orange", sound = "alert", text = L.trail_warn },
+	{ key = 87124, kind = "personal", color = "purple", sound = "alert", text = L.rune_violet },
+	{ key = 87125, kind = "personal", color = "purple", sound = "alert", text = L.rune_orange },
+	{ key = 87133, kind = "announce", color = "red", sound = "warning", text = L[87133] },
+	{ key = 87066, kind = "custom" },
+	{ key = 87067, kind = "custom" },
+	{ key = 87063, kind = "custom" },
+	{ key = 87083, kind = "custom" },
+	{ key = 87065, kind = "custom" },
+}
+DalaranFW:Setup(mod, abilities, { "wells", "runes", "stages" })
 
 function mod:OnBossEnable()
-	self:Log("SPELL_CAST_START", "Chains", 87058, 87431)
-	self:Log("SPELL_AURA_APPLIED", "Seal", 87050)
-	self:Log("SPELL_AURA_APPLIED_DOSE", "Seal", 87050)
-	self:Log("SPELL_AURA_APPLIED", "Punishment", 87051)
+	DalaranFW:Enable(self)
+
 	self:Log("SPELL_AURA_APPLIED", "BarrierUp", 87066)
 	self:Log("SPELL_AURA_REMOVED", "BarrierDown", 87066)
 	self:Log("SPELL_AURA_APPLIED", "SacrificeStart", 87067, 87091)
 	self:Log("SPELL_AURA_REMOVED", "SacrificeEnd", 87067, 87091)
-	self:Log("SPELL_AURA_APPLIED", "Rift", 87137)
-	self:Log("SPELL_AURA_APPLIED", "Missile", 87071)
-	self:Log("SPELL_AURA_APPLIED", "Trail", 87419)
-	self:Log("SPELL_AURA_APPLIED", "RuneViolet", 87124)
-	self:Log("SPELL_AURA_APPLIED", "RuneOrange", 87125)
 	self:Log("SPELL_AURA_APPLIED", "Enrage", 87065)
 	self:Log("SPELL_AURA_APPLIED", "WellExplosion", 87063)
-	self:Log("SPELL_AURA_APPLIED", "BurningSoul", 87064)
 	self:Log("SPELL_AURA_APPLIED", "KirinTorShield", 87083)
-	self:Log("SPELL_AURA_APPLIED", "RunicBarrage", 87420)
-	self:Log("SPELL_CAST_START", "ElementalCollapse", 87133)
 
 	self:Death("ChainsDown", 53030)
 	self:Death("Win", 53046)
@@ -119,106 +87,55 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
+	DalaranFW:Reset(self)
 	self:SetStage(1)
-	wipe(targetBatches)
 	self:CDBar("wells", 16, L.wells)
-end
-
-function mod:Chains(args)
-	self:CastBar(args.spellId, 3, L[87058])
-end
-
-function mod:Seal(args)
-	if self:MobId(args.destGUID) == 53046 then return end
-	local stacks = tonumber(args.amount)
-	if not stacks or stacks < 1 then stacks = 1 end
-	self:StackMessage(args.spellId, args.destName, stacks, "yellow", nil)
-end
-
-function mod:Punishment(args)
-	if self:Me(args.destGUID) then
-		self:PersonalMessage(args.spellId)
-		self:PlaySound(args.spellId, "alarm")
-	end
 end
 
 function mod:BarrierUp(args)
 	if self:MobId(args.destGUID) ~= 53046 then return end
-	self:Message(args.spellId, "yellow")
+	self:Message(87066, "yellow")
 end
 
 function mod:BarrierDown(args)
 	if self:MobId(args.destGUID) ~= 53046 then return end
-	self:Message(args.spellId, "green", nil, L.barrier_down)
+	self:Message(87066, "green", nil, L.barrier_down)
 end
 
 function mod:SacrificeStart(args)
 	if self:MobId(args.destGUID) ~= 53046 then return end
+	if DalaranFW:Dedupe(self, "sacrifice", args.time, 0.5) then return end
+
 	self:SetStage(2)
-	self:Message(args.spellId, "red", "alarm", L.sacrifice_msg)
-	self:Bar(args.spellId, 1e9 + 1, L.chains_bar)
+	self:Message(87067, "red", "alarm", L.sacrifice_msg)
+	self:Bar(87067, 1e9 + 1, L.chains_bar)
 end
 
 function mod:SacrificeEnd(args)
 	if self:MobId(args.destGUID) ~= 53046 then return end
+	if DalaranFW:Dedupe(self, "sacrifice_end", args.time, 0.5) then return end
+
 	self:StopBar(L.chains_bar)
 	self:SetStage(1)
-	self:Message(args.spellId, "green", nil, L.chains_broken)
+	self:Message(87067, "green", nil, L.chains_broken)
 end
 
-function mod:ChainsDown(args)
+function mod:ChainsDown()
 	self:StopBar(L.chains_bar)
-end
-
-function mod:Rift(args)
-	pushTarget(self, 87137, args, 3, "yellow", "warning", L[87137])
-end
-
-function mod:Trail(args)
-	pushTarget(self, 87419, args, 10, "orange", "alert", L[87419])
-end
-
-function mod:RuneViolet(args)
-	pushTarget(self, 87124, args, 2, "purple", "alert", L[87124])
-end
-
-function mod:RuneOrange(args)
-	pushTarget(self, 87125, args, 2, "purple", "alert", L[87125])
-end
-
-function mod:Missile(args)
-	self:TargetMessage(args.spellId, args.destName, "red", "alert")
 end
 
 function mod:WellExplosion(args)
-	self:Message(args.spellId, "red", "alarm")
-end
-
-function mod:BurningSoul(args)
-	if self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "orange", "alert")
-		self:TargetBar(args.spellId, 2, args.destName)
-	end
+	self:Message(87063, "red", "alarm")
 end
 
 function mod:KirinTorShield(args)
-	self:Message(args.spellId, "yellow")
-end
-
-function mod:RunicBarrage(args)
-	if self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "orange", "alert")
-	end
-end
-
-function mod:ElementalCollapse(args)
-	self:Message(args.spellId, "red", "warning")
+	self:Message(87083, "yellow")
 end
 
 function mod:Enrage(args)
 	if self:MobId(args.destGUID) ~= 53046 then return end
-	self:Message(args.spellId, "red", "alarm", L.enrage)
-	self:CDBar(args.spellId, 60, L.enrage_bar)
+	self:Message(87065, "red", "alarm", L.enrage)
+	self:CDBar(87065, 60, L.enrage_bar)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
@@ -233,5 +150,3 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
 		self:CDBar("runes", 20, L.runes)
 	end
 end
-
-
