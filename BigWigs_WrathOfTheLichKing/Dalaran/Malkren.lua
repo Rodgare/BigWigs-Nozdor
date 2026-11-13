@@ -20,6 +20,9 @@ if L then
 	L[87419] = "Ритуальный след"
 	L[87124] = "Фиолетовая руна"
 	L[87125] = "Оранжевая руна"
+	L[87126] = "Жёлтая руна"
+	L[87127] = "Синяя руна"
+	L[87128] = "Зелёная руна"
 	L[87065] = "Ярость надзирателя"
 
 	L.seal_text = "Осадное клеймо: %d"
@@ -31,6 +34,9 @@ if L then
 	L.trail_warn = "Ритуальный след на вас!"
 	L.rune_violet = "Фиолетовая руна на вас — найдите пару!"
 	L.rune_orange = "Оранжевая руна на вас — найдите пару!"
+	L.rune_yellow = "Жёлтая руна на вас — найдите пару!"
+	L.rune_blue = "Синяя руна на вас — найдите пару!"
+	L.rune_green = "Зелёная руна на вас — найдите пару!"
 
 	L.wells = "Колодцы душ"
 	L.runes = "Парные руны"
@@ -58,7 +64,10 @@ local abilities = {
 	{ key = 87071, kind = "personal", color = "red", sound = "alert", text = L.missile_warn },
 	{ key = 87419, kind = "personal", color = "orange", sound = "alert", text = L.trail_warn },
 	{ key = 87124, kind = "personal", color = "purple", sound = "alert", text = L.rune_violet },
-	{ key = 87125, kind = "personal", color = "purple", sound = "alert", text = L.rune_orange },
+	{ key = 87125, kind = "personal", color = "orange", sound = "alert", text = L.rune_orange },
+	{ key = 87126, kind = "personal", color = "yellow", sound = "alert", text = L.rune_yellow },
+	{ key = 87127, kind = "personal", color = "blue", sound = "alert", text = L.rune_blue },
+	{ key = 87128, kind = "personal", color = "green", sound = "alert", text = L.rune_green },
 	{ key = 87133, kind = "announce", color = "red", sound = "warning", text = L[87133] },
 	{ key = 87066, kind = "custom" },
 	{ key = 87067, kind = "custom" },
