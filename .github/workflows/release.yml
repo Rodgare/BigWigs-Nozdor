@@ -1,0 +1,53 @@
+name: Create Release ZIP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Delete old tag
+        run: |
+          git push --delete origin latest || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Archive
+        run: |
+          rm -rf release
+          mkdir -p release
+
+          for addon in BigWigs BigWigs_Azeroth BigWigs_Core BigWigs_Options BigWigs_Plugins BigWigs_WrathOfTheLichKing LittleWigs; do
+            rsync -a \
+              --exclude 'Tools' \
+              --exclude '*.log' \
+              --exclude 'extracted' \
+              "$addon/" "release/$addon/"
+          done
+
+          cd release
+          zip -r ../BigWigs-Nozdor.zip .
+
+      - name: Update Latest Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: BigWigs-Nozdor.zip
+          tag_name: latest
+          name: "Latest Version"
+          body: |
+            ${{ github.event.head_commit.message }}
+
+            _Обновлено автоматически: ${{ github.event.head_commit.timestamp }}_
+          prerelease: false
+          make_latest: "true"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
