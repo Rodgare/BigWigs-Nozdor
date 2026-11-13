@@ -84,10 +84,10 @@ end
 
 function mod:ImageCast(args)
 	if args.spellId == 192520 then -- Time Stop
-		self:Message(args.spellId, "red", "Warning")
+		self:Message(args.spellId, "orange", "Warning")
 		self:CDBar(args.spellId, 30)
 	elseif args.spellId == 192517 then -- Blizzard
-		self:Message(args.spellId, "orange", "Alarm")
+		self:Message(args.spellId, "red", "Alarm")
 	elseif args.spellId == 192519 then -- Frost Spike
 		self:Message(args.spellId, "blue")
 	else -- Fire Blast

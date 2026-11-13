@@ -32,7 +32,7 @@ end
 --
 
 function mod:MightyBlow(args)
-	self:Message(args.spellId, "red", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", nil, CL.casting:format(args.spellName))
 	self:CDBar(args.spellId, 10)
 end
 

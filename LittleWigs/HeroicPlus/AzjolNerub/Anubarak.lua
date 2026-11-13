@@ -52,12 +52,12 @@ function mod:Pound(args)
 end
 
 function mod:CarrionBeetles(args)
-	self:Message(args.spellId, "red", "Alert", args.spellName)
+	self:Message(args.spellId, "orange", "Alert", args.spellName)
 	self:Bar(args.spellId, 2)
 end
 
 function mod:CarrionEaters(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 end
 

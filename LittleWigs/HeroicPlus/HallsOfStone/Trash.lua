@@ -90,15 +90,7 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	local sound
-	if id == 191243 or id == 191288 or id == 191250 then -- Lightning, Shadow Bolt, Cleave
-		sound = "Warning"
-	elseif id == 191216 or id == 191247 then
-		sound = "Alert"
-	end
-	local color = sound == "Warning" and "red" or sound == "Alert" and "orange" or "yellow"
-
-	self:Message(id, color, sound, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
 end
 
 function mod:TrashAura(args)
@@ -107,7 +99,7 @@ function mod:TrashAura(args)
 		self:Message(id, "yellow")
 	elseif id == 191291 then
 		if self:Me(args.destGUID) or self:Tank() then
-			self:TargetMessage(id, args.destName, "orange", "Alarm", nil, nil, true)
+			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)
 		end
 	end
 end

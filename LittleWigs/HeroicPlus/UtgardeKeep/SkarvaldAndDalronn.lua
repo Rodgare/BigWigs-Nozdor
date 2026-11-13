@@ -51,13 +51,13 @@ function mod:StoneStrike(args)
 end
 
 function mod:Charge(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 	self:CDBar(args.spellId, 37)
 end
 
 function mod:Enrage(args)
-	self:Message(args.spellId, "red", "Warning")
+	self:Message(args.spellId, "orange", "Warning")
 end
 
 function mod:ShadowBolt(args)

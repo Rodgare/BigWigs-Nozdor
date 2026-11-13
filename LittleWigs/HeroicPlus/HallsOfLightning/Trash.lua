@@ -116,22 +116,14 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	local sound
-	if id == 191300 or id == 191304 or id == 191392 or id == 191367 or id == 191383 or id == 191377 or id == 191740 then
-		sound = "Warning"
-	elseif id == 191325 or id == 191335 or id == 191336 or id == 191369 then
-		sound = "Alert"
-	end
-	local color = sound == "Warning" and "red" or sound == "Alert" and "orange" or "yellow"
-
-	self:Message(id, color, sound, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
 end
 
 function mod:TrashAura(args)
 	local id = args.spellId
 	if id == 191302 or id == 191311 or id == 191320 or id == 191376 or id == 191382 or id == 191387 or id == 191853 then
 		if self:Me(args.destGUID) or self:Tank() then
-			self:TargetMessage(id, args.destName, "orange", "Alarm", nil, nil, true)
+			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)
 		end
 	elseif id == 191319 then
 		self:Message(id, "yellow")

@@ -38,7 +38,7 @@ function mod:ArcLightning(args)
 end
 
 function mod:LightningFlash(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 5)
 	self:CDBar(args.spellId, 24)
 end

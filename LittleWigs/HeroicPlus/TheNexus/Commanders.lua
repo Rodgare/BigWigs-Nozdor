@@ -55,7 +55,7 @@ function mod:Charge(args)
 end
 
 function mod:IntimidatingShout(args)
-	self:Message(args.spellId, "red", "Warning")
+	self:Message(args.spellId, "orange", "Warning")
 end
 
 function mod:BattleShout(args)

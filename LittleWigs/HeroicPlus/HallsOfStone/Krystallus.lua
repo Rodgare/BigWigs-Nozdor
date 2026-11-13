@@ -47,7 +47,7 @@ function mod:GroundSlam(args)
 end
 
 function mod:Shatter(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 	self:CDBar(args.spellId, 32)
 end

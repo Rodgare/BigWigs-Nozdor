@@ -51,5 +51,5 @@ function mod:SpellReflectionRemoved(args)
 end
 
 function mod:Frenzy(args)
-	self:Message(args.spellId, "red", "Warning")
+	self:Message(args.spellId, "orange", "Warning")
 end

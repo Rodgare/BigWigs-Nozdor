@@ -41,7 +41,7 @@ end
 
 function mod:Rip(args)
 	if self:Me(args.destGUID) or self:Healer() then
-		self:TargetMessage(args.spellId, args.destName, "orange", "Alarm", nil, nil, true)
+		self:TargetMessage(args.spellId, args.destName, "red", "Alarm", nil, nil, true)
 		self:TargetBar(args.spellId, 10, args.destName)
 	end
 end
@@ -65,7 +65,7 @@ function mod:Roar(args)
 end
 
 function mod:Pierce(args)
-	self:Message(args.spellId, "red")
+	self:Message(args.spellId, "orange")
 	self:CDBar(args.spellId, 37)
 end
 

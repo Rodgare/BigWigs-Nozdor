@@ -64,17 +64,18 @@ function mod:CrystallineBreath(args)
 end
 
 function mod:TailSweep(args)
-	self:Message(args.spellId, "yellow", self:Melee() and "Alarm")
+	local melee = self:Melee()
+	self:Message(args.spellId, melee and "red" or "yellow", melee and "Alarm")
 	self:CDBar(args.spellId, 20)
 end
 
 function mod:Crystallize(args)
-	self:Message(args.spellId, "red", "Warning")
+	self:Message(args.spellId, "orange", "Warning")
 	self:CDBar(192557, 20)
 end
 
 function mod:CrystallizeAura(args)
-	self:TargetMessage(args.spellId, args.destName, "orange", "Alarm")
+	self:TargetMessage(args.spellId, args.destName, "red", "Alarm")
 	self:TargetBar(args.spellId, 8, args.destName)
 end
 
@@ -92,5 +93,5 @@ function mod:CrystalChainsRemoved(args)
 end
 
 function mod:Enrage(args)
-	self:Message(args.spellId, "red", "Warning", CL.percent:format(20, self:SpellName(args.spellId)))
+	self:Message(args.spellId, "orange", "Warning", CL.percent:format(20, self:SpellName(args.spellId)))
 end

@@ -35,7 +35,7 @@ end
 --  Event Handlers
 
 function mod:PiercedArmor(args)
-	self:Message(args.spellId, "red", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", nil, CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 	self:CDBar(args.spellId, 20)
 end
@@ -52,6 +52,6 @@ function mod:LeechPoison(args)
 end
 
 function mod:WebGrab(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 end

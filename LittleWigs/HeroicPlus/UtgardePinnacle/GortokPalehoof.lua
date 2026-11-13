@@ -64,7 +64,7 @@ function mod:Cast(args)
 	elseif id == 192580 or id == 192597 then
 		sound = "Alert"
 	end
-	local color = sound == "Warning" and "red" or sound == "Alert" and "orange" or "yellow"
+	local color = sound == "Warning" and "orange" or sound == "Alert" and "orange" or "yellow"
 
 	self:Message(id, color, sound, CL.casting:format(args.spellName))
 
@@ -84,7 +84,7 @@ function mod:Aura(args)
 		self:Message(id, "yellow")
 	elseif id == 192582 or id == 192584 or id == 192597 or id == 192599 then -- Impale, Mortal Wound, Gore, Grievous Wound
 		if self:Me(args.destGUID) or self:Tank() then
-			self:TargetMessage(id, args.destName, "orange", "Alarm", nil, nil, true)
+			self:TargetMessage(id, args.destName, "red", "Alarm", nil, nil, true)
 		end
 	elseif id == 192583 or id == 192601 then -- Withering Roar, Stomp
 		if self:Me(args.destGUID) then

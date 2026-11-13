@@ -93,7 +93,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, _, source, _, _, target) -- Crystal Handler spawned
 	if source == self.displayName then -- cross-module safety, this is the only BOSS_EMOTE present in this encounter.
 		crystalHandlersSpawned = crystalHandlersSpawned + 1
-		self:Message("adds", "yellow", "Alarm", CL.spawned:format(target), false)
+		self:Message("adds", "red", "Alarm", CL.spawned:format(target), false)
 		if crystalHandlersSpawned <= 4 then
 			self:CDBar("adds", 15.8, CL.count:format(target, crystalHandlersSpawned), "spell_shadow_raisedead")
 		end

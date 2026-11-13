@@ -46,7 +46,7 @@ function mod:Cast(args)
 	elseif id == 192626 or id == 192627 then
 		sound = "Warning"
 	end
-	local color = sound == "Alert" and "orange" or sound == "Warning" and "red" or "yellow"
+	local color = sound == "Alert" and "orange" or sound == "Warning" and "orange" or "yellow"
 
 	self:Message(id, color, sound, CL.casting:format(args.spellName))
 

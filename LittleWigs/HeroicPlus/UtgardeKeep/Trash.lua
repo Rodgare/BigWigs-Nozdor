@@ -121,15 +121,7 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	local sound
-	if id == 191506 or id == 191551 or id == 191555 or id == 191539 or id == 191531 then -- Furnace Blast, breaths, Crushing Axe, Runecleave
-		sound = "Warning"
-	elseif id == 191535 or id == 191580 then -- Bone Crack, Dead Grip
-		sound = "Alert"
-	end
-	local color = sound == "Warning" and "red" or sound == "Alert" and "orange" or "yellow"
-
-	self:Message(id, color, sound, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
 
 	if id == 191551 then -- Burning Breath
 		self:CDBar(id, 19)
@@ -146,7 +138,7 @@ function mod:TrashAura(args)
 		self:Message(id, "yellow")
 	elseif id == 191527 or id == 191581 then
 		if self:Me(args.destGUID) or self:Tank() then
-			self:TargetMessage(id, args.destName, "orange", "Alarm", nil, nil, true)
+			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)
 		end
 	end
 end

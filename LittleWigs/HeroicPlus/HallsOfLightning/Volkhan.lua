@@ -44,7 +44,7 @@ function mod:ShatteringStomp(args)
 end
 
 function mod:ForgeGolems(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CDBar(args.spellId, 40)
 end
 
@@ -54,6 +54,6 @@ end
 
 function mod:SearingStrike(args)
 	if self:Me(args.destGUID) or self:Tank() then
-		self:TargetMessage(args.spellId, args.destName, "orange", "Alarm", nil, nil, true)
+		self:TargetMessage(args.spellId, args.destName, "red", "Alarm", nil, nil, true)
 	end
 end

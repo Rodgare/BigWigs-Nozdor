@@ -57,24 +57,24 @@ function mod:Smash(args)
 end
 
 function mod:Roar(args)
-	self:Message(args.spellId, "red", self:Ranged() and "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", self:Ranged() and "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 	self:CDBar(args.spellId, 20)
 end
 
 function mod:Enrage(args)
-	self:Message(args.spellId, "red", "Warning")
+	self:Message(args.spellId, "orange", "Warning")
 end
 
 function mod:DarkSmash(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2.5)
 	self:CDBar(args.spellId, 18)
 end
 
 function mod:WoeStrike(args)
 	if self:Me(args.destGUID) or self:Healer() or self:Dispeller("curse") then
-		self:TargetMessage(args.spellId, args.destName, "orange", "Alarm", nil, nil, true)
+		self:TargetMessage(args.spellId, args.destName, "red", "Alarm", nil, nil, true)
 		self:TargetBar(args.spellId, 8, args.destName)
 	end
 	self:CDBar(args.spellId, 13)
@@ -85,7 +85,7 @@ function mod:WoeStrikeRemoved(args)
 end
 
 function mod:DreadfulRoar(args)
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2.5)
 end
 

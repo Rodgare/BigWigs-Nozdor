@@ -50,12 +50,12 @@ function mod:ArcaneAttraction(args)
 end
 
 function mod:CreateRift(args)
-	self:Message(args.spellId, "red", "Warning")
+	self:Message(args.spellId, "orange", "Warning")
 	self:CDBar(args.spellId, 44)
 end
 
 function mod:RiftShield(args)
-	self:Message(args.spellId, "red", "Warning")
+	self:Message(args.spellId, "orange", "Warning")
 	self:Bar(args.spellId, 9)
 end
 

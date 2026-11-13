@@ -55,7 +55,7 @@ end
 
 function mod:ShockOfSorrow(args)
 	shouldBeTakingDamage = true
-	self:Message(args.spellId, "red", "Warning", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:Bar(args.spellId, 4, CL.casting:format(args.spellName))
 end
 

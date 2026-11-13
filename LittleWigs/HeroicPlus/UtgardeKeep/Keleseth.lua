@@ -39,7 +39,7 @@ function mod:ShadowBolt(args)
 end
 
 function mod:FrostTomb(args)
-	self:TargetMessage(args.spellId, args.destName, "red", "Warning", nil, nil, true)
+	self:TargetMessage(args.spellId, args.destName, "orange", "Warning", nil, nil, true)
 	self:TargetBar(args.spellId, 8, args.destName)
 end
 

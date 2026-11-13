@@ -54,19 +54,19 @@ function mod:CurseOfFatigueRemoved(args)
 end
 
 function mod:WebWrap(args)
-	self:Message(args.spellId, "red", "Alert", CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Alert", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 3)
 	self:Bar(args.spellId, 20)
 end
 
 function mod:Frenzy(args)
-	self:Message(args.spellId, "red", nil, CL.percent:format(10, args.spellName))
+	self:Message(args.spellId, "orange", nil, CL.percent:format(10, args.spellName))
 end
 
 function mod:UNIT_HEALTH_FREQUENT(event, unit)
 	local health = UnitHealth(unit) / UnitHealthMax(unit) * 100
 	if health > 10 and health <= 15 then
 		self:UnregisterUnitEvent(event, unit)
-		self:Message(192459, "red", nil, CL.soon:format(self:SpellName(192459))) -- Frenzy
+		self:Message(192459, "orange", nil, CL.soon:format(self:SpellName(192459))) -- Frenzy
 	end
 end

@@ -100,15 +100,7 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	local sound
-	if id == 191605 or id == 191613 or id == 191634 or id == 191641 or id == 191643 or id == 191659 then
-		sound = "Warning"
-	elseif id == 191600 or id == 191607 or id == 191622 or id == 191625 or id == 191631 or id == 191657 or id == 191661 then
-		sound = "Alert"
-	end
-	local color = sound == "Warning" and "red" or sound == "Alert" and "orange" or "yellow"
-
-	self:Message(id, color, sound, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
 
 	if id == 191657 then -- Dead Cold Volley
 		self:CDBar(id, 15)
@@ -127,7 +119,7 @@ function mod:TrashAura(args)
 		self:Message(id, "yellow")
 	elseif id == 191602 or id == 191637 or id == 191640 or id == 191658 or id == 191662 or id == 192615 then
 		if self:Me(args.destGUID) or self:Tank() then
-			self:TargetMessage(id, args.destName, "orange", "Alarm", nil, nil, true)
+			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)
 		end
 	end
 end

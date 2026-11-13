@@ -131,7 +131,7 @@ end
 
 function mod:SpellLock(args)
 	if self:Dispeller("magic") or self:Me(args.destGUID) then
-		self:TargetMessage(args.spellId, args.destName, "yellow", "Alarm", nil, nil, true)
+		self:TargetMessage(args.spellId, args.destName, "orange", "Alert", nil, nil, true)
 	end
 end
 
@@ -161,14 +161,7 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	local sound
-	if id == 61326 or id == 190233 or id == 190250 then -- Heal, Holy Flash, Sphere Explosion
-		sound = "Warning"
-	elseif id == 190200 or id == 56969 or id == 190214 or id == 190244 or id == 190255 or id == 48053 then
-		sound = "Alert"
-	end
-	local color = sound == "Warning" and "red" or sound == "Alert" and "orange" or "yellow"
-	self:Message(id, color, sound)
+	self:Message(id, "yellow", nil)
 
 	if id == 190250 then
 		self:CDBar(id, 18)
@@ -181,11 +174,11 @@ function mod:TrashAura(args)
 		self:Message(id, "yellow")
 	elseif id == 190223 or id == 190226 then -- Ice Trap, Ice Puddle
 		if self:Me(args.destGUID) then
-			self:Message(id, "orange", "Alarm")
+			self:Message(id, "orange", "Alert")
 		end
 	elseif id == 190222 or id == 191901 then -- Trap, Shattered Wind Vial
 		if self:Me(args.destGUID) then
-			self:TargetMessage(id, args.destName, "orange", "Alarm")
+			self:TargetMessage(id, args.destName, "orange", "Alert")
 		else
 			self:Message(id, "yellow")
 		end
