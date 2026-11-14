@@ -26,9 +26,11 @@ jobs:
           rm -rf release
           mkdir -p release
 
-          for addon in BigWigs BigWigs_Azeroth BigWigs_Core BigWigs_Options BigWigs_Plugins BigWigs_WrathOfTheLichKing LittleWigs; do
+          for addon in BigWigs BigWigs_Azeroth BigWigs_Core BigWigs_Options BigWigs_Plugins BigWigs_Voice_RU BigWigs_WrathOfTheLichKing LittleWigs; do
             rsync -a \
               --exclude 'Tools' \
+              --exclude 'tools' \
+              --exclude '__pycache__' \
               --exclude '*.log' \
               --exclude 'extracted' \
               "$addon/" "release/$addon/"
