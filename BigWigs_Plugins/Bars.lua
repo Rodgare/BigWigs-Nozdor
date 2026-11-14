@@ -48,9 +48,23 @@ local nameplateEmpUpdate = nil
 local rearrangeBars
 local rearrangeNameplateBars
 local timelineUpdate
+local timelinePlaceBar
 local applyTimelineLayout
 local applyClassicLayout
 local timelineStyleSet
+local timelineAnchorLayoutAxis
+local timelineLanding
+local updateTimelineLanding
+local timelineLandingSet
+local syncTimelineAnchor
+local timelineConfigMode
+local function timelineGeometry()
+	local icon = math.max(db.timelineIconSize or 44, 12)
+	local text = math.max(db.timelineTextWidth or 240, 40)
+	local gap = 16
+	local band = icon + 6
+	return icon, text, gap, band
+end
 local UnitGUID = UnitGUID
 local GetNamePlateForUnit = C_NamePlate and C_NamePlate.GetNamePlateForUnit or nil -- Nozdor: client has no C_NamePlate; nameplate-relative bars are skipped
 
@@ -510,11 +524,14 @@ plugin.defaultDB = {
 	BigWigsAnchor_height = 16,
 	-- Vertical ability timeline (retail-style icon column)
 	timelineMode = false,
-	timelineIconSize = 42,
-	timelineTrackHeight = 150,
-	timelineGrowAt = 1.2,
-	timelineGrowMax = 1.6,
-	timelineFontSize = 17,
+	timelineIconSize = 44,
+	timelineTrackHeight = 360,
+	timelineTextWidth = 240,
+	timelineFontSize = 24,
+	timelineLabelSize = 15,
+	timelineLandingSize = 100,
+	timelineThreshold = 10,
+	timelineBigIconThreshold = 5,
 	timelineShowText = true,
 	BigWigsEmphasizeAnchor_width = 320,
 	BigWigsEmphasizeAnchor_height = 22,
@@ -614,57 +631,73 @@ do
 --
 
 do
-	local function fontFlags()
-		local flags = nil
-		if db.monochrome and db.outline ~= "NONE" then
-			flags = "MONOCHROME," .. db.outline
-		elseif db.monochrome then
-			flags = "MONOCHROME"
-		elseif db.outline ~= "NONE" then
-			flags = db.outline
+	local WHITE = "Interface\\Buttons\\WHITE8x8"
+
+	local function formatTime(time)
+		if time >= 60 then
+			local m = math.floor(time / 60)
+			return string.format("%d:%02d", m, math.floor(time - m * 60))
+		elseif time < 10 then
+			return string.format("%.1f", time)
 		end
-		return flags
+		return string.format("%.0f", time)
 	end
 
+	-- Timer is centered on the icon (AbilityTimeline / Blizzard style), the
+	-- ability name is right-aligned to the left of the icon with a 16px gap.
 	local function setupText(bar)
 		if not bar.tlText then
-			local text = bar:CreateFontString(nil, "OVERLAY", GameFontHighlightSmallOutline)
+			local text = bar:CreateFontString(nil, "OVERLAY")
 			text:SetShadowOffset(1, -1)
 			text:SetShadowColor(0, 0, 0, 1)
-			text:SetTextColor(1, 1, 1, 1)
 			text:SetJustifyH("CENTER")
 			text:SetJustifyV("MIDDLE")
+			text:SetWordWrap(false)
 			bar.tlText = text
 		end
-		bar.tlText:SetFont(media:Fetch(FONT, db.fontName), db.timelineFontSize or 16, fontFlags())
+		bar.tlText:SetFont(media:Fetch(FONT, db.fontName), db.timelineFontSize or 24, "OUTLINE")
+		bar.tlText:SetTextColor(1, 1, 1, 1)
 		bar.tlText:ClearAllPoints()
-		bar.tlText:SetPoint("CENTER", bar.candyBarIconFrame, "CENTER", 0, 0)
+		bar.tlText:SetPoint("CENTER", bar, "CENTER", 0, 0)
 		bar.tlText:SetText("")
 		bar.tlText:Show()
 	end
 
 	local function setupLabel(bar)
 		if not bar.tlLabel then
-			local label = bar:CreateFontString(nil, "OVERLAY", GameFontHighlightSmallOutline)
+			local label = bar:CreateFontString(nil, "OVERLAY")
 			label:SetShadowOffset(1, -1)
 			label:SetShadowColor(0, 0, 0, 1)
-			label:SetTextColor(1, 1, 1, 1)
-			label:SetJustifyH("CENTER")
+			label:SetJustifyH("RIGHT")
 			label:SetJustifyV("MIDDLE")
+			label:SetWordWrap(false)
 			bar.tlLabel = label
 		end
-		bar.tlLabel:SetFont(media:Fetch(FONT, db.fontName), db.fontSize, fontFlags())
-		local size = math.max(db.timelineIconSize or 40, 8)
-		bar.tlLabel:SetWidth(size * 2)
-		bar.tlLabel:SetHeight(14)
+		local _, _, gap = timelineGeometry()
+		bar.tlLabel:SetFont(media:Fetch(FONT, db.fontName), db.timelineLabelSize or 15, "OUTLINE")
+		local r, g, b = bar.candyBarLabel:GetTextColor()
+		bar.tlLabel:SetTextColor(r or 1, g or 1, b or 1, 1)
 		bar.tlLabel:SetText(bar:GetLabel() or "")
 		bar.tlLabel:ClearAllPoints()
-		bar.tlLabel:SetPoint("TOP", bar, "BOTTOM", 0, -4)
+		bar.tlLabel:SetPoint("RIGHT", bar, "LEFT", -gap, 0)
 		bar.tlLabel:Show()
 	end
 
-	-- The icon is anchored by its bottom edge so it grows *upward* from the
-	-- baseline without ever stretching horizontally.
+	local function setupBorder(bar)
+		if not bar.tlBorder then
+			local border = bar:CreateTexture(nil, "BACKGROUND")
+			border:SetTexture(WHITE)
+			bar.tlBorder = border
+		end
+		bar.tlBorder:ClearAllPoints()
+		bar.tlBorder:SetPoint("TOPLEFT", bar.candyBarIconFrame, "TOPLEFT", -1, 1)
+		bar.tlBorder:SetPoint("BOTTOMRIGHT", bar.candyBarIconFrame, "BOTTOMRIGHT", 1, -1)
+		bar.tlBorder:SetVertexColor(0, 0, 0, 0.85)
+		bar.tlBorder:Show()
+	end
+
+	-- The icon never changes size while sinking: the enlarged "landing" icon
+	-- below the timeline handles the urgent highlight instead.
 	local function iconFill(bar, size)
 		local icon = bar.candyBarIconFrame
 		icon:ClearAllPoints()
@@ -676,10 +709,12 @@ do
 
 	applyTimelineLayout = function(bar)
 		bar.tlRaised = nil
-		bar:SetFrameLevel(0)
-		local size = math.max(db.timelineIconSize or 40, 8)
+		bar:SetFrameStrata("MEDIUM")
+		bar:SetFrameLevel((timelineAnchor and timelineAnchor:GetFrameLevel() or 21) + 10)
+		local size = math.max(db.timelineIconSize or 44, 12)
 		bar:SetSize(size, size)
 		iconFill(bar, size)
+		setupBorder(bar)
 		if bar.candyBarIconFrame.icon then
 			bar.candyBarIconFrame:Show()
 		else
@@ -690,6 +725,8 @@ do
 		bar.candyBarBackground:Hide()
 		bar.candyBarLabel:Hide()
 		bar.candyBarDuration:Hide()
+		if bar.candyBarBackdrop then bar.candyBarBackdrop:Hide() end
+		if bar.candyBarIconFrameBackdrop then bar.candyBarIconFrameBackdrop:Hide() end
 		if db.time then
 			setupText(bar)
 		elseif bar.tlText then
@@ -704,15 +741,19 @@ do
 
 	applyClassicLayout = function(bar)
 		bar:SetScale(1)
+		bar:SetAlpha(1)
 		bar.tlRaised = nil
 		bar:SetFrameLevel(0)
 		bar.funcs = nil
 		if bar.tlText then bar.tlText:Hide() end
 		if bar.tlLabel then bar.tlLabel:Hide() end
+		if bar.tlBorder then bar.tlBorder:Hide() end
 		bar.candyBarBar:Show()
 		bar.candyBarBackground:Show()
 		bar.candyBarLabel:Show()
 		bar.candyBarDuration:Show()
+		if bar.candyBarBackdrop then bar.candyBarBackdrop:Show() end
+		if bar.candyBarIconFrameBackdrop then bar.candyBarIconFrameBackdrop:Show() end
 		local anchor = bar:Get("bigwigs:anchor")
 		if anchor == normalAnchor or anchor == timelineAnchor then
 			bar:SetSize(db.BigWigsAnchor_width, db.BigWigsAnchor_height)
@@ -726,6 +767,7 @@ do
 	timelineStyleSet = function(info, value)
 		local key = info[#info]
 		db[key] = value
+		if timelineAnchor then timelineAnchor:RefixPosition() end
 		for bar in next, timelineAnchor.bars do
 			if db.timelineMode then
 				applyTimelineLayout(bar)
@@ -734,48 +776,43 @@ do
 		rearrangeBars(timelineAnchor)
 	end
 
-	timelineUpdate = function(bar)
-		local duration = bar:Get("bigwigs:duration") or bar.remaining or 1
-		if duration <= 0 then duration = 1 end
-		local p = bar.remaining / duration
-		if p < 0 then p = 0 elseif p > 1 then p = 1 end
-		local track = math.max(db.timelineTrackHeight or 1, 1)
-		local anchor = bar:Get("bigwigs:anchor") or timelineAnchor
-		bar:ClearAllPoints()
-		bar:SetPoint("BOTTOMLEFT", anchor, "BOTTOMLEFT", 0, track * p) -- descend toward the baseline
-
-		local size = math.max(db.timelineIconSize or 40, 8)
-		local growAt = db.timelineGrowAt
-		local growMax = db.timelineGrowMax or 1.6
-		if growAt and growAt > 0 and bar.candyBarIconFrame.icon then
-			local t = growAt - bar.remaining
-			if t > 0 then
-				local g = size * (1 + (t / growAt) * (growMax - 1))
-				g = math.min(g, size * growMax)
-				bar.candyBarIconFrame:SetHeight(g)
-				bar:SetFrameLevel(5)
-			else
-				bar.candyBarIconFrame:SetHeight(size)
-				bar:SetFrameLevel(0)
-			end
+	timelineLandingSet = function(info, value)
+		db[info[#info]] = value
+		if not timelineLanding or not timelineLanding.RefixPosition then return end
+		if db.timelineMode and value and value > 0 then
+			timelineLanding:RefixPosition()
+			if timelineConfigMode then timelineLanding:Show() end
 		else
-			bar.candyBarIconFrame:SetHeight(size)
-			bar:SetFrameLevel(0)
+			timelineLanding:Hide()
 		end
+	end
 
-		if bar.tlText and bar.remaining then
-			local time = bar.remaining
-			local s
-			if time >= 60 then
-				local m = math.floor(time / 60)
-				s = string.format("%d:%02d", m, math.floor(time - m * 60))
-			elseif time < 10 then
-				s = string.format("%.1f", time)
-			else
-				s = string.format("%.0f", time)
+	-- Places one icon on the track. `y` is the distance from the bottom of the
+	-- band (0 = about to fire, track height = entered the visible window).
+	timelinePlaceBar = function(bar, y, remaining)
+		local icon, text, _, band = timelineGeometry()
+		local iconX = text + (band - icon) * 0.5
+		bar:ClearAllPoints()
+		bar:SetPoint("BOTTOMLEFT", timelineAnchor, "BOTTOMLEFT", iconX, y)
+		if bar.tlText then
+			local s = formatTime(remaining)
+			if s ~= bar.tlTimeText then
+				bar.tlTimeText = s
+				bar.tlText:SetText(s)
 			end
-			bar.tlText:SetText(s)
 		end
+	end
+
+	-- Fallback used when a bar is created/rearranged before the driver ticks.
+	timelineUpdate = function(bar)
+		local remaining = bar.remaining or 0
+		if bar.exp and not bar.paused then
+			remaining = bar.exp - GetTime()
+			if remaining < 0 then remaining = 0 end
+		end
+		local threshold = math.max(db.timelineThreshold or 10, 1)
+		local track = math.max(db.timelineTrackHeight or 1, 1)
+		timelinePlaceBar(bar, track * math.min(remaining / threshold, 1), remaining)
 	end
 end
 
@@ -907,7 +944,6 @@ local function sortBars(info, value)
 							if value then
 								for i = 1, #bars do
 									applyTimelineLayout(bars[i])
-									bars[i]:AddUpdateFunction(timelineUpdate)
 								end
 							else
 								for i = 1, #bars do
@@ -921,6 +957,7 @@ local function sortBars(info, value)
 							rearrangeBars(emphasizeAnchor)
 							rearrangeBars(timelineAnchor)
 							if BigWigsAnchor then BigWigsAnchor:RefixPosition() end
+							if syncTimelineAnchor then syncTimelineAnchor() end
 						end,
 					},
 					timelineOpts = {
@@ -950,37 +987,73 @@ local function sortBars(info, value)
 								width = 2,
 								set = timelineStyleSet,
 							},
-							timelineGrowAt = {
-								type = "range",
-								name = L.timelineGrowAt,
-								min = 0,
-								max = 5,
-								step = 0.1,
-								order = 3,
-								width = 2,
-							},
-							timelineGrowMax = {
-								type = "range",
-								name = L.timelineGrowMax,
-								min = 1,
-								max = 3,
-								step = 0.05,
-								order = 4,
-								width = 2,
-							},
 							timelineFontSize = {
 								type = "range",
-								name = L.fontSize,
+								name = L.timelineTimeSize,
+								min = 6,
+								softMax = 48,
+								step = 1,
+								order = 3,
+								width = 2,
+								set = timelineStyleSet,
+							},
+							timelineLabelSize = {
+								type = "range",
+								name = L.timelineLabelSize,
 								min = 6,
 								softMax = 40,
 								step = 1,
+								order = 4,
+								width = 2,
+								set = timelineStyleSet,
+							},
+							timelineTextWidth = {
+								type = "range",
+								name = L.timelineTextWidth,
+								min = 80,
+								softMax = 500,
+								step = 2,
 								order = 5,
 								width = 2,
+								set = timelineStyleSet,
+							},
+							timelineThreshold = {
+								type = "range",
+								name = L.timelineThreshold,
+								desc = L.timelineThresholdDesc,
+								min = 5,
+								max = 60,
+								step = 1,
+								order = 6,
+								width = 2,
+								set = timelineStyleSet,
+							},
+							timelineBigIconThreshold = {
+								type = "range",
+								name = L.timelineBigIconThreshold,
+								desc = L.timelineBigIconThresholdDesc,
+								min = 0,
+								max = 30,
+								step = 1,
+								order = 7,
+								width = 2,
+								set = timelineStyleSet,
+							},
+							timelineLandingSize = {
+								type = "range",
+								name = L.timelineLandingSize,
+								desc = L.timelineLandingSizeDesc,
+								min = 0,
+								max = 160,
+								step = 2,
+								order = 8,
+								width = 2,
+								set = timelineLandingSet,
 							},
 							timelineShowText = {
 								type = "toggle",
 								name = L.timelineShowText,
-								order = 6,
+								order = 9,
 								width = 2,
 								set = timelineStyleSet,
 							},
@@ -1589,9 +1662,14 @@ do
 				end
 			end
 			if db.timelineMode then
-				-- The per-tick timeline update positions the icon within the track
-				bar:ClearAllPoints()
-				bar:SetPoint("BOTTOMLEFT", anchor, "BOTTOMLEFT")
+				-- Position immediately, so a freshly created bar never flashes at
+				-- the anchor origin before its first update tick.
+				if timelineUpdate then
+					timelineUpdate(bar)
+				else
+					bar:ClearAllPoints()
+					bar:SetPoint("BOTTOMLEFT", anchor, "BOTTOMLEFT")
+				end
 			else
 				local spacing = currentBarStyler.GetSpacing(bar) or db.spacing
 				bar:ClearAllPoints()
@@ -1797,16 +1875,75 @@ end
 
 local showTimelineAnchor, hideTimelineAnchor
 do
-	-- Dedicated editing element for the vertical timeline. Completely separate
-	-- from the classic bar anchors. It is a slim vertical axis exactly the size
-	-- of the real timeline: width = icon size (fixed) and height = track height.
-	-- Dragging it moves the whole column; dragging the corner changes only the
-	-- height (track length), width is always clamped back to the icon width.
+	-- The timeline container: dark band with a vertical axis, a left text column
+	-- (ability name + timer) and the icon column on the right. It stays visible
+	-- while the timeline mode is on; the header and resize handle only appear in
+	-- the configuration mode, and mouse input is only enabled there.
+	local WHITE = "Interface\\Buttons\\WHITE8x8"
 	local resizeGuard = false
 
 	local function axisWidth()
-		local apiw = db and db.timelineIconSize
-		return math.max(apiw or 40, 40)
+		local _, text, _, band = timelineGeometry()
+		return text + band
+	end
+
+	timelineAnchorLayoutAxis = function()
+		if not timelineAnchor or not db then return end
+		local _, text, _, band = timelineGeometry()
+		local width = timelineAnchor:GetWidth()
+		local height = timelineAnchor:GetHeight()
+
+		-- The dark strip covers only the icon column, exactly like the
+		-- Blizzard/AbilityTimeline track; the name labels sit outside it.
+		local bg = timelineAnchor.background
+		bg:ClearAllPoints()
+		bg:SetPoint("TOPLEFT", timelineAnchor, "TOPLEFT", text, 0)
+		bg:SetPoint("BOTTOMRIGHT", timelineAnchor, "BOTTOMRIGHT", 0, 0)
+
+		local edges = timelineAnchor.edges
+		for i = 1, 2 do
+			local edge = edges[i]
+			edge:ClearAllPoints()
+			edge:SetPoint("TOP", timelineAnchor, "TOPLEFT", i == 1 and text or (width - 1), 0)
+			edge:SetPoint("BOTTOM", timelineAnchor, "BOTTOMLEFT", i == 1 and text or (width - 1), 0)
+			edge:SetWidth(1)
+		end
+
+		local threshold = math.max(db.timelineThreshold or 10, 1)
+		local ticks = timelineAnchor.ticks
+		local used = 0
+		for tick = 5, threshold - 1, 5 do
+			used = used + 1
+			local widget = ticks[used]
+			if widget then
+				local y = math.floor(height * (tick / threshold) + 0.5)
+				local line = widget.line
+				line:ClearAllPoints()
+				line:SetPoint("BOTTOMLEFT", timelineAnchor, "BOTTOMLEFT", text, y)
+				line:SetPoint("BOTTOMRIGHT", timelineAnchor, "BOTTOMRIGHT", 0, y)
+				line:SetHeight(1)
+				line:Show()
+				widget.text:ClearAllPoints()
+				widget.text:SetPoint("LEFT", line, "RIGHT", 4, 0)
+				widget.text:SetText(tick .. "s")
+				widget.text:Show()
+			end
+		end
+		for i = used + 1, #ticks do
+			ticks[i].line:Hide()
+			ticks[i].text:Hide()
+		end
+
+		local baseline = timelineAnchor.baseline
+		baseline:ClearAllPoints()
+		baseline:SetPoint("BOTTOMLEFT", timelineAnchor, "BOTTOMLEFT", text, 0)
+		baseline:SetPoint("BOTTOMRIGHT", timelineAnchor, "BOTTOMRIGHT", 0, 0)
+		baseline:SetHeight(1)
+
+		local header = timelineAnchor.header
+		header:ClearAllPoints()
+		header:SetPoint("TOP", timelineAnchor, "TOP", 0, 0)
+		header:SetWidth(width)
 	end
 
 	local function refix()
@@ -1818,50 +1955,64 @@ do
 		else
 			timelineAnchor:SetPoint("CENTER", UIParent, "CENTER", 0, -60)
 		end
+		resizeGuard = true
 		timelineAnchor:SetWidth(axisWidth())
-		timelineAnchor:SetHeight(db.timelineTrackHeight or 150)
+		timelineAnchor:SetHeight(math.max(db.timelineTrackHeight or 360, 30))
+		resizeGuard = false
+		timelineAnchorLayoutAxis()
+		if timelineLanding and timelineLanding.RefixPosition then
+			timelineLanding:RefixPosition()
+		end
 	end
 
 	timelineAnchor = CreateFrame("Frame", "BigWigsTimelineAnchor", UIParent)
 	timelineAnchor:SetClampedToScreen(true)
 	timelineAnchor:SetMovable(true)
 	timelineAnchor:SetResizable(true)
-	timelineAnchor:SetMinResize(40, 40)
+	timelineAnchor:SetMinResize(80, 40)
 	timelineAnchor:EnableMouse(true)
 	timelineAnchor:RegisterForDrag("LeftButton")
 	timelineAnchor:SetFrameLevel(21)
 
 	local bg = timelineAnchor:CreateTexture(nil, "BACKGROUND")
-	bg:SetAllPoints(timelineAnchor)
-	BigWigsTextureSetColor(bg, 0.1, 0.1, 0.1, 0.45)
+	BigWigsTextureSetColor(bg, 0.17, 0.17, 0.19, 0.72)
 	timelineAnchor.background = bg
 
-	local centerLine = timelineAnchor:CreateTexture(nil, "OVERLAY")
-	centerLine:SetTexture("Interface\\Buttons\\WHITE8x8")
-	BigWigsTextureSetColor(centerLine, 0.35, 0.35, 0.35, 0.8)
-	centerLine:SetPoint("TOP", timelineAnchor, "TOP", 0, -2)
-	centerLine:SetPoint("BOTTOM", timelineAnchor, "BOTTOM", 0, 2)
-	centerLine:SetWidth(2)
-	timelineAnchor.centerLine = centerLine
+	timelineAnchor.edges = {}
+	for i = 1, 2 do
+		local edge = timelineAnchor:CreateTexture(nil, "BORDER")
+		edge:SetTexture(WHITE)
+		BigWigsTextureSetColor(edge, 1, 1, 1, 0.12)
+		timelineAnchor.edges[i] = edge
+	end
+
+	timelineAnchor.ticks = {}
+	for i = 1, 6 do
+		local line = timelineAnchor:CreateTexture(nil, "ARTWORK")
+		line:SetTexture(WHITE)
+		BigWigsTextureSetColor(line, 1, 1, 1, 0.28)
+		local text = timelineAnchor:CreateFontString(nil, "OVERLAY")
+		text:SetFont(plugin:GetDefaultFont(11), 11, "OUTLINE")
+		text:SetTextColor(1, 1, 1, 0.7)
+		timelineAnchor.ticks[i] = { line = line, text = text }
+	end
 
 	local header = timelineAnchor:CreateFontString(nil, "ARTWORK")
 	header:SetFont(plugin:GetDefaultFont(12))
 	header:SetShadowOffset(1, -1)
 	header:SetTextColor(1, 0.82, 0, 1)
 	header:SetText(L.timelineMode or "Timeline")
-	header:SetPoint("TOP", timelineAnchor, "TOP", 0, 0)
-	header:SetWidth(axisWidth())
 	header:SetHeight(14)
 	header:SetJustifyH("CENTER")
 	header:SetJustifyV("MIDDLE")
 	timelineAnchor.header = header
 
 	local baseline = timelineAnchor:CreateTexture(nil, "OVERLAY")
-	baseline:SetTexture("Interface\\Buttons\\WHITE8x8")
-	BigWigsTextureSetColor(baseline, 1, 0.82, 0, 1)
+	baseline:SetTexture(WHITE)
+	BigWigsTextureSetColor(baseline, 1, 1, 1, 0.35)
 	baseline:SetPoint("BOTTOMLEFT", timelineAnchor, "BOTTOMLEFT", 0, 0)
 	baseline:SetPoint("BOTTOMRIGHT", timelineAnchor, "BOTTOMRIGHT", 0, 0)
-	baseline:SetHeight(3)
+	baseline:SetHeight(1)
 	timelineAnchor.baseline = baseline
 
 	local handle = CreateFrame("Frame", nil, timelineAnchor)
@@ -1869,24 +2020,27 @@ do
 	handle:SetWidth(16)
 	handle:SetHeight(16)
 	handle:SetPoint("BOTTOMRIGHT", timelineAnchor, "BOTTOMRIGHT", -1, 1)
+	handle:SetAlpha(0.5)
 	handle:EnableMouse(true)
 	handle:SetScript("OnMouseDown", function() timelineAnchor:StartSizing("BOTTOMRIGHT") end)
 	handle:SetScript("OnMouseUp", function() timelineAnchor:StopMovingOrSizing() end)
 	local htex = handle:CreateTexture(nil, "OVERLAY")
 	htex:SetTexture("Interface\\AddOns\\BigWigs\\Media\\Textures\\draghandle")
-	BigWigsTextureSetColor(htex, 1, 1, 1, 0.9)
+	htex:SetVertexColor(1, 1, 1, 0.9)
 	htex:SetWidth(16)
 	htex:SetHeight(16)
 	htex:SetBlendMode("ADD")
 	htex:SetPoint("CENTER", handle)
+	timelineAnchor.handle = handle
 
 	timelineAnchor:SetScript("OnSizeChanged", function(self, width, height)
 		if resizeGuard then return end
 		resizeGuard = true
-		-- Keep the width fixed, only the height (track length) may change.
+		-- Width is derived from the text/icon sizes, only the height is user-set.
 		db.timelineTrackHeight = math.max(math.floor(height + 0.5), 30)
 		self:SetWidth(axisWidth())
 		resizeGuard = false
+		timelineAnchorLayoutAxis()
 		plugin:UpdateGUI()
 		rearrangeBars(timelineAnchor)
 	end)
@@ -1896,6 +2050,7 @@ do
 		local s = timelineAnchor:GetEffectiveScale()
 		db.BigWigsTimelineAnchor_x = timelineAnchor:GetLeft() * s
 		db.BigWigsTimelineAnchor_y = timelineAnchor:GetTop() * s
+		if timelineLanding then timelineLanding:RefixPosition() end
 		plugin:UpdateGUI()
 	end)
 	timelineAnchor.bars = {}
@@ -1908,14 +2063,211 @@ do
 		refix()
 	end
 	timelineAnchor:Hide()
+
+	syncTimelineAnchor = function()
+		if not timelineAnchor then return end
+		local on = db and db.timelineMode
+		if on then
+			refix()
+			timelineAnchor:Show()
+			timelineAnchor:EnableMouse(timelineConfigMode and true or false)
+			timelineAnchor.header:SetShown(timelineConfigMode and true or false)
+			timelineAnchor.handle:SetShown(timelineConfigMode and true or false)
+		else
+			timelineAnchor:Hide()
+		end
+		if timelineLanding then
+			local size = db and db.timelineLandingSize or 0
+			if on and size and size > 0 then
+				timelineLanding:RefixPosition()
+				timelineLanding:Show()
+				timelineLanding:EnableMouse(timelineConfigMode and true or false)
+			else
+				timelineLanding:Hide()
+			end
+		end
+	end
 	showTimelineAnchor = function()
-		if not db.timelineMode then return end
-		refix()
-		timelineAnchor:Show()
+		timelineConfigMode = true
+		syncTimelineAnchor()
 	end
 	hideTimelineAnchor = function()
-		timelineAnchor:Hide()
+		timelineConfigMode = false
+		syncTimelineAnchor()
 	end
+end
+
+do
+	-- Big icon, exactly like AbilityTimeline: it only appears when the closest
+	-- ability is within `timelineBigIconThreshold` seconds, shows the icon, a
+	-- very large centred countdown and the ability name below it.
+	local WHITE = "Interface\\Buttons\\WHITE8x8"
+	local backdrop = {
+		bgFile = WHITE,
+		edgeFile = WHITE,
+		tile = false, tileSize = 0, edgeSize = 1,
+		insets = {left = 0, right = 0, top = 0, bottom = 0},
+	}
+
+	local function landingSize()
+		return math.max(db and db.timelineLandingSize or 0, 0)
+	end
+
+	timelineLanding = CreateFrame("Frame", "BigWigsTimelineLanding", UIParent)
+	timelineLanding:SetClampedToScreen(true)
+	timelineLanding:SetMovable(true)
+	timelineLanding:SetFrameLevel(22)
+	timelineLanding:RegisterForDrag("LeftButton")
+	timelineLanding:SetBackdrop(backdrop)
+	timelineLanding:SetBackdropColor(0, 0, 0, 0)
+	timelineLanding:SetBackdropBorderColor(0, 0, 0, 0.9)
+
+	local icon = timelineLanding:CreateTexture(nil, "ARTWORK")
+	icon:SetPoint("TOPLEFT", timelineLanding, "TOPLEFT", 0, 0)
+	icon:SetPoint("BOTTOMRIGHT", timelineLanding, "BOTTOMRIGHT", 0, 0)
+	icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+	timelineLanding.icon = icon
+
+	local time = timelineLanding:CreateFontString(nil, "OVERLAY")
+	time:SetPoint("CENTER", timelineLanding, "CENTER", 0, 0)
+	time:SetTextColor(1, 1, 1, 1)
+	timelineLanding.time = time
+
+	local name = timelineLanding:CreateFontString(nil, "OVERLAY")
+	name:SetPoint("TOP", timelineLanding, "BOTTOM", 0, -2)
+	name:SetJustifyH("CENTER")
+	name:SetJustifyV("TOP")
+	name:SetWordWrap(false)
+	name:SetTextColor(1, 1, 1, 1)
+	timelineLanding.name = name
+
+	timelineLanding:SetScript("OnDragStart", function()
+		timelineLanding:StartMoving()
+	end)
+	timelineLanding:SetScript("OnDragStop", function()
+		timelineLanding:StopMovingOrSizing()
+		local s = timelineLanding:GetEffectiveScale()
+		db.BigWigsTimelineLanding_x = timelineLanding:GetLeft() * s
+		db.BigWigsTimelineLanding_y = timelineLanding:GetTop() * s
+		plugin:UpdateGUI()
+	end)
+	timelineLanding.RefixPosition = function(self)
+		local size = landingSize()
+		if size <= 0 then return end
+		self:SetSize(size, size)
+		local timeSize = math.max(12, math.floor(size * 0.48 + 0.5))
+		local nameSize = math.max(10, math.floor(size * 0.2 + 0.5))
+		self.time:SetFont(plugin:GetDefaultFont(timeSize), timeSize, "OUTLINE")
+		self.name:SetFont(plugin:GetDefaultFont(nameSize), nameSize, "OUTLINE")
+		self:ClearAllPoints()
+		if db.BigWigsTimelineLanding_x and db.BigWigsTimelineLanding_y then
+			local s = self:GetEffectiveScale()
+			self:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", db.BigWigsTimelineLanding_x / s, db.BigWigsTimelineLanding_y / s)
+		elseif timelineAnchor then
+			local _, text = timelineGeometry()
+			self:SetPoint("TOP", timelineAnchor, "BOTTOM", math.floor(text * 0.5), -10)
+		else
+			self:SetPoint("CENTER", UIParent, "CENTER", 0, -300)
+		end
+	end
+	timelineLanding.Reset = function(self)
+		db.BigWigsTimelineLanding_x = nil
+		db.BigWigsTimelineLanding_y = nil
+		self:RefixPosition()
+	end
+
+	updateTimelineLanding = function(best, bestRem)
+		if not db or not db.timelineMode or landingSize() <= 0 then return end
+		local threshold = math.max(db.timelineBigIconThreshold or 5, 0)
+		if not best or not bestRem or bestRem > threshold then
+			if timelineConfigMode then
+				timelineLanding.icon:SetTexture("Interface\\Icons\\INV_Misc_QuestionMark")
+				timelineLanding.time:SetText("")
+				timelineLanding.name:SetText(L.timelineLandingSize or "")
+				timelineLanding.name:SetTextColor(1, 0.82, 0, 1)
+				timelineLanding:Show()
+			else
+				timelineLanding:Hide()
+			end
+			return
+		end
+		timelineLanding.icon:SetTexture(best:GetIcon() or "Interface\\Icons\\INV_Misc_QuestionMark")
+		timelineLanding.time:SetText(bestRem < 10 and string.format("%.1f", bestRem) or string.format("%.0f", bestRem))
+		local r, g, b = best.candyBarLabel:GetTextColor()
+		timelineLanding.name:SetTextColor(r or 1, g or 1, b or 1, 1)
+		timelineLanding.name:SetText(best:GetLabel() or "")
+		if not timelineConfigMode then
+			timelineLanding:Show()
+		end
+	end
+
+	-- Always-on driver: stacks the icons (time proportional, pushed together
+	-- when they would overlap), hides events outside the visible window and
+	-- shows the big icon only for the last seconds before a cast.
+	local list = {}
+	local driver = CreateFrame("Frame", nil, UIParent)
+	driver:Show()
+	driver:SetScript("OnUpdate", function()
+		if not db or not db.timelineMode or not timelineAnchor then return end
+		local iconSize, text, _, band = timelineGeometry()
+		local track = math.max(db.timelineTrackHeight or 1, 1)
+		local threshold = math.max(db.timelineThreshold or 10, 1)
+		local now = GetTime()
+
+		wipe(list)
+		for bar in next, timelineAnchor.bars do
+			local remaining = bar.remaining or 0
+			if bar.exp and not bar.paused then
+				remaining = bar.exp - now
+				if remaining < 0 then remaining = 0 end
+			end
+			if remaining > 0 then
+				bar.tlRemaining = remaining
+				list[#list + 1] = bar
+			end
+		end
+		local hasBars = #list > 0
+
+		if not timelineConfigMode then
+			if hasBars then
+				timelineAnchor:Show()
+			else
+				timelineAnchor:Hide()
+			end
+		end
+
+		if hasBars then
+			table.sort(list, function(a, b) return a.tlRemaining < b.tlRemaining end)
+			local iconX = text + (band - iconSize) * 0.5
+			local cursor = 0
+			for i = 1, #list do
+				local bar = list[i]
+				local remaining = bar.tlRemaining
+				local y = track * math.min(remaining / threshold, 1)
+				if y < cursor then y = cursor end
+				if y > track - iconSize then y = math.max(track - iconSize, 0) end
+				cursor = y + iconSize + 4
+				bar:ClearAllPoints()
+				bar:SetPoint("BOTTOMLEFT", timelineAnchor, "BOTTOMLEFT", iconX, y)
+				-- Events outside the window wait dimmed at the far end instead
+				-- of disappearing, so a freshly started test bar is visible too.
+				bar:SetAlpha(remaining <= threshold and 1 or 0.65)
+				if bar.tlText then
+					local s = remaining < 10 and string.format("%.1f", remaining) or string.format("%.0f", remaining)
+					if s ~= bar.tlTimeText then
+						bar.tlTimeText = s
+						bar.tlText:SetText(s)
+					end
+				end
+			end
+			local nearest = list[1]
+			updateTimelineLanding(nearest, nearest and nearest.tlRemaining)
+		else
+			updateTimelineLanding(nil)
+		end
+	end)
+
+	timelineLanding:Hide()
 end
 
 local function showAnchors()
@@ -1934,6 +2286,7 @@ local function resetAnchors()
 	normalAnchor:Reset()
 	emphasizeAnchor:Reset()
 	timelineAnchor:Reset()
+	if timelineLanding then timelineLanding:Reset() end
 end
 
 local function updateProfile()
@@ -1956,6 +2309,16 @@ local function updateProfile()
 	db.tempMonoUIReset = nil
 	db.tempSpacingReset = nil
 	db.font = nil
+	-- Migration to the AbilityTimeline-style layout.
+	if db.timelineTextWidth == nil then db.timelineTextWidth = 240 end
+	if db.timelineLabelSize == nil then db.timelineLabelSize = 15 end
+	if db.timelineThreshold == nil then db.timelineThreshold = 10 end
+	if db.timelineBigIconThreshold == nil then db.timelineBigIconThreshold = 5 end
+	if db.timelineLandingSize == 64 then db.timelineLandingSize = 100 end
+	if db.timelineIconSize == 38 or db.timelineIconSize == 40 or db.timelineIconSize == 42 then db.timelineIconSize = 44 end
+	if db.timelineFontSize == 17 or db.timelineFontSize == 20 then db.timelineFontSize = 24 end
+	if db.timelineTrackHeight == 150 or db.timelineTrackHeight == 260 then db.timelineTrackHeight = 360 end
+	if syncTimelineAnchor then syncTimelineAnchor() end
 end
 
 --------------------------------------------------------------------------------
@@ -2015,6 +2378,11 @@ function plugin:OnPluginEnable()
 			startBreak(seconds-(curTime-prevTime), nick, isDBM, true)
 		end
 	end
+end
+
+function plugin:OnPluginDisable()
+	if timelineAnchor then timelineAnchor:Hide() end
+	if timelineLanding then timelineLanding:Hide() end
 end
 
 --------------------------------------------------------------------------------
@@ -2440,7 +2808,6 @@ function plugin:BigWigs_StartBar(_, module, key, text, time, icon, isApprox)
 	bar:Start()
 	if db.timelineMode then
 		applyTimelineLayout(bar)
-		bar:AddUpdateFunction(timelineUpdate)
 	elseif db.emphasize and time < db.emphasizeTime then
 		self:EmphasizeBar(bar, true)
 	else
