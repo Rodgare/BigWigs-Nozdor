@@ -523,16 +523,20 @@ plugin.defaultDB = {
 	BigWigsAnchor_width = 220,
 	BigWigsAnchor_height = 16,
 	-- Vertical ability timeline (retail-style icon column)
-	timelineMode = false,
-	timelineIconSize = 44,
-	timelineTrackHeight = 360,
-	timelineTextWidth = 240,
-	timelineFontSize = 24,
-	timelineLabelSize = 15,
-	timelineLandingSize = 100,
+	timelineMode = true,
+	timelineIconSize = 36,
+	timelineTrackHeight = 293,
+	timelineTextWidth = 224,
+	timelineFontSize = 25,
+	timelineLabelSize = 18,
+	timelineLandingSize = 48,
 	timelineThreshold = 10,
 	timelineBigIconThreshold = 5,
 	timelineShowText = true,
+	BigWigsTimelineAnchor_x = 608.8003147801304,
+	BigWigsTimelineAnchor_y = 589.6501531264605,
+	BigWigsTimelineLanding_x = 805.3596060869019,
+	BigWigsTimelineLanding_y = 323.3860653744073,
 	BigWigsEmphasizeAnchor_width = 320,
 	BigWigsEmphasizeAnchor_height = 22,
 	nameplateWidth = 150,
@@ -2309,15 +2313,8 @@ local function updateProfile()
 	db.tempMonoUIReset = nil
 	db.tempSpacingReset = nil
 	db.font = nil
-	-- Migration to the AbilityTimeline-style layout.
-	if db.timelineTextWidth == nil then db.timelineTextWidth = 240 end
-	if db.timelineLabelSize == nil then db.timelineLabelSize = 15 end
-	if db.timelineThreshold == nil then db.timelineThreshold = 10 end
-	if db.timelineBigIconThreshold == nil then db.timelineBigIconThreshold = 5 end
-	if db.timelineLandingSize == 64 then db.timelineLandingSize = 100 end
-	if db.timelineIconSize == 38 or db.timelineIconSize == 40 or db.timelineIconSize == 42 then db.timelineIconSize = 44 end
-	if db.timelineFontSize == 17 or db.timelineFontSize == 20 then db.timelineFontSize = 24 end
-	if db.timelineTrackHeight == 150 or db.timelineTrackHeight == 260 then db.timelineTrackHeight = 360 end
+	-- Timeline layout defaults now match the tuned layout, so no migration is
+	-- needed; just refresh the anchor visibility/geometry.
 	if syncTimelineAnchor then syncTimelineAnchor() end
 end
 
