@@ -329,6 +329,7 @@ L.timelineShowText = "Show ability name under icon"
 L.Warning = "Warning"
 
 L.sound = "Sound"
+L.previewSound = "Preview"
 L.soundDesc = "Messages might come with a sound. Some people find it easier to listen for these after they've learned which sound goes with which message, as opposed to reading the actual messages."
 
 L.customSoundDesc = "Play the selected custom sound instead of the one supplied by the module"

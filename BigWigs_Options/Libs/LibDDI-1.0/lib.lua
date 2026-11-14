@@ -45,7 +45,7 @@
 -- @class file
 -- @name LibDDI-1.0
 
-local ddiVersion = 2
+local ddiVersion = 3
 local prototype = LibStub("BW-AceGUI-3.0-DropDown-ItemBase"):GetItemBase()
 local version = ddiVersion + prototype.version
 
@@ -54,6 +54,7 @@ _G.AGUILSMDDI10 = version
 
 local media = LibStub("BW-LibSharedMedia-3.0")
 local gui = LibStub("BW-AceGUI-3.0")
+local L = BigWigsAPI and BigWigsAPI:GetLocale("BigWigs: Plugins") or {}
 
 -----------------------------------------------------------------------
 -- Common
@@ -160,19 +161,31 @@ do
 		local self = commonConstructor(widgetType)
 		local frame = self.frame
 
+		self.text:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -24, 0)
+
 		local sndButton = CreateFrame("Button", nil, frame)
-		sndButton:SetWidth(16)
-		sndButton:SetHeight(16)
+		sndButton:SetWidth(18)
+		sndButton:SetHeight(18)
 		sndButton:SetPoint("RIGHT", frame, "RIGHT", -3, -1)
 		sndButton:SetScript("OnClick", onClick)
 		sndButton.sound = frame.obj.text
+		sndButton:SetScript("OnEnter", function(btn)
+			GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+			GameTooltip:SetText(L.previewSound or "Preview")
+			GameTooltip:Show()
+		end)
+		sndButton:SetScript("OnLeave", function()
+			GameTooltip:Hide()
+		end)
 
-		local icon = sndButton:CreateTexture(nil, "BACKGROUND")
-		icon:SetTexture(nil) -- Nozdor 3.3.5: no VoiceChat texture; keep button functional
+		local icon = sndButton:CreateTexture(nil, "ARTWORK")
+		icon:SetTexture("Interface\\Icons\\INV_Misc_Horn_01")
+		icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 		icon:SetAllPoints(sndButton)
 
 		local highlight = sndButton:CreateTexture(nil, "HIGHLIGHT")
-		highlight:SetTexture(nil) -- Nozdor 3.3.5: no VoiceChat texture
+		highlight:SetTexture("Interface\\Buttons\\ButtonHilight-Square")
+		highlight:SetBlendMode("ADD")
 		highlight:SetAllPoints(sndButton)
 
 		gui:RegisterAsWidget(self)
