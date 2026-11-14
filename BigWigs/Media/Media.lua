@@ -37,66 +37,25 @@ do
 	media:Register(SOUND, "BigWigs: Victory Long", "Interface\\AddOns\\BigWigs\\Media\\Sounds\\VictoryLong.ogg")
 	media:Register(SOUND, "BigWigs: Victory Classic", "Interface\\AddOns\\BigWigs\\Media\\Sounds\\VictoryClassic.ogg")
 
-	if GetAddOnInfo and GetAddOnInfo("DBM-Core") then
-		local path = "Interface\\AddOns\\DBM-Core\\sounds\\"
-		local function dbm(name, file)
-			media:Register(SOUND, "DBM: " .. name, path .. file)
-		end
-
-		dbm("Long", "Long.mp3")
-		dbm("Alert", "Alert.mp3")
-		dbm("Info", "Info.mp3")
-		dbm("Air Horn", "AirHorn.ogg")
-		dbm("Alarm", "Alarm.ogg")
-		dbm("Alarm Clock Beeps", "alarmclockbeeps.ogg")
-		dbm("Beware", "beware.ogg")
-		dbm("Blip", "blip_8.ogg")
-		dbm("Tick", "Tick.mp3")
-		dbm("3 to 1 Countdown", "3to1.mp3")
-		dbm("5 to 1 Countdown", "5to1.mp3")
-		dbm("Thrall Phase 2", "phase2Trall.ogg")
-
-		dbm("Jaina: Beware", "SoundClips\\beware.ogg")
-		dbm("Jaina: Beware (reverb)", "SoundClips\\beware_with_reverb.ogg")
-		dbm("Thrall: Incredible", "SoundClips\\incredible.ogg")
-		dbm("Saurfang: Don't Die", "SoundClips\\dontdie.ogg")
-
-		dbm("Blakbyrd Alert 1", "BlakbyrdAlerts\\Alert1.ogg")
-		dbm("Blakbyrd Alert 2", "BlakbyrdAlerts\\Alert2.ogg")
-		dbm("Blakbyrd Alert 3", "BlakbyrdAlerts\\Alert3.ogg")
-
-		dbm("Shadowmeld", "PlayerAbilities\\Shadowmeld.ogg")
-		dbm("Vanish", "PlayerAbilities\\Vanish.ogg")
-
-		dbm("Raid: Bone Spike Cast", "RaidAbilities\\Bone_Spike_cast.mp3")
-		dbm("Raid: Bone Storm Cast", "RaidAbilities\\Bone_Storm_cast.mp3")
-		dbm("Raid: Choking", "RaidAbilities\\choking.mp3")
-		dbm("Raid: Choking Soon", "RaidAbilities\\choking_soon.mp3")
-		dbm("Raid: Defile on You", "RaidAbilities\\defileOnYou.mp3")
-		dbm("Raid: Empowered Orb on You", "RaidAbilities\\EmpoweredOrbOnYou.mp3")
-		dbm("Raid: Empowered Vortex", "RaidAbilities\\EmpoweredVortex.mp3")
-		dbm("Raid: Infest Soon", "RaidAbilities\\infestSoon.mp3")
-		dbm("Raid: Kinetic Spawn", "RaidAbilities\\KineticSpawn.mp3")
-		dbm("Raid: Malleable", "RaidAbilities\\malleable.mp3")
-		dbm("Raid: Malleable Soon", "RaidAbilities\\malleable_soon.mp3")
-		dbm("Raid: Necrotic on You", "RaidAbilities\\necroticOnYou.mp3")
-		dbm("Raid: Puddle Cast", "RaidAbilities\\puddle_cast.mp3")
-		dbm("Raid: Soul Reaper Soon", "RaidAbilities\\soulreaperSoon.mp3")
-		dbm("Raid: Spirits", "RaidAbilities\\spirits.mp3")
-		dbm("Raid: Suppressors Spawned", "RaidAbilities\\suppressersSpawned.mp3")
-		dbm("Raid: Unchained", "RaidAbilities\\unchained.mp3")
-		dbm("Raid: Vortex Near", "RaidAbilities\\vortexNear.mp3")
-
-		dbm("Timer Tick", "Timer\\TempMono.ogg")
-		dbm("BG Countdown Timer", "Timer\\UI_BattlegroundCountdown_Timer.ogg")
-		dbm("BG Countdown End", "Timer\\UI_BattlegroundCountdown_End.ogg")
-
-		dbm("Victory: Alarak", "Victory\\AlarakRakshir.ogg")
-		dbm("Victory: Battleground", "Victory\\bbvictory.ogg")
-		dbm("Victory: Fanfare", "Victory\\SmoothMcGroove_Fanfare.ogg")
-		dbm("Victory: Vorazun GG", "Victory\\VorazunGG.ogg")
-		dbm("Victory: Vorazun History", "Victory\\VorazunHistory.ogg")
+	local path = "Interface\\AddOns\\BigWigs\\Media\\Sounds\\DBM\\"
+	local function dbm(name, file)
+		media:Register(SOUND, "DBM: " .. name, path .. file)
 	end
+
+	dbm("Air Horn", "DBM-AirHorn.ogg")
+	dbm("Alarm Clock Beeps", "DBM-AlarmClockBeeps.ogg")
+	dbm("Beware", "DBM-Beware.ogg")
+	dbm("Blip", "DBM-Blip.ogg")
+	dbm("Tick", "DBM-Tick.mp3")
+
+	dbm("Jaina - Beware", "DBM-JainaBeware.ogg")
+	dbm("Jaina - Beware (reverb)", "DBM-JainaBewareReverb.ogg")
+	dbm("Thrall - Incredible", "DBM-ThrallIncredible.ogg")
+	dbm("Saurfang - Don't Die", "DBM-SaurfangDontDie.ogg")
+
+	dbm("Blakbyrd Alert 1", "DBM-BlakbyrdAlert1.ogg")
+	dbm("Blakbyrd Alert 2", "DBM-BlakbyrdAlert2.ogg")
+	dbm("Blakbyrd Alert 3", "DBM-BlakbyrdAlert3.ogg")
 end
 
 -- Fonts

@@ -119,8 +119,33 @@ end
 -- Initialization
 --
 
+local staleSounds = {
+	["DBM: Long"] = "BigWigs: Long",
+	["DBM: Alert"] = "BigWigs: Alert",
+	["DBM: Info"] = "BigWigs: Info",
+	["DBM: Alarm"] = "BigWigs: Alarm",
+}
+
+local function migrateSounds()
+	local function remap(t)
+		for k, v in next, t do
+			if staleSounds[v] then t[k] = staleSounds[v] end
+		end
+	end
+	remap(db.media)
+	for optionName in next, sounds do
+		local overrides = db[optionName]
+		if type(overrides) == "table" then
+			for _, options in next, overrides do
+				if type(options) == "table" then remap(options) end
+			end
+		end
+	end
+end
+
 local function updateProfile()
 	db = plugin.db.profile
+	migrateSounds()
 end
 
 function plugin:OnRegister()

@@ -166,6 +166,8 @@ do
 		local sndButton = CreateFrame("Button", nil, frame)
 		sndButton:SetWidth(18)
 		sndButton:SetHeight(18)
+		sndButton:SetFrameStrata(frame:GetFrameStrata())
+		sndButton:SetFrameLevel(frame:GetFrameLevel() + 5)
 		sndButton:SetPoint("RIGHT", frame, "RIGHT", -3, -1)
 		sndButton:SetScript("OnClick", onClick)
 		sndButton.sound = frame.obj.text
@@ -178,9 +180,10 @@ do
 			GameTooltip:Hide()
 		end)
 
-		local icon = sndButton:CreateTexture(nil, "ARTWORK")
-		icon:SetTexture("Interface\\Icons\\INV_Misc_Horn_01")
-		icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+		local icon = sndButton:CreateTexture(nil, "OVERLAY", nil, 7)
+		icon:SetTexture("Interface\\AddOns\\BigWigs\\Media\\Textures\\icons\\play")
+		local r, g, b = self.text:GetTextColor()
+		icon:SetVertexColor(r or 1, g or 1, b or 1)
 		icon:SetAllPoints(sndButton)
 
 		local highlight = sndButton:CreateTexture(nil, "HIGHLIGHT")
