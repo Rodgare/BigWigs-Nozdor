@@ -84,7 +84,7 @@ function mod:CrystallizeAuraRemoved(args)
 end
 
 function mod:CrystalChains(args)
-	self:TargetMessage(args.spellId, args.destName, "yellow")
+	self:TargetMessage(args.spellId, args.destName, "yellow", "Info")
 	self:TargetBar(args.spellId, 10, args.destName)
 end
 

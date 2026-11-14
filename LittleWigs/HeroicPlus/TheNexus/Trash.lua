@@ -159,9 +159,19 @@ do
 	end
 end
 
+local castSound = {
+	[190250] = "Alert", -- Sphere Explosion
+	[190261] = "Warning", -- Crystal of Roots
+	[190259] = "Warning", -- Crystalline Bloom
+	[61326] = "Warning", -- Heal
+	[190240] = "Warning", -- Shattered Wind Vial
+	[190244] = "Warning", -- Arcane Shackles
+	[190245] = "Warning", -- Suppression Seel
+}
+
 function mod:TrashCast(args)
 	local id = args.spellId
-	self:Message(id, "yellow", nil)
+	self:Message(id, "yellow", castSound[id] or "Info")
 
 	if id == 190250 then
 		self:CDBar(id, 18)
@@ -171,7 +181,7 @@ end
 function mod:TrashAura(args)
 	local id = args.spellId
 	if id == 48082 or id == 190257 or id == 190228 then -- Shell, Crystal Bark, Blade Whirl
-		self:Message(id, "yellow")
+		self:Message(id, "yellow", "Info")
 	elseif id == 190223 or id == 190226 then -- Ice Trap, Ice Puddle
 		if self:Me(args.destGUID) then
 			self:Message(id, "orange", "Alert")
@@ -180,11 +190,11 @@ function mod:TrashAura(args)
 		if self:Me(args.destGUID) then
 			self:TargetMessage(id, args.destName, "orange", "Alert")
 		else
-			self:Message(id, "yellow")
+			self:Message(id, "yellow", "Info")
 		end
 	elseif id == 190232 then -- Bleed
 		if self:Me(args.destGUID) or self:Tank("player") then
-			self:TargetMessage(id, args.destName, "yellow")
+			self:TargetMessage(id, args.destName, "yellow", "Info")
 		end
 	end
 end

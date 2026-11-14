@@ -41,10 +41,10 @@
 15716,Enrage,Ghaz'an,LittleWigs\TBC\TheUnderbog\Ghazan.lua
 16172,Head Crack,Warlord Kalithresh,LittleWigs\TBC\TheSteamvault\Kalithresh.lua
 16856,Mortal Strike,General Bjarngrim,LittleWigs\WotLK\HallsOfLightning\Bjarngrim.lua
-17086,Breath,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
-18392,Fireball,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
-18431,Bellowing Roar,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
-18435,Flame Breath,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+17086,Дыхание,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+18392,Огненный шар,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+18431,Раскатистый рев,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+18435,Огненное дыхание,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
 22883,Heal,Mana-Tombs Trash,LittleWigs\TBC\ManaTombs\Trash.lua
 25033,Lightning Cloud,Hydromancer Thespia,LittleWigs\TBC\TheSteamvault\Thespia.lua
 27621,Windfury Totem,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
@@ -54,7 +54,7 @@
 28059,Positive Charge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
 28084,Negative Charge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
 28089,Polarity Shift,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
-28131,Frenzy,Patchwerk,BigWigs_WrathOfTheLichKing\Naxxramas\Patchwerk.lua
+28131,Бешенство,Patchwerk,BigWigs_WrathOfTheLichKing\Naxxramas\Patchwerk.lua
 28134,Power Surge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
 28169,Mutating Injection,Grobbulus,BigWigs_WrathOfTheLichKing\Naxxramas\Grobbulus.lua
 28240,Poison Cloud,Grobbulus,BigWigs_WrathOfTheLichKing\Naxxramas\Grobbulus.lua
@@ -315,11 +315,11 @@
 62279,Lightning Charge,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
 62331,Impale,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
 62338,Runic Barrier,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
-62374,Pursued,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+62374,Преследование,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 62382,Brittle,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
-62396,Flame Vents,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+62396,Огненное дыхание,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 62437,Ground Tremor,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
-62475,Systems Shutdown,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+62475,Отключение системы,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 62488,Activate Construct,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
 62526,Rune Detonation,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
 62589,Nature's Fury,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
@@ -394,9 +394,9 @@
 66197,Пламя Легиона,Lord Jaraxxus,BigWigs_WrathOfTheLichKing\Coliseum\Jaraxxus.lua
 66228,Сила Пустоты,Lord Jaraxxus,BigWigs_WrathOfTheLichKing\Coliseum\Jaraxxus.lua
 66237,Испепеление плоти,Lord Jaraxxus,BigWigs_WrathOfTheLichKing\Coliseum\Jaraxxus.lua
-66317,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-66330,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-66331,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66317,Огненная бомба,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66330,Сотрясающий топот,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66331,Прокалывание,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
 66334,Поцелуй Госпожи,Lord Jaraxxus,BigWigs_WrathOfTheLichKing\Coliseum\Jaraxxus.lua
 66515,Reflective Shield,Argent Confessor Paletress,LittleWigs\WotLK\TrialOfTheChampion\Paletress.lua
 66537,Renew,Argent Confessor Paletress,LittleWigs\WotLK\TrialOfTheChampion\Paletress.lua
@@ -404,12 +404,12 @@
 66665,Сжигающее дыхание,Koralon the Flame Watcher,BigWigs_WrathOfTheLichKing\Northrend\Koralon.lua
 66684,Пылающая головня,Koralon the Flame Watcher,BigWigs_WrathOfTheLichKing\Northrend\Koralon.lua
 66725,Кулаки-метеоры,Koralon the Flame Watcher,BigWigs_WrathOfTheLichKing\Northrend\Koralon.lua
-66758,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-66759,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-66770,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-66823,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-66869,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-66883,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66758,Глубокое потрясение,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66759,Кипящая ярость,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66770,Свирепое бодание,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66823,Паралитический токсин,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66869,Горящая желчь,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66883,Лужа жижи,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
 66935,Radiance,Eadric the Pure,LittleWigs\WotLK\TrialOfTheChampion\Eadric.lua
 67514,Призыв охотника Скверны,Faction Champions,BigWigs_WrathOfTheLichKing\Coliseum\Champions.lua
 67528,Healing Wave,Grand Champions,LittleWigs\WotLK\TrialOfTheChampion\GrandChampions.lua
@@ -417,8 +417,8 @@
 67574,Pursued by Anub'arak,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
 67777,Призыв питомца,Faction Champions,BigWigs_WrathOfTheLichKing\Coliseum\Champions.lua
 67781,Desecration,The Black Knight,LittleWigs\WotLK\TrialOfTheChampion\TheBlackKnight.lua
-68335,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
-68605,Blue Pyrite,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+68335,Исступление,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+68605,Синий колчедан,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 68789,Throw Saronite,Forgemaster Garfrost,LittleWigs\WotLK\PitOfSaron\ForgemasterGarfrost.lua
 68839,Corrupt Soul,Bronjahm,LittleWigs\WotLK\TheForgeOfSouls\Bronjahm.lua
 68872,Soulstorm,Bronjahm,LittleWigs\WotLK\TheForgeOfSouls\Bronjahm.lua
@@ -429,9 +429,9 @@
 68989,Poison Nova,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
 69037,Вызов валь'киры,The Lich King,BigWigs_WrathOfTheLichKing\Citadel\LichKing.lua
 69051,Mirrored Soul,Devourer of Souls,LittleWigs\WotLK\TheForgeOfSouls\DevourerOfSouls.lua
-69057,Bone Spike Graveyard,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
-69076,Bone Storm,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
-69138,Coldflame,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
+69057,Костяной шип,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
+69076,Вихрь костей,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
+69138,Холодное пламя,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
 69165,Вдыхание гнилостных испарений,Festergut,BigWigs_WrathOfTheLichKing\Citadel\Festergut.lua
 69167,Unholy Power,Scourgelord Tyrannus,LittleWigs\WotLK\PitOfSaron\Tyrannus.lua
 69172,Overlord's Brand,Scourgelord Tyrannus,LittleWigs\WotLK\PitOfSaron\Tyrannus.lua
@@ -517,15 +517,15 @@
 74453,Flame Beacon,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 74502,Enervating Brand,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 74509,Repelling Wave,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
-74525,Flame Breath,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74562,Fiery Combustion,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74630,Combustion,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74648,Meteor Strike,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74769,Twilight Cutter,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74792,Soul Consumption,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74802,Consumption,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74806,Dark Breath,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74826,Corporeality,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74525,Огненное дыхание,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74562,Пылающий огонь,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74630,Возгорание,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74648,Падение метеора,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74769,Лезвие сумерок,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74792,Пожирание души,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74802,Пожирание,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74806,Темное дыхание,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74826,Материальность,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
 75125,Blade Tempest,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 78722,Enrage,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 83646,Некротическая язва,Heroic+ Affixes,LittleWigs\HeroicPlus\Affixes.lua

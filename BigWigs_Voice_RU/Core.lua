@@ -4,9 +4,7 @@ local name, addon = ...
 -- Locals
 --
 
-local tostring = tostring
 local format = format
-addon.SendMessage = BigWigsLoader.SendMessage
 
 --------------------------------------------------------------------------------
 -- Event Handlers
@@ -15,16 +13,14 @@ addon.SendMessage = BigWigsLoader.SendMessage
 local path = "Interface\\AddOns\\BigWigs_Voice_RU\\Sounds\\%s"
 
 local function play(base)
-	return PlaySoundFile(base .. ".ogg", "Master")
-		or PlaySoundFile(base .. ".mp3", "Master")
-		or PlaySoundFile(base .. ".wav", "Master")
+	PlaySoundFile(base .. ".ogg", "Master")
 end
 
 local function handler(event, module, key, sound, isOnMe)
-	local base = format(path, tostring(key)) .. (isOnMe and "y" or "")
-	if not play(base) then
-		addon:SendMessage("BigWigs_Sound", module, key, sound)
-	end
+	-- The pack has no per-player "y" variants yet; use the base clip for both
+	-- personal and group announcements instead of staying silent on "on you".
+	local base = format(path, tostring(key))
+	play(base)
 end
 
 BigWigsLoader.RegisterMessage(addon, "BigWigs_Voice", handler)

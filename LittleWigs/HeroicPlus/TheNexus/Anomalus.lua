@@ -40,7 +40,7 @@ end
 --
 
 function mod:Spark(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 	self:CDBar(args.spellId, 20)
 end
 
@@ -60,5 +60,5 @@ function mod:RiftShield(args)
 end
 
 function mod:RiftCharge(args)
-	self:Message(args.spellId, "orange")
+	self:Message(args.spellId, "orange", "Warning")
 end

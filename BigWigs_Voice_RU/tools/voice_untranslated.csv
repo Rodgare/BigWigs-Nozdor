@@ -39,10 +39,6 @@
 15716,Enrage,Ghaz'an,LittleWigs\TBC\TheUnderbog\Ghazan.lua
 16172,Head Crack,Warlord Kalithresh,LittleWigs\TBC\TheSteamvault\Kalithresh.lua
 16856,Mortal Strike,General Bjarngrim,LittleWigs\WotLK\HallsOfLightning\Bjarngrim.lua
-17086,Breath,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
-18392,Fireball,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
-18431,Bellowing Roar,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
-18435,Flame Breath,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
 22883,Heal,Mana-Tombs Trash,LittleWigs\TBC\ManaTombs\Trash.lua
 25033,Lightning Cloud,Hydromancer Thespia,LittleWigs\TBC\TheSteamvault\Thespia.lua
 27621,Windfury Totem,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
@@ -52,7 +48,6 @@
 28059,Positive Charge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
 28084,Negative Charge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
 28089,Polarity Shift,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
-28131,Frenzy,Patchwerk,BigWigs_WrathOfTheLichKing\Naxxramas\Patchwerk.lua
 28134,Power Surge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
 28169,Mutating Injection,Grobbulus,BigWigs_WrathOfTheLichKing\Naxxramas\Grobbulus.lua
 28240,Poison Cloud,Grobbulus,BigWigs_WrathOfTheLichKing\Naxxramas\Grobbulus.lua
@@ -289,11 +284,8 @@
 62279,Lightning Charge,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
 62331,Impale,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
 62338,Runic Barrier,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
-62374,Pursued,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 62382,Brittle,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
-62396,Flame Vents,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 62437,Ground Tremor,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
-62475,Systems Shutdown,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 62488,Activate Construct,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
 62526,Rune Detonation,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
 62589,Nature's Fury,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
@@ -363,7 +355,6 @@
 67534,Hex of Mending,Grand Champions,LittleWigs\WotLK\TrialOfTheChampion\GrandChampions.lua
 67574,Pursued by Anub'arak,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
 67781,Desecration,The Black Knight,LittleWigs\WotLK\TrialOfTheChampion\TheBlackKnight.lua
-68605,Blue Pyrite,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
 68789,Throw Saronite,Forgemaster Garfrost,LittleWigs\WotLK\PitOfSaron\ForgemasterGarfrost.lua
 68839,Corrupt Soul,Bronjahm,LittleWigs\WotLK\TheForgeOfSouls\Bronjahm.lua
 68872,Soulstorm,Bronjahm,LittleWigs\WotLK\TheForgeOfSouls\Bronjahm.lua
@@ -371,9 +362,6 @@
 68987,Pursuit,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
 68989,Poison Nova,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
 69051,Mirrored Soul,Devourer of Souls,LittleWigs\WotLK\TheForgeOfSouls\DevourerOfSouls.lua
-69057,Bone Spike Graveyard,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
-69076,Bone Storm,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
-69138,Coldflame,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
 69167,Unholy Power,Scourgelord Tyrannus,LittleWigs\WotLK\PitOfSaron\Tyrannus.lua
 69172,Overlord's Brand,Scourgelord Tyrannus,LittleWigs\WotLK\PitOfSaron\Tyrannus.lua
 69263,Explosive Barrage,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
@@ -414,15 +402,6 @@
 74453,Flame Beacon,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 74502,Enervating Brand,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 74509,Repelling Wave,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
-74525,Flame Breath,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74562,Fiery Combustion,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74630,Combustion,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74648,Meteor Strike,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74769,Twilight Cutter,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74792,Soul Consumption,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74802,Consumption,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74806,Dark Breath,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
-74826,Corporeality,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
 75125,Blade Tempest,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 78722,Enrage,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
 88352,Chest Bomb,Helix Gearbreaker,LittleWigs\Classic\Deadmines\HelixGearbreaker.lua

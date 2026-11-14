@@ -55,12 +55,27 @@ frame:SetScript("OnEvent", function(self, event)
 	export(true)
 end)
 
+local function testSound(key, extension)
+	key = tostring(key or "190206"):gsub("%s+", "")
+	extension = extension and extension ~= "" and extension or "ogg"
+	local base = format("Interface\\AddOns\\BigWigs_Voice_RU\\Sounds\\%s", key)
+	PlaySoundFile(base .. "." .. extension, "Master")
+	print(format("|cff33ff99BigWigs_Voice_RU|r: playing %s.%s", base, extension))
+end
+
 SLASH_BIGWIGSVOICEEXPORT1 = "/bwvoice"
 SlashCmdList["BIGWIGSVOICEEXPORT"] = function(msg)
-	msg = tostring(msg or ""):lower():gsub("%s+", "")
-	if msg == "" or msg == "export" then
+	msg = tostring(msg or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
+	local command, argument = msg:match("^(%S*)%s*(.*)$")
+	if command == "" or command == "status" then
+		print(format("|cff33ff99BigWigs_Voice_RU|r: loaded=%s, voice pack=%s, sounds=ogg, use /bwvoice test <key>",
+			tostring(IsAddOnLoaded("BigWigs_Voice_RU")), tostring(BigWigsAPI:HasVoicePack())))
+	elseif command == "export" then
 		export(false)
+	elseif command == "test" then
+		local key, extension = argument:match("^(%S+)%s*(%S*)$")
+		testSound(key, extension)
 	else
-		print("|cff33ff99BigWigs_Voice_RU|r: usage /bwvoice export")
+		print("|cff33ff99BigWigs_Voice_RU|r: usage /bwvoice status | /bwvoice export | /bwvoice test <spellId>")
 	end
 end

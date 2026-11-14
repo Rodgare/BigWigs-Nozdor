@@ -150,6 +150,8 @@ def main() -> int:
                 args.instructions, args.speed, args.retries,
             )
             out.write_bytes(audio)
+            from voice_audio import convert_to_ogg
+            convert_to_ogg(out)
             made += 1
             characters += len(text)
         except Exception as exc:

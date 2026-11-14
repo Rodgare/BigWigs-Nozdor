@@ -57,7 +57,7 @@ function mod:UNIT_HEALTH_FREQUENT(event, unit)
 		if splitPhase > 1 or self:Normal() then -- No 2nd split on Normal mode
 			self:UnregisterUnitEvent(event, unit)
 		end
-		self:Message(-7395, "green", nil, CL.soon:format(self:SpellName(-7395)), false)
+		self:Message(-7395, "green", "Info", CL.soon:format(self:SpellName(-7395)), false)
 	end
 end
 
@@ -78,7 +78,7 @@ function mod:FireBomb(args)
 end
 
 function mod:FrostFlash(args)
-	self:Message(args.spellId, "blue")
+	self:Message(args.spellId, "blue", "Info")
 	self:CDBar(args.spellId, 20)
 end
 
@@ -89,8 +89,8 @@ function mod:ImageCast(args)
 	elseif args.spellId == 192517 then -- Blizzard
 		self:Message(args.spellId, "red", "Alarm")
 	elseif args.spellId == 192519 then -- Frost Spike
-		self:Message(args.spellId, "blue")
+		self:Message(args.spellId, "blue", "Info")
 	else -- Fire Blast
-		self:Message(args.spellId, "yellow")
+		self:Message(args.spellId, "yellow", "Info")
 	end
 end

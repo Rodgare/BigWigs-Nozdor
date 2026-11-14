@@ -42,7 +42,7 @@ function mod:Stomp(args)
 end
 
 function mod:SpellReflection(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 	self:Bar(args.spellId, 8)
 end
 

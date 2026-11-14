@@ -100,6 +100,8 @@ async def main_async(args) -> int:
 
         try:
             await synthesize(text, args.voice, args.rate, args.pitch, out, args.retries)
+            from voice_audio import convert_to_ogg
+            convert_to_ogg(out)
             made += 1
         except Exception as exc:
             errors += 1

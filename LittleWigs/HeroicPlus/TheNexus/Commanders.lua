@@ -47,11 +47,11 @@ function mod:Whirlwind(args)
 end
 
 function mod:WhirlwindAura(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 end
 
 function mod:Charge(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Warning")
 end
 
 function mod:IntimidatingShout(args)
@@ -59,6 +59,6 @@ function mod:IntimidatingShout(args)
 end
 
 function mod:BattleShout(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 	self:CDBar(192507, 24)
 end
