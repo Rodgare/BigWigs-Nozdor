@@ -28,7 +28,7 @@ end
 --
 
 function mod:Thundershock()
-	self:Message(60029, "orange")
+	self:Message(60029, "orange", "Warning")
 	self:Bar(60029, 10)
 end
 

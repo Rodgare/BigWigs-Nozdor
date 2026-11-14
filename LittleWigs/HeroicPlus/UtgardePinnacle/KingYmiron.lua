@@ -66,7 +66,7 @@ end
 
 function mod:BaneRemoved(args)
 	if self:MobId(args.destGUID) == 26861 then -- Boss only
-		self:Message(args.spellId, "green", nil, CL.over:format(args.spellName))
+		self:Message(args.spellId, "green", "Info", CL.over:format(args.spellName))
 		self:StopBar(args.spellName)
 	end
 end

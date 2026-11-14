@@ -45,7 +45,7 @@ end
 --  Event Handlers
 
 function mod:StoneStrike(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 	self:CDBar(args.spellId, 10)
 end
@@ -61,7 +61,7 @@ function mod:Enrage(args)
 end
 
 function mod:ShadowBolt(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 1)
 	self:CDBar(args.spellId, 5)
 end

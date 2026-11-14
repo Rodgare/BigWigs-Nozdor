@@ -33,7 +33,7 @@ end
 --
 
 function mod:ArcLightning(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CDBar(args.spellId, 24)
 end
 

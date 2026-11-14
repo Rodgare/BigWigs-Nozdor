@@ -42,7 +42,7 @@ function mod:Smash(args)
 end
 
 function mod:PoisonedDart(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CDBar(args.spellId, 19)
 end
 
@@ -53,7 +53,7 @@ function mod:Whirlwind(args)
 end
 
 function mod:WhirlwindAura(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 end
 
 do

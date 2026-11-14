@@ -32,7 +32,7 @@ end
 --
 
 function mod:MightyBlow(args)
-	self:Message(args.spellId, "orange", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CDBar(args.spellId, 10)
 end
 
@@ -42,5 +42,5 @@ function mod:Whirlwind(args)
 end
 
 function mod:SteelRenewal(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 end

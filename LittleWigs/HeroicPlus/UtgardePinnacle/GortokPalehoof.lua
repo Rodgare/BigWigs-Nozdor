@@ -81,7 +81,7 @@ end
 function mod:Aura(args)
 	local id = args.spellId
 	if id == 192585 or id == 192586 or id == 192589 then -- Frenzy, Enrage
-		self:Message(id, "yellow")
+		self:Message(id, "yellow", "Info")
 	elseif id == 192582 or id == 192584 or id == 192597 or id == 192599 then -- Impale, Mortal Wound, Gore, Grievous Wound
 		if self:Me(args.destGUID) or self:Tank() then
 			self:TargetMessage(id, args.destName, "red", "Alarm", nil, nil, true)

@@ -141,5 +141,5 @@ function mod:Cast(args)
 	local id = args.spellId
 	if throttle[id] and t - throttle[id] < 2 then return end
 	throttle[id] = t
-	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", "Info", CL.casting:format(args.spellName))
 end

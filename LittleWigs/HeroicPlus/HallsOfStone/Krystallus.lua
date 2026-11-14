@@ -35,7 +35,7 @@ end
 --
 
 function mod:BoulderToss(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 	self:CDBar(args.spellId, 10)
 end

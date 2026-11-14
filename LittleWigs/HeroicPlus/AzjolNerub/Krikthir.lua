@@ -38,13 +38,13 @@ end
 --  Event Handlers
 
 function mod:MindFlay(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 2)
 	self:CDBar(args.spellId, 10)
 end
 
 function mod:CurseOfFatigue(args)
-	self:TargetMessage(args.spellId, args.destName, "yellow")
+	self:TargetMessage(args.spellId, args.destName, "yellow", "Info")
 	self:TargetBar(args.spellId, 10, args.destName)
 	self:CDBar(args.spellId, 16)
 end
@@ -60,13 +60,13 @@ function mod:WebWrap(args)
 end
 
 function mod:Frenzy(args)
-	self:Message(args.spellId, "orange", nil, CL.percent:format(10, args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.percent:format(10, args.spellName))
 end
 
 function mod:UNIT_HEALTH_FREQUENT(event, unit)
 	local health = UnitHealth(unit) / UnitHealthMax(unit) * 100
 	if health > 10 and health <= 15 then
 		self:UnregisterUnitEvent(event, unit)
-		self:Message(192459, "orange", nil, CL.soon:format(self:SpellName(192459))) -- Frenzy
+		self:Message(192459, "orange", "Warning", CL.soon:format(self:SpellName(192459))) -- Frenzy
 	end
 end

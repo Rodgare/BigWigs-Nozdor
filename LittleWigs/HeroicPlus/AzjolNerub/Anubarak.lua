@@ -64,9 +64,9 @@ end
 function mod:UNIT_TARGETABLE_CHANGED(_, unit)
 	-- Submerge
 	if UnitCanAttack("player", unit) then
-		self:Message(-6359, "cyan", nil, CL.over:format(self:SpellName(-6359)))
+		self:Message(-6359, "cyan", "Info", CL.over:format(self:SpellName(-6359)))
 	else
-		self:Message(-6359, "cyan")
+		self:Message(-6359, "cyan", "Info")
 		self:Bar(-6359, self:Normal() and 41 or 62)
 	end
 end
@@ -74,7 +74,7 @@ end
 function mod:UNIT_HEALTH_FREQUENT(event, unit)
 	local hp = UnitHealth(unit) / UnitHealthMax(unit) * 100
 	if hp < nextSubmergeWarning then
-		self:Message(-6359, "cyan", nil, CL.soon:format(self:SpellName(-6359))) -- Submerge
+		self:Message(-6359, "cyan", "Info", CL.soon:format(self:SpellName(-6359))) -- Submerge
 		nextSubmergeWarning = nextSubmergeWarning - 25
 
 		while nextSubmergeWarning >= 25 and hp < nextSubmergeWarning do

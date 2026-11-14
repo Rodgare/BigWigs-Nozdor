@@ -43,7 +43,7 @@ end
 
 function mod:OnEngage()
 	deaths = 0
-	self:Message("stages", "cyan", nil, CL.stage:format(1), false)
+	self:Message("stages", "cyan", "Info", CL.stage:format(1), false)
 	self:CDBar(192427, 7)
 end
 
@@ -51,7 +51,7 @@ end
 --  Event Handlers
 
 function mod:Smash(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 3)
 	self:CDBar(args.spellId, 16)
 end

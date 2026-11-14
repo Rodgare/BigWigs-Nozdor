@@ -86,13 +86,13 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", "Info", CL.casting:format(args.spellName))
 end
 
 function mod:TrashAura(args)
 	local id = args.spellId
 	if id == 191000 or id == 192461 then -- Bone Shield
-		self:Message(id, "yellow")
+		self:Message(id, "yellow", "Info")
 	elseif id == 192465 then -- Shadow Strike
 		if self:Me(args.destGUID) or self:Tank() then
 			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)

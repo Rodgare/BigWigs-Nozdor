@@ -1,5 +1,7 @@
 local addonName, addon = ...
 
+local CL = BigWigsAPI:GetLocale("BigWigs: Common")
+
 -- Exports localized spell names for every BigWigs option key.
 -- Usage: /bwvoice export  then  /reload
 -- Result: WTF/Account/<account>/SavedVariables/BigWigs_Voice_RU.lua
@@ -18,7 +20,13 @@ local function export(silent)
 
 	for moduleName, module in BigWigs:IterateBossModules() do
 		modules = modules + 1
+		-- toggleOptions is filled lazily by SetupOptions when a module is
+		-- enabled or its options are opened. Most dungeon modules are never
+		-- enabled in town, so call GetOptions() directly to export every key.
 		local options = module.toggleOptions
+		if not options and module.GetOptions then
+			options = module:GetOptions(CL)
+		end
 		if options then
 			for _, entry in ipairs(options) do
 				local key = type(entry) == "table" and entry[1] or entry

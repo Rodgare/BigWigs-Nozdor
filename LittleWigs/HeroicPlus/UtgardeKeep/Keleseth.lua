@@ -34,7 +34,7 @@ end
 --  Event Handlers
 
 function mod:ShadowBolt(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 1)
 end
 
@@ -52,6 +52,6 @@ function mod:BoneArmor(args)
 	if now - lastBoneArmor < 1 then return end
 	lastBoneArmor = now
 
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 	self:CastBar(args.spellId, 1)
 end

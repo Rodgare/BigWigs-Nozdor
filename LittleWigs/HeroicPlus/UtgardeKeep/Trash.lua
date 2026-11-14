@@ -121,7 +121,7 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", "Info", CL.casting:format(args.spellName))
 
 	if id == 191551 then -- Burning Breath
 		self:CDBar(id, 19)
@@ -135,7 +135,7 @@ end
 function mod:TrashAura(args)
 	local id = args.spellId
 	if id == 191517 or id == 191519 or id == 191524 or id == 191529 or id == 191534 or id == 191540 or id == 191583 then
-		self:Message(id, "yellow")
+		self:Message(id, "yellow", "Info")
 	elseif id == 191527 or id == 191581 then
 		if self:Me(args.destGUID) or self:Tank() then
 			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)

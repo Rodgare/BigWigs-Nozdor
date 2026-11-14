@@ -116,7 +116,7 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", "Info", CL.casting:format(args.spellName))
 end
 
 function mod:TrashAura(args)
@@ -126,6 +126,6 @@ function mod:TrashAura(args)
 			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)
 		end
 	elseif id == 191319 then
-		self:Message(id, "yellow")
+		self:Message(id, "yellow", "Info")
 	end
 end

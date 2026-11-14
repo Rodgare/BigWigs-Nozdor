@@ -39,7 +39,7 @@ end
 --
 
 function mod:ShatteringStomp(args)
-	self:Message(args.spellId, "orange", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 4)
 end
 

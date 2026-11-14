@@ -67,7 +67,7 @@ end
 function mod:OnEngage()
 	crystalHandlersSpawned = 1
 	crystalHandlersLeft = 4
-	self:Message("stages", "cyan", nil, CL.stage:format(1), false)
+	self:Message("stages", "cyan", "Info", CL.stage:format(1), false)
 	self:CDBar("adds", 15.5, CL.count:format(self:SpellName(-6378), crystalHandlersSpawned), "spell_shadow_raisedead")
 end
 
@@ -102,7 +102,7 @@ end
 
 function mod:AddDied(args)
 	crystalHandlersLeft = crystalHandlersLeft - 1
-	self:Message("stages", "cyan", nil, CL.mob_remaining:format(args.destName, crystalHandlersLeft), false)
+	self:Message("stages", "cyan", "Info", CL.mob_remaining:format(args.destName, crystalHandlersLeft), false)
 	if crystalHandlersLeft == 0 then
 		self:Bar("stages", 6.5, CL.stage:format(2), "inv_trinket_naxxramas06") -- icon that's used in the "Defeat Kel'thuzad" achievement
 	end
@@ -111,7 +111,7 @@ end
 -- Stage 2
 function mod:UNIT_TARGETABLE_CHANGED(_, unit)
 	if UnitCanAttack("player", unit) then
-		self:Message("stages", "cyan", nil, CL.stage:format(2), false)
+		self:Message("stages", "cyan", "Info", CL.stage:format(2), false)
 		self:CDBar(192647, 6) -- Wrath of Misery
 		if not self:Normal() then
 			self:CDBar(192648, 1.5) -- Summon Minions
@@ -121,7 +121,7 @@ end
 
 function mod:WrathOfMisery(args)
 	if self:Me(args.destGUID) or self:Healer() or self:Dispeller("curse") then
-		self:TargetMessage(192647, args.destName, "orange")
+		self:TargetMessage(192647, args.destName, "orange", "Warning")
 		self:TargetBar(192647, 8, args.destName)
 	end
 end
@@ -135,6 +135,6 @@ function mod:WrathOfMiseryCastSuccess()
 end
 
 function mod:SummonMinions(args)
-	self:Message(args.spellId, "yellow", nil, CL.spawned:format(CL.adds))
+	self:Message(args.spellId, "yellow", "Info", CL.spawned:format(CL.adds))
 	self:CDBar(args.spellId, 39.8) -- time until the next SPELL_CAST_START, 39.8 - 42.3s
 end

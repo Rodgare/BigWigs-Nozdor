@@ -31,11 +31,11 @@ end
 --
 
 function mod:Insanity(args)
-	self:Message(args.spellId, "orange", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
 end
 
 function mod:Shiver(args)
-	self:TargetMessage(59978, args.destName, "yellow")
+	self:TargetMessage(59978, args.destName, "yellow", "Info")
 	self:TargetBar(59978, 15, args.destName)
 end
 

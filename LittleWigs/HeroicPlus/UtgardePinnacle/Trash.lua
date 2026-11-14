@@ -100,7 +100,7 @@ end
 
 function mod:TrashCast(args)
 	local id = args.spellId
-	self:Message(id, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(id, "yellow", "Info", CL.casting:format(args.spellName))
 
 	if id == 191657 then -- Dead Cold Volley
 		self:CDBar(id, 15)
@@ -116,7 +116,7 @@ end
 function mod:TrashAura(args)
 	local id = args.spellId
 	if id == 191606 or id == 191636 then -- Madness of Loyalty, Call of Blood (self)
-		self:Message(id, "yellow")
+		self:Message(id, "yellow", "Info")
 	elseif id == 191602 or id == 191637 or id == 191640 or id == 191658 or id == 191662 or id == 192615 then
 		if self:Me(args.destGUID) or self:Tank() then
 			self:TargetMessage(id, args.destName, "orange", "Alert", nil, nil, true)

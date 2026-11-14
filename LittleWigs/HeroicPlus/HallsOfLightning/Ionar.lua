@@ -30,7 +30,7 @@ end
 --
 
 function mod:BallLightning(args)
-	self:Message(args.spellId, "yellow", nil, CL.casting:format(args.spellName))
+	self:Message(args.spellId, "yellow", "Info", CL.casting:format(args.spellName))
 	self:CastBar(args.spellId, 3)
 end
 

@@ -46,7 +46,7 @@ end
 
 function mod:InfectedWound(args)
 	if self:Me(args.destGUID) or self:Healer() or self:Dispeller("disease") then
-		self:TargetMessage(args.spellId, args.destName, "orange")
+		self:TargetMessage(args.spellId, args.destName, "orange", "Warning")
 		self:TargetBar(args.spellId, 10, args.destName)
 	end
 end
@@ -64,11 +64,11 @@ function mod:Crush(args)
 end
 
 function mod:Consume(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 	self:CDBar(args.spellId, 20)
 end
 
 function mod:CorpseExplode(args)
-	self:Message(args.spellId, "orange")
+	self:Message(args.spellId, "orange", "Warning")
 	self:CDBar(args.spellId, 20)
 end

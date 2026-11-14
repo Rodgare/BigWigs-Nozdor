@@ -55,7 +55,7 @@ function mod:RipCast(args)
 end
 
 function mod:Bite(args)
-	self:Message(args.spellId, "orange")
+	self:Message(args.spellId, "orange", "Warning")
 	self:CDBar(args.spellId, 20)
 end
 
@@ -65,11 +65,11 @@ function mod:Roar(args)
 end
 
 function mod:Pierce(args)
-	self:Message(args.spellId, "orange")
+	self:Message(args.spellId, "orange", "Warning")
 	self:CDBar(args.spellId, 37)
 end
 
 function mod:Raptor(args)
-	self:Message(args.spellId, "yellow")
+	self:Message(args.spellId, "yellow", "Info")
 	self:CDBar(args.spellId, 58)
 end
