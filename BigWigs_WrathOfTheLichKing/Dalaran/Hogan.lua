@@ -2,6 +2,7 @@ local mod = BigWigs:NewBoss("Hogan Death Herald", 961, 53000)
 if not mod then return end
 mod:RegisterEnableMob(53000)
 mod:SetEncounterID(53000)
+mod:SetStage(1)
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -54,9 +55,9 @@ end
 function mod:OnEngage()
 	DalaranFW:Reset(self)
 	self.phase = 1
+	self:SetStage(1)
 	self.warned65 = nil
 	self.nodesRemaining = nil
-	self.nodesText = nil
 
 	self:Berserk(481)
 	self:Bar(87005, 44, L.rise_bar)
@@ -80,15 +81,9 @@ function mod:GraveyardStart(args)
 
 	self.phase = 2
 	self.nodesRemaining = 5
+	self:SetStage(2)
 	self:StopBar(L.rise_bar)
 	self:Message(args.spellId, "cyan", "long", L.nodes_start)
-	self:ShowNodesBar()
-end
-
-function mod:ShowNodesBar()
-	if self.nodesText then self:StopBar(self.nodesText) end
-	self.nodesText = string.format(L.nodes_bar, self.nodesRemaining)
-	self:Bar(87027, 1e9 + 1, self.nodesText, 87027)
 end
 
 function mod:NodeDied()
@@ -97,10 +92,7 @@ function mod:NodeDied()
 	self.nodesRemaining = self.nodesRemaining - 1
 	if self.nodesRemaining > 0 then
 		self:Message(87027, "yellow", nil, string.format(L.nodes_left, self.nodesRemaining))
-		self:ShowNodesBar()
 	else
-		if self.nodesText then self:StopBar(self.nodesText) end
-		self.nodesText = nil
 		self.nodesRemaining = nil
 	end
 end
@@ -110,10 +102,7 @@ function mod:GraveyardEnd(args)
 	if DalaranFW:Dedupe(self, "graveyard_end", args.time, 0.5) then return end
 
 	self.phase = 3
-	if self.nodesText then
-		self:StopBar(self.nodesText)
-		self.nodesText = nil
-	end
+	self:SetStage(3)
 	self.nodesRemaining = nil
 
 	self:Message(args.spellId, "green", nil, L.nodes_end)
@@ -122,9 +111,5 @@ end
 
 function mod:OnBossDisable()
 	self:StopBar(L.rise_bar)
-	if self.nodesText then
-		self:StopBar(self.nodesText)
-		self.nodesText = nil
-	end
 	self.nodesRemaining = nil
 end

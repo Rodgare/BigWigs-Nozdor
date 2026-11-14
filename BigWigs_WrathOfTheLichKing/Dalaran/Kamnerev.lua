@@ -2,6 +2,7 @@ local mod = BigWigs:NewBoss("Kamnerev the Living Earth", 961, 53060)
 if not mod then return end
 mod:RegisterEnableMob(53060)
 mod:SetEncounterID(53060)
+mod:SetStage(1)
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -30,6 +31,7 @@ if L then
 	L.charge_end = "Камнерев потерял равновесие"
 	L.charge_you = "Разбег на вас!"
 	L.heavy_warn = "Тяжелая поступь — спрячьтесь за каменными шипами!"
+	L.heavy_soon = "Тяжелая поступь скоро — приготовьтесь спрятаться!"
 	L.stomp_bar = "Сотрясение"
 	L.charge_bar = "Неудержимый разбег"
 	L.quake_warn = "Землетрясение — отбегите!"
@@ -38,9 +40,9 @@ L = mod:GetLocale()
 mod.displayName = L.boss_name
 
 local abilities = {
-	{ key = 87174, kind = "announce", color = "orange", sound = "alert", castBar = 2.5, bar = 31 },
-	{ key = 87102, kind = "announce", color = "orange", sound = "warning", castBar = 7, cdBar = 41 },
-	{ key = 87110, kind = "announce", color = "red", sound = "alarm", text = L.quake_warn, castBar = 1.5, bar = 57 },
+	{ key = 87174, kind = "announce", color = "orange", sound = "alert", castBar = 2.5, bar = 33.6 },
+	{ key = 87102, kind = "announce", color = "orange", sound = "warning", castBar = 7, cdBar = 45.5 },
+	{ key = 87110, kind = "announce", color = "red", sound = "alarm", text = L.quake_warn, castBar = 1.5, bar = 64.4 },
 	{ key = 87176, kind = "announce", color = "red", sound = "alarm", text = L.heavy_warn, castBar = 4 },
 	{ key = 87185, kind = "personal", color = "purple", sound = "alert", text = L.spike_warn },
 	{ key = 87107, kind = "personal", color = "red", sound = "alert", text = L.grip_warn },
@@ -64,9 +66,26 @@ end
 function mod:OnEngage()
 	DalaranFW:Reset(self)
 	self:SetStage(1)
-	self:Bar(87174, 13, L.stomp_bar)
-	self:CDBar(87102, 18, L.charge_bar)
-	self:CDBar(87110, 50, L.quake_warn)
+	self.heavy50 = nil
+	self.heavy20 = nil
+	self:Bar(87174, 12, L.stomp_bar)
+	self:CDBar(87102, 17, L.charge_bar)
+	self:CDBar(87110, 48)
+	self:RegisterEvent("UNIT_HEALTH", "CheckHeavyFoot")
+end
+
+function mod:CheckHeavyFoot(_, unit)
+	if unit ~= "boss1" then return end
+	local max = UnitHealthMax("boss1")
+	if not max or max <= 0 then return end
+	local hp = UnitHealth("boss1") / max
+	if hp <= 0.52 and not self.heavy50 then
+		self.heavy50 = true
+		self:Message(87176, "red", "alarm", L.heavy_soon)
+	elseif hp <= 0.22 and not self.heavy20 then
+		self.heavy20 = true
+		self:Message(87176, "red", "alarm", L.heavy_soon)
+	end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)

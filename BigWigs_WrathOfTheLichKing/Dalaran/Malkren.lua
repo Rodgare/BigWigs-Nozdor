@@ -2,6 +2,7 @@ local mod = BigWigs:NewBoss("Overseer Malkren", 961, 53046)
 if not mod then return end
 mod:RegisterEnableMob(53046)
 mod:SetEncounterID(53046)
+mod:SetStage(1)
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -55,7 +56,7 @@ end
 L = mod:GetLocale()
 
 local abilities = {
-	{ key = 87058, ids = { 87058, 87431 }, kind = "announce", castBar = 3, message = false },
+	{ key = 87058, ids = { 87058, 87431 }, kind = "announce", castBar = 3, cdBar = 15, message = false },
 	{ key = 87050, kind = "personalStack", color = "orange", sound = "warning", stackText = L.seal_text },
 	{ key = 87051, kind = "personal", color = "red", sound = "alarm", text = L.punishment_warn },
 	{ key = 87064, kind = "personal", color = "red", sound = "alert", text = L.burning_warn, selfBar = 2 },
@@ -98,7 +99,8 @@ end
 function mod:OnEngage()
 	DalaranFW:Reset(self)
 	self:SetStage(1)
-	self:CDBar("wells", 16, L.wells)
+	self:CDBar(87058, 10)
+	self:CDBar("wells", 19, L.wells)
 end
 
 function mod:BarrierUp(args)
@@ -117,7 +119,7 @@ function mod:SacrificeStart(args)
 
 	self:SetStage(2)
 	self:Message(87067, "red", "alarm", L.sacrifice_msg)
-	self:Bar(87067, 1e9 + 1, L.chains_bar)
+	self:Bar(87067, 45, L.chains_bar)
 end
 
 function mod:SacrificeEnd(args)
@@ -130,6 +132,10 @@ function mod:SacrificeEnd(args)
 end
 
 function mod:ChainsDown()
+	self:StopBar(L.chains_bar)
+end
+
+function mod:OnBossDisable()
 	self:StopBar(L.chains_bar)
 end
 
@@ -151,7 +157,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
 	if self:IsSecret(msg) then return end
 	if msg:find("Колодцы душ", nil, true) then
 		self:Message("wells", "orange", "alert", L.wells_msg)
-		self:CDBar("wells", 25, L.wells)
+		self:CDBar("wells", 83, L.wells)
 	elseif msg:find("Последнее Жертвоприношение", nil, true) then
 		self:Message("stages", "red", "alarm", L.last_sacrifice)
 	elseif msg:find("Парные руны", nil, true) then

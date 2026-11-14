@@ -2,6 +2,7 @@ local mod = BigWigs:NewBoss("High Cultist Daren", 961, 53070)
 if not mod then return end
 mod:RegisterEnableMob(53070)
 mod:SetEncounterID(53070)
+mod:SetStage(1)
 
 local L = mod:NewLocale("enUS", true)
 if L then
@@ -50,9 +51,9 @@ local abilities = {
 	{ key = 87170, kind = "personal", color = "red", sound = "warning", text = L.control_warn },
 	{ key = 87154, kind = "personal", color = "orange", sound = "alert", text = L.fire_ground },
 	{ key = 87193, kind = "personal", color = "blue", sound = "alert", text = L.frost_ground },
-	{ key = 87162, kind = "announce", color = "red", sound = "warning", text = L.eradication_warn, cdBar = 52 },
+	{ key = 87162, kind = "announce", color = "red", sound = "warning", text = L.eradication_warn, cdBar = 48.5 },
 	{ key = 87510, kind = "announce", color = "yellow" },
-	{ key = 87187, kind = "announce", color = "orange", sound = "warning", text = L.arcane_warn, castBar = 1.5, cdBar = 54 },
+	{ key = 87187, kind = "announce", color = "orange", sound = "warning", text = L.arcane_warn, castBar = 1.5, cdBar = 55 },
 	{ key = 87164, kind = "custom" },
 	{ key = 87188, kind = "custom" },
 }

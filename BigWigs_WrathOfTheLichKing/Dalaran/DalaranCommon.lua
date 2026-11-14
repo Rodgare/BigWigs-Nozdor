@@ -85,6 +85,15 @@ function D:Enable(mod)
 	if #castIds > 0 then
 		mod:Log("SPELL_CAST_START", "DalaranCast", unpack(castIds))
 	end
+
+	if not mod.__dalaranDisableWrapped then
+		mod.__dalaranDisableWrapped = true
+		local onDisable = mod.OnBossDisable
+		mod.OnBossDisable = function(self)
+			if onDisable then onDisable(self) end
+			self:SendMessage("BigWigs_StopBars", self)
+		end
+	end
 end
 
 --- Сбросить состояние между пуллами. Вызывать из OnEngage.
