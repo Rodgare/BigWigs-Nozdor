@@ -16,12 +16,12 @@ mod:RegisterEnableMob(
 
 local L = mod:GetLocale()
 if L then
-	L.necrotic = "Necrotic Plague"
-	L.wretched = "Wretched Soul"
-	L.cry = "Cry of the Wretched Soul"
-	L.disembodied = "Disembodied"
-	L.destabilization = "Destabilization"
-	L.incorporeal = "Incorporeal"
+	L.necrotic = "Некротическая язва"
+	L.wretched = "Изнемогающая душа"
+	L.cry = "Крик изнемогающей души"
+	L.disembodied = "Бесплотный"
+	L.destabilization = "Дестабилизация"
+	L.incorporeal = "Бесплотность"
 end
 
 --------------------------------------------------------------------------------

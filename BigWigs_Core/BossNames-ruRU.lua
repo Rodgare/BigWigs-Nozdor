@@ -193,5 +193,17 @@ BigWigs_BossNames_ruRU = {
 	["Overseer Malkren"] = "Надзиратель Малкрен",
 	["Kamnerev the Living Earth"] = "Камнерев Живая Земля",
 	["High Cultist Daren"] = "Верховный сектант Дарен",
+	["Manabonk"] = "Минигоб Манабонк",
 	["Siege of Dalaran"] = "Осада Даларана",
+
+	-- Names below are taken from LibBabble-Boss-3.0 (ruRU) or DBM ruRU.
+	-- Custom server bosses use the name sent by the server/logs.
+	["Kel'Thuzad Naxxramas"] = "Кел'Тузад", -- LibBabble: Kel'Thuzad
+	["Anub'arakAN"] = "Ануб'арак", -- LibBabble: Anub'arak
+	["Tribunal of Ages"] = "Трибунал веков", -- LibBabble: The Tribunal of Ages
+	["Ick & Krick"] = "Ик и Крик", -- DBM ruRU
+	["Commander Kolurg/Stoutbeard"] = "Командир Колург/Пивобород", -- LibBabble: Commander Kolurg / Commander Stoutbeard
+	["Skarvald & Dalronn"] = "Скальвард Строитель и Далронн Контролирующий", -- LibBabble: Skarvald the Constructor / Dalronn the Controller
+	["Kael'thas Sunstrider "] = "Кель'тас Солнечный Скиталец", -- LibBabble: Kael'thas Sunstrider
+	["\"Captain\" Cookie"] = "Пирожок", -- LibBabble: Cookie
 }

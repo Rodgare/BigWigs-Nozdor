@@ -1,0 +1,12 @@
+lightweight tag 442044b209436a2931103044d8c430f6b83ca41f v10.2.0.4
+Author:	Martin Wallgren <martin@orangeworks.se>
+Date:	Sun Nov 26 19:40:57 2023 +0100
+
+commit 442044b209436a2931103044d8c430f6b83ca41f
+Author: Martin Wallgren <martin@orangeworks.se>
+Date:   Sun Nov 26 19:40:57 2023 +0100
+
+    Sync with
+    * BigWigs v302
+    * LittleWigs v10.2.14
+

@@ -1,0 +1,571 @@
+﻿key,text,module,source
+-7598,Ghoul Explode,The Black Knight,LittleWigs\WotLK\TrialOfTheChampion\TheBlackKnight.lua
+-7534,Poison Bottle,Grand Champions,LittleWigs\WotLK\TrialOfTheChampion\GrandChampions.lua
+-7442,Call Azure Ring Captain,Varos Cloudstrider,LittleWigs\WotLK\TheOculus\VarosCloudstrider.lua
+-7395,Mirror Images,Grand Magus Telestra,LittleWigs\HeroicPlus\TheNexus\Telestra.lua
+-6359,Submerge,Anub'arakAN,LittleWigs\HeroicPlus\AzjolNerub\Anubarak.lua
+-6042,Ahn'kahar Guardian,Elder Nadox,LittleWigs\HeroicPlus\Ahnkahet\ElderNadox.lua
+-6008,Foul Spores,Hungarfen,LittleWigs\TBC\TheUnderbog\Hungarfen.lua
+-6003,Spell Reflection,Warlord Kalithresh,LittleWigs\TBC\TheSteamvault\Kalithresh.lua
+-5999,Steamrigger Mechanics,Mekgineer Steamrigger,LittleWigs\TBC\TheSteamvault\Steamrigger.lua
+-5899,Blade Dance,Warchief Kargath Bladefist,LittleWigs\TBC\TheShatteredHalls\KargathBladefist.lua
+-5894,Beatdown,Warbringer O'mrogg,LittleWigs\TBC\TheShatteredHalls\Omrogg.lua
+-5488,Inferno,Nethermancer Sepethrea,LittleWigs\TBC\TheMechanar\Sepethrea.lua
+-5478,Summon Saplings,Warp Splinter,LittleWigs\TBC\TheBotanica\WarpSplinter.lua
+-5411,Summon Reinforcements,Commander Sarannis,LittleWigs\TBC\TheBotanica\Sarannis.lua
+-5388,Burning Nova,Keli'dan the Breaker,LittleWigs\TBC\TheBloodFurnace\Kelidan.lua
+-5335,Harbringer's Illusion,Harbinger Skyriss,LittleWigs\TBC\TheArcatraz\Skyriss.lua
+-5293,Felfire,Wrath-Scryer Soccothrates,LittleWigs\TBC\TheArcatraz\Soccothrates.lua
+-5267,Draw Shadows,Grandmaster Vorpil,LittleWigs\TBC\ShadowLabyrinth\Vorpil.lua
+-5253,Brood of Anzu,Anzu,LittleWigs\TBC\SethekkHalls\Anzu.lua
+-5252,Cyclone of Feathers,Anzu,LittleWigs\TBC\SethekkHalls\Anzu.lua
+-5235,Summon Elementals,Darkweaver Syth,LittleWigs\TBC\SethekkHalls\Syth.lua
+-5180,Shock Barrier,Kael'thas Sunstrider ,LittleWigs\TBC\MagistersTerrace\KaelthasSunstrider.lua
+-5167,Flame Strike,Kael'thas Sunstrider ,LittleWigs\TBC\MagistersTerrace\KaelthasSunstrider.lua
+-5085,Pure Energy,Vexallus,LittleWigs\TBC\MagistersTerrace\Vexallus.lua
+-5041,Focus Fire,Shirrak the Dead Watcher,LittleWigs\TBC\AuchenaiCrypts\Shirrak.lua
+8362,Renew,Watchkeeper Gargolmar,LittleWigs\TBC\HellfireRamparts\Gargolmar.lua
+8599,Enrage,Keristrasza,LittleWigs\HeroicPlus\TheNexus\Keristrasza.lua
+12039,Heal,Watchkeeper Gargolmar,LittleWigs\TBC\HellfireRamparts\Gargolmar.lua
+12542,Fear,The Shattered Halls Trash,LittleWigs\TBC\TheShatteredHalls\Trash.lua
+12548,Frost Shock,Darkweaver Syth,LittleWigs\TBC\SethekkHalls\Syth.lua
+13005,Hammer of Justice,Captain Skarloc,LittleWigs\TBC\OldHillsbradFoothills\Skarloc.lua
+13323,Polymorph,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
+14032,Shadow Word: Pain,Watchkeeper Gargolmar,LittleWigs\TBC\HellfireRamparts\Gargolmar.lua
+15496,Cleave,Blood Guard Porung,LittleWigs\TBC\TheShatteredHalls\Porung.lua
+15615,Pummel,The Shattered Halls Trash,LittleWigs\TBC\TheShatteredHalls\Trash.lua
+15655,Shield Slam,The Slave Pens Trash,LittleWigs\TBC\TheSlavePens\Trash.lua
+15659,Chain Lightning,Darkweaver Syth,LittleWigs\TBC\SethekkHalls\Syth.lua
+15716,Enrage,Ghaz'an,LittleWigs\TBC\TheUnderbog\Ghazan.lua
+16172,Head Crack,Warlord Kalithresh,LittleWigs\TBC\TheSteamvault\Kalithresh.lua
+16856,Mortal Strike,General Bjarngrim,LittleWigs\WotLK\HallsOfLightning\Bjarngrim.lua
+17086,Breath,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+18392,Fireball,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+18431,Bellowing Roar,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+18435,Flame Breath,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+22883,Heal,Mana-Tombs Trash,LittleWigs\TBC\ManaTombs\Trash.lua
+25033,Lightning Cloud,Hydromancer Thespia,LittleWigs\TBC\TheSteamvault\Thespia.lua
+27621,Windfury Totem,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
+27808,Frost Blast,Kel'Thuzad Naxxramas,BigWigs_WrathOfTheLichKing\Naxxramas\Kelthuzad.lua
+27810,Shadow Fissure,Kel'Thuzad Naxxramas,BigWigs_WrathOfTheLichKing\Naxxramas\Kelthuzad.lua
+27819,Detonate Mana,Kel'Thuzad Naxxramas,BigWigs_WrathOfTheLichKing\Naxxramas\Kelthuzad.lua
+28059,Positive Charge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+28084,Negative Charge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+28089,Polarity Shift,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+28131,Frenzy,Patchwerk,BigWigs_WrathOfTheLichKing\Naxxramas\Patchwerk.lua
+28134,Power Surge,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+28169,Mutating Injection,Grobbulus,BigWigs_WrathOfTheLichKing\Naxxramas\Grobbulus.lua
+28240,Poison Cloud,Grobbulus,BigWigs_WrathOfTheLichKing\Naxxramas\Grobbulus.lua
+28338,Magnetic Pull,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+28371,Enrage,Gluth,BigWigs_WrathOfTheLichKing\Naxxramas\Gluth.lua
+28375,Decimate,Gluth,BigWigs_WrathOfTheLichKing\Naxxramas\Gluth.lua
+28410,Chains of Kel'Thuzad,Kel'Thuzad Naxxramas,BigWigs_WrathOfTheLichKing\Naxxramas\Kelthuzad.lua
+28522,Ice Bolt,Sapphiron,BigWigs_WrathOfTheLichKing\Naxxramas\Sapphiron.lua
+28524,Frost Breath,Sapphiron,BigWigs_WrathOfTheLichKing\Naxxramas\Sapphiron.lua
+28542,Life Drain,Sapphiron,BigWigs_WrathOfTheLichKing\Naxxramas\Sapphiron.lua
+28732,Widow's Embrace,Grand Widow Faerlina,BigWigs_WrathOfTheLichKing\Naxxramas\Faerlina.lua
+28741,Poison Shock,Maexxna,BigWigs_WrathOfTheLichKing\Naxxramas\Maexxna.lua
+28747,Frenzy,Maexxna,BigWigs_WrathOfTheLichKing\Naxxramas\Maexxna.lua
+28776,Necrotic Poison,Maexxna,BigWigs_WrathOfTheLichKing\Naxxramas\Maexxna.lua
+28783,Impale,Anub'Rekhan,BigWigs_WrathOfTheLichKing\Naxxramas\Anubrekhan.lua
+28785,Locust Swarm,Anub'Rekhan,BigWigs_WrathOfTheLichKing\Naxxramas\Anubrekhan.lua
+28794,Rain of Fire,Grand Widow Faerlina,BigWigs_WrathOfTheLichKing\Naxxramas\Faerlina.lua
+28798,Frenzy,Grand Widow Faerlina,BigWigs_WrathOfTheLichKing\Naxxramas\Faerlina.lua
+28863,Void Zone,The Four Horsemen,BigWigs_WrathOfTheLichKing\Naxxramas\Horsemen.lua
+28883,Holy Wrath,The Four Horsemen,BigWigs_WrathOfTheLichKing\Naxxramas\Horsemen.lua
+28884,Meteor,The Four Horsemen,BigWigs_WrathOfTheLichKing\Naxxramas\Horsemen.lua
+29051,Mind Exhaustion,Instructor Razuvious,BigWigs_WrathOfTheLichKing\Naxxramas\Razuvious.lua
+29060,Taunt,Instructor Razuvious,BigWigs_WrathOfTheLichKing\Naxxramas\Razuvious.lua
+29061,Bone Barrier,Instructor Razuvious,BigWigs_WrathOfTheLichKing\Naxxramas\Razuvious.lua
+29204,Inevitable Doom,Loatheb,BigWigs_WrathOfTheLichKing\Naxxramas\Loatheb.lua
+29208,Blink,Noth the Plaguebringer,BigWigs_WrathOfTheLichKing\Naxxramas\Noth.lua
+29212,Cripple,Noth the Plaguebringer,BigWigs_WrathOfTheLichKing\Naxxramas\Noth.lua
+29213,Curse of the Plaguebringer,Noth the Plaguebringer,BigWigs_WrathOfTheLichKing\Naxxramas\Noth.lua
+29214,Wrath of the Plaguebringer,Noth the Plaguebringer,BigWigs_WrathOfTheLichKing\Naxxramas\Noth.lua
+29234,Summon Spore,Loatheb,BigWigs_WrathOfTheLichKing\Naxxramas\Loatheb.lua
+29306,Infected Wound,Gluth,BigWigs_WrathOfTheLichKing\Naxxramas\Gluth.lua
+29427,Holy Light,Captain Skarloc,LittleWigs\TBC\OldHillsbradFoothills\Skarloc.lua
+29484,Web Spray,Maexxna,BigWigs_WrathOfTheLichKing\Naxxramas\Maexxna.lua
+29865,Deathbloom,Loatheb,BigWigs_WrathOfTheLichKing\Naxxramas\Loatheb.lua
+29998,Decrepit Fever,Heigan the Unclean,BigWigs_WrathOfTheLichKing\Naxxramas\Heigan.lua
+30496,Lesser Shadow Fissure,Grand Warlock Nethekurse,LittleWigs\TBC\TheShatteredHalls\Nethekurse.lua
+30500,Death Coil,Grand Warlock Nethekurse,LittleWigs\TBC\TheShatteredHalls\Nethekurse.lua
+30502,Dark Spin,Grand Warlock Nethekurse,LittleWigs\TBC\TheShatteredHalls\Nethekurse.lua
+30695,Treacherous Aura,Omor the Unscarred,LittleWigs\TBC\HellfireRamparts\Omor.lua
+30849,Spell Lock,The Nexus Trash,LittleWigs\HeroicPlus\TheNexus\Trash.lua
+30916,Poison Cloud,Broggok,LittleWigs\TBC\TheBloodFurnace\Broggok.lua
+30923,Domination,The Maker,LittleWigs\TBC\TheBloodFurnace\TheMaker.lua
+30980,Sap,The Shattered Halls Trash,LittleWigs\TBC\TheShatteredHalls\Trash.lua
+31429,Echoing Roar,Swamplord Musel'ek,LittleWigs\TBC\TheUnderbog\Muselek.lua
+31458,Hasten,Temporus,LittleWigs\TBC\TheBlackMorass\Temporus.lua
+31467,"Time Lapse, XXX revise this module",Chrono Lord Deja,LittleWigs\TBC\TheBlackMorass\ChronoLordDeja.lua
+31481,Lung Burst,Hydromancer Thespia,LittleWigs\TBC\TheSteamvault\Thespia.lua
+31485,Super Shrink Ray,Mekgineer Steamrigger,LittleWigs\TBC\TheSteamvault\Steamrigger.lua
+31554,Spell Reflection,The Slave Pens Trash,LittleWigs\TBC\TheSlavePens\Trash.lua
+31615,Hunter's Mark,Swamplord Musel'ek,LittleWigs\TBC\TheUnderbog\Muselek.lua
+31689,Spore Cloud,Hungarfen,LittleWigs\TBC\TheUnderbog\Hungarfen.lua
+31704,Levitate,The Black Stalker,LittleWigs\TBC\TheUnderbog\TheBlackStalker.lua
+31715,Static Charge,The Black Stalker,LittleWigs\TBC\TheUnderbog\TheBlackStalker.lua
+31717,Chain Lightning,The Black Stalker,LittleWigs\TBC\TheUnderbog\TheBlackStalker.lua
+31718,Enveloping Winds,Hydromancer Thespia,LittleWigs\TBC\TheSteamvault\Thespia.lua
+31910,Whirlwind,Lieutenant Drake,LittleWigs\TBC\OldHillsbradFoothills\Drake.lua
+31911,Mortal Strike,Lieutenant Drake,LittleWigs\TBC\OldHillsbradFoothills\Drake.lua
+31914,Sand Breath,Epoch Hunter,LittleWigs\TBC\OldHillsbradFoothills\EpochHunter.lua
+31948,Ensnaring Moss,Rokmar the Crackler,LittleWigs\TBC\TheSlavePens\Rokmar.lua
+31991,Corrupted Nova Totem,Mennu the Betrayer,LittleWigs\TBC\TheSlavePens\Mennu.lua
+32173,Entangling Roots,The Slave Pens Trash,LittleWigs\TBC\TheSlavePens\Trash.lua
+32346,Stolen Soul,Exarch Maladaar,LittleWigs\TBC\AuchenaiCrypts\Maladaar.lua
+32361,Crystal Prison,Tavarok,LittleWigs\TBC\ManaTombs\Tavarok.lua
+32365,Frost Nova,Nexus-Prince Shaffar,LittleWigs\TBC\ManaTombs\Shaffar.lua
+33547,Fear,Ambassador Hellmaw,LittleWigs\TBC\ShadowLabyrinth\Hellmaw.lua
+33676,Incite Chaos,Blackheart the Inciter,LittleWigs\TBC\ShadowLabyrinth\Blackheart.lua
+33787,Cripple,The Slave Pens Trash,LittleWigs\TBC\TheSlavePens\Trash.lua
+33834,Magic Disruption Aura,Epoch Hunter,LittleWigs\TBC\OldHillsbradFoothills\EpochHunter.lua
+33871,Shield Bash,Mana-Tombs Trash,LittleWigs\TBC\ManaTombs\Trash.lua
+33923,Sonic Boom,Murmur,LittleWigs\TBC\ShadowLabyrinth\Murmur.lua
+34268,Acid Breath,Ghaz'an,LittleWigs\TBC\TheUnderbog\Ghazan.lua
+34322,Psychic Scream,Mana-Tombs Trash,LittleWigs\TBC\ManaTombs\Trash.lua
+34550,Tranquility,High Botanist Freywinn,LittleWigs\TBC\TheBotanica\Freywinn.lua
+34659,Hellfire,Thorngrin the Tender,LittleWigs\TBC\TheBotanica\Thorngrin.lua
+34661,Sacrifice,Thorngrin the Tender,LittleWigs\TBC\TheBotanica\Thorngrin.lua
+34670,Enrage,Thorngrin the Tender,LittleWigs\TBC\TheBotanica\Thorngrin.lua
+34697,Allergic Reaction,Laj,LittleWigs\TBC\TheBotanica\Laj.lua
+34716,Stomp,Warp Splinter,LittleWigs\TBC\TheBotanica\WarpSplinter.lua
+34752,Freezing Touch,High Botanist Freywinn,LittleWigs\TBC\TheBotanica\Freywinn.lua
+34794,Arcane Resonance,Commander Sarannis,LittleWigs\TBC\TheBotanica\Sarannis.lua
+34922,Shadows Embrace,Mana-Tombs Trash,LittleWigs\TBC\ManaTombs\Trash.lua
+34925,Curse of Impotence,Mana-Tombs Trash,LittleWigs\TBC\ManaTombs\Trash.lua
+34970,Frenzy,Rokmar the Crackler,LittleWigs\TBC\TheSlavePens\Rokmar.lua
+34971,Frenzy,Swamplord Musel'ek,LittleWigs\TBC\TheUnderbog\Muselek.lua
+34980,Mennu's Healing Ward,Mennu the Betrayer,LittleWigs\TBC\TheSlavePens\Mennu.lua
+34984,Psychic Horror,The Slave Pens Trash,LittleWigs\TBC\TheSlavePens\Trash.lua
+35032,Slow,Talon King Ikiss,LittleWigs\TBC\SethekkHalls\Ikiss.lua
+35096,Greater Heal,Commander Sarannis,LittleWigs\TBC\TheBotanica\Sarannis.lua
+35158,Reflective Magic Shield,Mechano-Lord Capacitus,LittleWigs\TBC\TheMechanar\Capacitus.lua
+35159,Reflective Damage Shield,Mechano-Lord Capacitus,LittleWigs\TBC\TheMechanar\Capacitus.lua
+35250,Dragon's Breath,Nethermancer Sepethrea,LittleWigs\TBC\TheMechanar\Sepethrea.lua
+35280,Domination,Pathaleon the Calculator,LittleWigs\TBC\TheMechanar\Pathaleon.lua
+35285,Summon Nether Wraith,Pathaleon the Calculator,LittleWigs\TBC\TheMechanar\Pathaleon.lua
+35311,Stream of Machine Fluid,Gatewatcher Gyro-Kill,LittleWigs\TBC\TheMechanar\Gyrokill.lua
+35312,Raging Flames,Nethermancer Sepethrea,LittleWigs\TBC\TheMechanar\Sepethrea.lua
+35314,Arcane Blast,Nethermancer Sepethrea,LittleWigs\TBC\TheMechanar\Sepethrea.lua
+35759,Felfire Shock,Wrath-Scryer Soccothrates,LittleWigs\TBC\TheArcatraz\Soccothrates.lua
+35943,Prayer of Healing,The Shattered Halls Trash,LittleWigs\TBC\TheShatteredHalls\Trash.lua
+36020,Curse of the Shattered Hand,The Shattered Halls Trash,LittleWigs\TBC\TheShatteredHalls\Trash.lua
+36033,Kick,The Shattered Halls Trash,LittleWigs\TBC\TheShatteredHalls\Trash.lua
+36119,Void Zone,Zereketh the Unbound,LittleWigs\TBC\TheArcatraz\Zereketh.lua
+36123,Seed of Corruption,Zereketh the Unbound,LittleWigs\TBC\TheArcatraz\Zereketh.lua
+36175,Whirlwind,Dalliah the Doomsayer,LittleWigs\TBC\TheArcatraz\Dalliah.lua
+36405,Stomp,Yor,LittleWigs\TBC\ManaTombs\Yor.lua
+36453,Warlord's Rage,Warlord Kalithresh,LittleWigs\TBC\TheSteamvault\Kalithresh.lua
+36700,Hex,The Arcatraz Trash,LittleWigs\TBC\TheArcatraz\Trash.lua
+36778,Soul Steal,The Arcatraz Trash,LittleWigs\TBC\TheArcatraz\Trash.lua
+36814,Mortal Wound,Watchkeeper Gargolmar,LittleWigs\TBC\HellfireRamparts\Gargolmar.lua
+36819,Pyroblast,Kael'thas Sunstrider ,LittleWigs\TBC\MagistersTerrace\KaelthasSunstrider.lua
+36866,Domination,The Arcatraz Trash,LittleWigs\TBC\TheArcatraz\Trash.lua
+36886,Spiteful Fury,The Arcatraz Trash,LittleWigs\TBC\TheArcatraz\Trash.lua
+36924,Mind Rend,Harbinger Skyriss,LittleWigs\TBC\TheArcatraz\Skyriss.lua
+37162,Domination,Harbinger Skyriss,LittleWigs\TBC\TheArcatraz\Skyriss.lua
+37605,Enrage,Aeonus,LittleWigs\TBC\TheBlackMorass\Aeonus.lua
+38153,Acid Spray,Quagmirran,LittleWigs\TBC\TheSlavePens\Quagmirran.lua
+38197,Arcane Explosion,Talon King Ikiss,LittleWigs\TBC\SethekkHalls\Ikiss.lua
+38245,Polymorph,Talon King Ikiss,LittleWigs\TBC\SethekkHalls\Ikiss.lua
+38361,Double Breath,Yor,LittleWigs\TBC\ManaTombs\Yor.lua
+38385,Consecration,Captain Skarloc,LittleWigs\TBC\OldHillsbradFoothills\Skarloc.lua
+38592,Spell Reflection,Temporus,LittleWigs\TBC\TheBlackMorass\Temporus.lua
+38618,Whirlwind,Commander Kolurg/Stoutbeard,LittleWigs\HeroicPlus\TheNexus\Commanders.lua
+38737,Tail Sweep,Ghaz'an,LittleWigs\TBC\TheUnderbog\Ghazan.lua
+38759,Dark Shell,Pandemonius,LittleWigs\TBC\ManaTombs\Pandemonius.lua
+38791,Banish,Grandmaster Vorpil,LittleWigs\TBC\ShadowLabyrinth\Vorpil.lua
+38794,Murmur's Touch,Murmur,LittleWigs\TBC\ShadowLabyrinth\Murmur.lua
+38801,Grievous Wound,Rokmar the Crackler,LittleWigs\TBC\TheSlavePens\Rokmar.lua
+38815,Sightless Touch,The Arcatraz Trash,LittleWigs\TBC\TheArcatraz\Trash.lua
+38903,Meteor,The Arcatraz Trash,LittleWigs\TBC\TheArcatraz\Trash.lua
+39005,Shadow Nova,Zereketh the Unbound,LittleWigs\TBC\TheArcatraz\Zereketh.lua
+39009,Gift of the Doomsayer,Dalliah the Doomsayer,LittleWigs\TBC\TheArcatraz\Dalliah.lua
+39013,Heal,Dalliah the Doomsayer,LittleWigs\TBC\TheArcatraz\Dalliah.lua
+39096,Polarity Shift,Mechano-Lord Capacitus,LittleWigs\TBC\TheMechanar\Capacitus.lua
+39193,Shadow Power,Gatewatcher Gyro-Kill,LittleWigs\TBC\TheMechanar\Gyrokill.lua
+39194,Jackhammer,Gatewatcher Iron-Hand,LittleWigs\TBC\TheMechanar\Ironhand.lua
+39378,Heal,The Slave Pens Trash,LittleWigs\TBC\TheSlavePens\Trash.lua
+39415,Fear,Harbinger Skyriss,LittleWigs\TBC\TheArcatraz\Skyriss.lua
+40184,Paralyzing Screech,Anzu,LittleWigs\TBC\SethekkHalls\Anzu.lua
+40303,Spell Bomb,Anzu,LittleWigs\TBC\SethekkHalls\Anzu.lua
+40504,Cleave,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+41107,Berserker Aura,General Bjarngrim,LittleWigs\WotLK\HallsOfLightning\Bjarngrim.lua
+41951,Fixate,Nethermancer Sepethrea,LittleWigs\TBC\TheMechanar\Sepethrea.lua
+44141,Seed of Corruption,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
+44178,Blizzard,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
+44194,Phoenix,Kael'thas Sunstrider ,LittleWigs\TBC\MagistersTerrace\KaelthasSunstrider.lua
+44224,Gravity Lapse,Kael'thas Sunstrider ,LittleWigs\TBC\MagistersTerrace\KaelthasSunstrider.lua
+44320,Mana Rage,Selin Fireheart,LittleWigs\TBC\MagistersTerrace\SelinFireheart.lua
+44335,Energy Feedback,Vexallus,LittleWigs\TBC\MagistersTerrace\Vexallus.lua
+44475,Magic Dampening Field,Magisters' Terrace Trash,LittleWigs\TBC\MagistersTerrace\Trash.lua
+44644,Arcane Nova,Magisters' Terrace Trash,LittleWigs\TBC\MagistersTerrace\Trash.lua
+44765,Banish,Magisters' Terrace Trash,LittleWigs\TBC\MagistersTerrace\Trash.lua
+46192,Renew,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
+46193,Power Word: Shield,Priestess Delrissa,LittleWigs\TBC\MagistersTerrace\PriestessDelrissa.lua
+47731,Critter,Grand Magus Telestra,LittleWigs\HeroicPlus\TheNexus\Telestra.lua
+47779,Arcane Torrent,The Nexus Trash,LittleWigs\HeroicPlus\TheNexus\Trash.lua
+47981,Spell Reflection,Ormorok the Tree-Shaper,LittleWigs\HeroicPlus\TheNexus\Ormorok.lua
+48017,Frenzy,Ormorok the Tree-Shaper,LittleWigs\HeroicPlus\TheNexus\Ormorok.lua
+48095,Intense Cold,Keristrasza,LittleWigs\HeroicPlus\TheNexus\Keristrasza.lua
+48179,Crystallize,Keristrasza,LittleWigs\HeroicPlus\TheNexus\Keristrasza.lua
+48267,Ritual Preparation,Svala Sorrowgrave,LittleWigs\WotLK\UtgardePinnacle\SvalaSorrowgrave.lua
+48276,Ritual of the Sword,Svala Sorrowgrave,LittleWigs\WotLK\UtgardePinnacle\SvalaSorrowgrave.lua
+48585,Drought,King Ymiron,LittleWigs\HeroicPlus\UtgardePinnacle\KingYmiron.lua
+49106,Terrify,Utgarde Pinnacle Trash,LittleWigs\WotLK\UtgardePinnacle\Trash.lua
+50774,Thundering Stomp,Drakos the Interrogator,LittleWigs\WotLK\TheOculus\Drakos.lua
+50810,Shatter,Krystallus,LittleWigs\WotLK\HallsOfStone\Krystallus.lua
+50834,Static Charge,Sjonnir The Ironshaper,LittleWigs\HeroicPlus\HallsOfStone\SjonnirTheIronshaper.lua
+50840,Lightning Ring,Sjonnir The Ironshaper,LittleWigs\HeroicPlus\HallsOfStone\SjonnirTheIronshaper.lua
+50997,Crystal Chains,Keristrasza,LittleWigs\HeroicPlus\TheNexus\Keristrasza.lua
+51021,Arcane Beam,Varos Cloudstrider,LittleWigs\WotLK\TheOculus\VarosCloudstrider.lua
+51054,Amplify Magic,Varos Cloudstrider,LittleWigs\WotLK\TheOculus\VarosCloudstrider.lua
+51103,Frostbomb,Mage-Lord Urom,LittleWigs\WotLK\TheOculus\Urom.lua
+51110,Empowered Arcane Explosion,Mage-Lord Urom,LittleWigs\WotLK\TheOculus\Urom.lua
+51121,Time Bomb,Mage-Lord Urom,LittleWigs\WotLK\TheOculus\Urom.lua
+51162,Planar Shift,Ley-Guardian Eregos,LittleWigs\WotLK\TheOculus\Eregos.lua
+51170,Enraged Assault,Ley-Guardian Eregos,LittleWigs\WotLK\TheOculus\Eregos.lua
+52696,Constricting Chains,Meathook,LittleWigs\WotLK\TheCullingOfStratholme\Meathook.lua
+52721,Sleep,Mal'Ganis,LittleWigs\WotLK\TheCullingOfStratholme\MalGanis.lua
+52723,Vampiric Touch,Mal'Ganis,LittleWigs\WotLK\TheCullingOfStratholme\MalGanis.lua
+52770,Disperse,Ionar,LittleWigs\WotLK\HallsOfLightning\Ionar.lua
+52772,Curse of Exertion,Chrono-Lord Epoch,LittleWigs\WotLK\TheCullingOfStratholme\Epoch.lua
+54378,Mortal Wound,Gluth,BigWigs_WrathOfTheLichKing\Naxxramas\Gluth.lua
+55098,Transformation,Moorabi,LittleWigs\WotLK\Gundrak\Moorabi.lua
+55543,Disrupting Shout,Instructor Razuvious,BigWigs_WrathOfTheLichKing\Naxxramas\Razuvious.lua
+55550,Jagged Knife,Instructor Razuvious,BigWigs_WrathOfTheLichKing\Naxxramas\Razuvious.lua
+55593,Necrotic Aura,Loatheb,BigWigs_WrathOfTheLichKing\Naxxramas\Loatheb.lua
+55817,Eck Residue,Eck the Ferocious,LittleWigs\WotLK\Gundrak\Eck.lua
+55931,Conjure Flame Sphere,Prince Taldaram,LittleWigs\HeroicPlus\Ahnkahet\PrinceTaldaram.lua
+56130,Brood Plague,Elder Nadox,LittleWigs\HeroicPlus\Ahnkahet\ElderNadox.lua
+57055,Mini,Amanitar,LittleWigs\HeroicPlus\Ahnkahet\Amanitar.lua
+57369,Unholy Shadow,The Four Horsemen,BigWigs_WrathOfTheLichKing\Naxxramas\Horsemen.lua
+57491,Flame Tsunami,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+57496,Insanity,Herald Volazj,LittleWigs\HeroicPlus\Ahnkahet\HeraldVolazj.lua
+58793,Hatch Eggs,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+58835,Twilight Torment,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+58845,Curse of Twisted Flesh,Salramm the Fleshcrafter,LittleWigs\WotLK\TheCullingOfStratholme\Salramm.lua
+58956,Flame Breath,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+59126,Shadow Breath,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+59127,Shadow Fissure,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+59165,Sleep,Halls of Lightning Trash,LittleWigs\WotLK\HallsOfLightning\Trash.lua
+59267,Withering Roar,Gortok Palehoof,LittleWigs\WotLK\UtgardePinnacle\GortokPalehoof.lua
+59268,Impale,Gortok Palehoof,LittleWigs\WotLK\UtgardePinnacle\GortokPalehoof.lua
+59300,Fetid Rot,King Ymiron,LittleWigs\WotLK\UtgardePinnacle\KingYmiron.lua
+59301,Bane,King Ymiron,LittleWigs\WotLK\UtgardePinnacle\KingYmiron.lua
+59322,Whirlwind,Skadi the Ruthless,LittleWigs\WotLK\UtgardePinnacle\Skadi.lua
+59451,Mojo Puddle,Drakkari Colossus,LittleWigs\WotLK\Gundrak\DrakkariColossus.lua
+59513,Embrace of the Vampyr,Prince Taldaram,LittleWigs\HeroicPlus\Ahnkahet\PrinceTaldaram.lua
+59529,Shattering Stomp,Volkhan,LittleWigs\WotLK\HallsOfLightning\Volkhan.lua
+59726,Shock of Sorrow,Maiden of Grief,LittleWigs\WotLK\HallsOfStone\MaidenOfGrief.lua
+59772,Storm of Grief,Maiden of Grief,LittleWigs\HeroicPlus\HallsOfStone\MaidenOfGrief.lua
+59795,Static Overload,Ionar,LittleWigs\WotLK\HallsOfLightning\Ionar.lua
+59825,Whirling Slash,Gal'darah,LittleWigs\WotLK\Gundrak\Galdarah.lua
+59827,Impaling Charge,Gal'darah,LittleWigs\WotLK\Gundrak\Galdarah.lua
+59835,Lightning Nova,Loken,LittleWigs\WotLK\HallsOfLightning\Loken.lua
+59842,Poison Nova,Slad'ran,LittleWigs\WotLK\Gundrak\Sladran.lua
+59866,Searing Gaze,Tribunal of Ages,LittleWigs\HeroicPlus\HallsOfStone\TribunalOfAges.lua
+59868,Dark Matter,Tribunal of Ages,LittleWigs\HeroicPlus\HallsOfStone\TribunalOfAges.lua
+59978,Shiver,Herald Volazj,LittleWigs\HeroicPlus\Ahnkahet\HeraldVolazj.lua
+60029,Thunder Shock,Jedoga Shadowseeker,LittleWigs\HeroicPlus\Ahnkahet\JedogaShadowseeker.lua
+60430,Molten Fury,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+60588,Corrupting Blight,Infinite Corruptor,LittleWigs\WotLK\TheCullingOfStratholme\InfiniteCorruptor.lua
+61581,Charged Flurry,Halls of Lightning Trash,LittleWigs\WotLK\HallsOfLightning\Trash.lua
+61869,Overload,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+61887,Lightning Tendrils,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+61903,Fusion Punch,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+61968,Flash Freeze,Hodir,BigWigs_WrathOfTheLichKing\Ulduar\Hodir.lua
+61974,Rune of Power,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+62016,Charge Orb,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62017,Lightning Shock,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62039,Biting Cold,Hodir,BigWigs_WrathOfTheLichKing\Ulduar\Hodir.lua
+62042,Stormhammer,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62130,Unbalancing Strike,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62269,Rune of Death,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+62273,Rune of Summoning,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+62274,Shield of Runes,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+62279,Lightning Charge,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62331,Impale,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62338,Runic Barrier,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62374,Pursued,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+62382,Brittle,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
+62396,Flame Vents,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+62437,Ground Tremor,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
+62475,Systems Shutdown,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+62488,Activate Construct,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
+62526,Rune Detonation,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62589,Nature's Fury,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
+62623,Sunbeam,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
+62660,Shadow Crash,General Vezax,BigWigs_WrathOfTheLichKing\Ulduar\Vezax.lua
+62661,Searing Flames,General Vezax,BigWigs_WrathOfTheLichKing\Ulduar\Vezax.lua
+62662,Surge of Darkness,General Vezax,BigWigs_WrathOfTheLichKing\Ulduar\Vezax.lua
+62717,Slag Pot,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
+62776,Tympanic Tantrum,XT-002 Deconstructor,BigWigs_WrathOfTheLichKing\Ulduar\XT-002.lua
+62794,Harpooned,Razorscale,BigWigs_WrathOfTheLichKing\Ulduar\Razorscale.lua
+62861,Iron Roots,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
+62865,Unstable Energy,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
+62942,Runic Fortification,Thorim,BigWigs_WrathOfTheLichKing\Ulduar\Thorim.lua
+62979,Summon Guardian,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+63050,Sanity,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+63120,Insane,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+63138,Sara's Fervor,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+63274,P3Wx2 Laser Barrage,Mimiron,BigWigs_WrathOfTheLichKing\Ulduar\Mimiron.lua
+63276,Mark of the Faceless,General Vezax,BigWigs_WrathOfTheLichKing\Ulduar\Vezax.lua
+63355,Crunch Armor,Kologarn,BigWigs_WrathOfTheLichKing\Ulduar\Kologarn.lua
+63472,Flame Jets,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
+63474,Scorch,Ignis the Furnace Master,BigWigs_WrathOfTheLichKing\Ulduar\Ignis.lua
+63483,Lightning Whirl,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+63512,Frozen Blows,Hodir,BigWigs_WrathOfTheLichKing\Ulduar\Hodir.lua
+63631,Shock Blast,Mimiron,BigWigs_WrathOfTheLichKing\Ulduar\Mimiron.lua
+63802,Brain Link,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+63811,Bomb Bot,Mimiron,BigWigs_WrathOfTheLichKing\Ulduar\Mimiron.lua
+63830,Malady of the Mind,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+63849,Exposed Heart,XT-002 Deconstructor,BigWigs_WrathOfTheLichKing\Ulduar\XT-002.lua
+63983,Arm Sweep,Kologarn,BigWigs_WrathOfTheLichKing\Ulduar\Kologarn.lua
+64021,Flame Breath,Razorscale,BigWigs_WrathOfTheLichKing\Ulduar\Razorscale.lua
+64059,Induce Madness,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+64122,Black Hole Explosion,Algalon the Observer,BigWigs_WrathOfTheLichKing\Ulduar\Algalon.lua
+64126,Squeeze,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+64163,Lunatic Gaze,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+64189,Deafening Roar,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+64193,Heartbreak,XT-002 Deconstructor,BigWigs_WrathOfTheLichKing\Ulduar\XT-002.lua
+64234,Gravity Bomb,XT-002 Deconstructor,BigWigs_WrathOfTheLichKing\Ulduar\XT-002.lua
+64290,Stone Grip,Kologarn,BigWigs_WrathOfTheLichKing\Ulduar\Kologarn.lua
+64386,Terrifying Screech,Auriaya,BigWigs_WrathOfTheLichKing\Ulduar\Auriaya.lua
+64396,Guardian Swarm,Auriaya,BigWigs_WrathOfTheLichKing\Ulduar\Auriaya.lua
+64412,Phase Punch,Algalon the Observer,BigWigs_WrathOfTheLichKing\Ulduar\Algalon.lua
+64443,Big Bang,Algalon the Observer,BigWigs_WrathOfTheLichKing\Ulduar\Algalon.lua
+64444,Magnetic Core,Mimiron,BigWigs_WrathOfTheLichKing\Ulduar\Mimiron.lua
+64465,Shadow Beacon,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+64529,Plasma Blast,Mimiron,BigWigs_WrathOfTheLichKing\Ulduar\Mimiron.lua
+64570,Flame Suppressant,Mimiron,BigWigs_WrathOfTheLichKing\Ulduar\Mimiron.lua
+64597,Cosmic Smash,Algalon the Observer,BigWigs_WrathOfTheLichKing\Ulduar\Algalon.lua
+64623,Frost Bomb,Mimiron,BigWigs_WrathOfTheLichKing\Ulduar\Mimiron.lua
+64637,Overwhelming Power,The Iron Council,BigWigs_WrathOfTheLichKing\Ulduar\IronCouncil.lua
+64678,Sentinel Blast,Auriaya,BigWigs_WrathOfTheLichKing\Ulduar\Auriaya.lua
+64688,Sonic Screech,Auriaya,BigWigs_WrathOfTheLichKing\Ulduar\Auriaya.lua
+64733,Devouring Flame,Razorscale,BigWigs_WrathOfTheLichKing\Ulduar\Razorscale.lua
+64771,Fuse Armor,Razorscale,BigWigs_WrathOfTheLichKing\Ulduar\Razorscale.lua
+65121,Searing Light,XT-002 Deconstructor,BigWigs_WrathOfTheLichKing\Ulduar\XT-002.lua
+65133,Storm Cloud,Hodir,BigWigs_WrathOfTheLichKing\Ulduar\Hodir.lua
+66012,Freezing Slash,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
+66013,Penetrating Cold,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
+66043,Polymorph,Grand Champions,LittleWigs\WotLK\TrialOfTheChampion\GrandChampions.lua
+66118,Leeching Swarm,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
+66134,Shadow Strike,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
+66515,Reflective Shield,Argent Confessor Paletress,LittleWigs\WotLK\TrialOfTheChampion\Paletress.lua
+66537,Renew,Argent Confessor Paletress,LittleWigs\WotLK\TrialOfTheChampion\Paletress.lua
+66619,Shadows of the Past,Argent Confessor Paletress,LittleWigs\WotLK\TrialOfTheChampion\Paletress.lua
+66935,Radiance,Eadric the Pure,LittleWigs\WotLK\TrialOfTheChampion\Eadric.lua
+67528,Healing Wave,Grand Champions,LittleWigs\WotLK\TrialOfTheChampion\GrandChampions.lua
+67534,Hex of Mending,Grand Champions,LittleWigs\WotLK\TrialOfTheChampion\GrandChampions.lua
+67574,Pursued by Anub'arak,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
+67781,Desecration,The Black Knight,LittleWigs\WotLK\TrialOfTheChampion\TheBlackKnight.lua
+68605,Blue Pyrite,Flame Leviathan,BigWigs_WrathOfTheLichKing\Ulduar\Leviathan.lua
+68789,Throw Saronite,Forgemaster Garfrost,LittleWigs\WotLK\PitOfSaron\ForgemasterGarfrost.lua
+68839,Corrupt Soul,Bronjahm,LittleWigs\WotLK\TheForgeOfSouls\Bronjahm.lua
+68872,Soulstorm,Bronjahm,LittleWigs\WotLK\TheForgeOfSouls\Bronjahm.lua
+68912,Wailing Souls,Devourer of Souls,LittleWigs\WotLK\TheForgeOfSouls\DevourerOfSouls.lua
+68987,Pursuit,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
+68989,Poison Nova,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
+69051,Mirrored Soul,Devourer of Souls,LittleWigs\WotLK\TheForgeOfSouls\DevourerOfSouls.lua
+69057,Bone Spike Graveyard,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
+69076,Bone Storm,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
+69138,Coldflame,Lord Marrowgar,BigWigs_WrathOfTheLichKing\Citadel\Marrowgar.lua
+69167,Unholy Power,Scourgelord Tyrannus,LittleWigs\WotLK\PitOfSaron\Tyrannus.lua
+69172,Overlord's Brand,Scourgelord Tyrannus,LittleWigs\WotLK\PitOfSaron\Tyrannus.lua
+69263,Explosive Barrage,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
+69275,Mark of Rimefang,Scourgelord Tyrannus,LittleWigs\WotLK\PitOfSaron\Tyrannus.lua
+69483,Dark Reckoning,Icecrown Citadel Trash,BigWigs_WrathOfTheLichKing\Citadel\Trash.lua
+69638,Battle Fury,Icecrown Gunship Battle,BigWigs_WrathOfTheLichKing\Citadel\Gunship.lua
+69651,Wounding Strike,Icecrown Gunship Battle,BigWigs_WrathOfTheLichKing\Citadel\Gunship.lua
+69762,Unchained Magic,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+69766,Instability,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+70106,Chilled to the Bone,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+70123,Blistering Cold,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+70126,Frost Beacon,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+70127,Mystic Buffet,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+70274,Toxic Waste,Ick & Krick,LittleWigs\WotLK\PitOfSaron\IckAndKrick.lua
+70381,Deep Freeze,Forgemaster Garfrost,LittleWigs\WotLK\PitOfSaron\ForgemasterGarfrost.lua
+70900,Dark Transformation,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+70901,Dark Empowerment,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+71001,Death and Decay,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+71022,Disrupting Shout,Icecrown Citadel Trash,BigWigs_WrathOfTheLichKing\Citadel\Trash.lua
+71127,Mortal Wound,Icecrown Citadel Trash,BigWigs_WrathOfTheLichKing\Citadel\Trash.lua
+71204,Touch of Insignificance,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+71237,Curse of Torpor,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+71289,Dominate Mind,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+71426,Summon Spirit,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+72293,Mark of the Fallen Champion,Deathbringer Saurfang,BigWigs_WrathOfTheLichKing\Citadel\Saurfang.lua
+72363,Corrupted Flesh,Marwyn,LittleWigs\WotLK\HallsOfReflection\Marwyn.lua
+72368,Shared Suffering,Marwyn,LittleWigs\WotLK\HallsOfReflection\Marwyn.lua
+72383,Corrupted Touch,Marwyn,LittleWigs\WotLK\HallsOfReflection\Marwyn.lua
+72385,Boiling Blood,Deathbringer Saurfang,BigWigs_WrathOfTheLichKing\Citadel\Saurfang.lua
+72410,Rune of Blood,Deathbringer Saurfang,BigWigs_WrathOfTheLichKing\Citadel\Saurfang.lua
+72422,Quivering Strike,Falric,LittleWigs\WotLK\HallsOfReflection\Falric.lua
+72426,Impending Despair,Falric,LittleWigs\WotLK\HallsOfReflection\Falric.lua
+72737,Frenzy,Deathbringer Saurfang,BigWigs_WrathOfTheLichKing\Citadel\Saurfang.lua
+74367,Cleave Armor,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+74384,Intimidating Roar,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+74403,Flame Breath,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+74452,Conflagration,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+74453,Flame Beacon,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+74502,Enervating Brand,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+74509,Repelling Wave,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+74525,Flame Breath,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74562,Fiery Combustion,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74630,Combustion,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74648,Meteor Strike,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74769,Twilight Cutter,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74792,Soul Consumption,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74802,Consumption,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74806,Dark Breath,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+74826,Corporeality,Halion,BigWigs_WrathOfTheLichKing\RubySanctum\Halion.lua
+75125,Blade Tempest,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+78722,Enrage,The Ruby Sanctum Trash,BigWigs_WrathOfTheLichKing\RubySanctum\Trash.lua
+88352,Chest Bomb,Helix Gearbreaker,LittleWigs\Classic\Deadmines\HelixGearbreaker.lua
+88481,Overdrive,Foe Reaper 5000,LittleWigs\Classic\Deadmines\FoeReaper5000.lua
+88495,Harvest,Foe Reaper 5000,LittleWigs\Classic\Deadmines\FoeReaper5000.lua
+88522,Safety Restrictions Off-line,Foe Reaper 5000,LittleWigs\Classic\Deadmines\FoeReaper5000.lua
+89252,Cauldron Fire,\,LittleWigs\Classic\Deadmines\Cookie.lua
+92614,Deflection,Vanessa VanCleef,LittleWigs\Classic\Deadmines\VanessaVanCleef.lua
+93423,Asphyxiate,Baron Ashbury,LittleWigs\Classic\ShadowfangKeep\Ashbury.lua
+93505,Conjure Frost Mixture,Lord Walden,LittleWigs\Classic\ShadowfangKeep\Walden.lua
+93520,Pistol Barrage,Lord Godfrey,LittleWigs\Classic\ShadowfangKeep\Godfrey.lua
+93527,Ice Shards,Lord Walden,LittleWigs\Classic\ShadowfangKeep\Walden.lua
+93581,Pain and Suffering,Baron Ashbury,LittleWigs\Classic\ShadowfangKeep\Ashbury.lua
+93617,Toxic Coagulant,Lord Walden,LittleWigs\Classic\ShadowfangKeep\Walden.lua
+93629,Cursed Bullets,Lord Godfrey,LittleWigs\Classic\ShadowfangKeep\Godfrey.lua
+93675,Mortal Wound,Lord Godfrey,LittleWigs\Classic\ShadowfangKeep\Godfrey.lua
+93687,Desecration,Commander Springvale,LittleWigs\Classic\ShadowfangKeep\Springvale.lua
+93689,Toxic Catalyst,Lord Walden,LittleWigs\Classic\ShadowfangKeep\Walden.lua
+93697,Conjure Poisonous Mixture,Lord Walden,LittleWigs\Classic\ShadowfangKeep\Walden.lua
+93707,Summon Bloodthirsty Ghouls,Lord Godfrey,LittleWigs\Classic\ShadowfangKeep\Godfrey.lua
+93757,Dark Archangel Form,Baron Ashbury,LittleWigs\Classic\ShadowfangKeep\Ashbury.lua
+93844,Unholy Empowerment,Commander Springvale,LittleWigs\Classic\ShadowfangKeep\Springvale.lua
+93852,Word of Shame,Commander Springvale,LittleWigs\Classic\ShadowfangKeep\Springvale.lua
+93857,Summon Worgen Spirit,Baron Silverlaine,LittleWigs\Classic\ShadowfangKeep\Silverlaine.lua
+95542,Vengeance of VanCleef,Vanessa VanCleef,LittleWigs\Classic\Deadmines\VanessaVanCleef.lua
+191300,Call Reinforcements,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191302,Arc Weld,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191304,Reforged Shell,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191311,Hammer Strike,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191312,Shock Arrow,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191318,Shot,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191319,Combat Overheat,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191320,Weapon Throw,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191325,Steam Blast,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191335,Lava Burst,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191336,Destabilize,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191357,Thunderbolt,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191363,Lightning,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191364,Charged Flurry,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191367,Thunderous Roar,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191369,Forked Lightning,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191376,Runic Strike,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191377,Charge,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191382,Poisoned Spear,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191383,Thunderous Eruption,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191387,Soul Strike,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191392,Storm Heal,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191600,Funeral Cleave,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191602,Funeral Cleave,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191605,Madness of Loyalty,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191606,Madness of Loyalty,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191607,Fanatic's Leap,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191611,Chain Lightning,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191613,Storm's Omen,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191617,Stone Strike,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191622,Rotten Eruption,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191625,Sweeping Axe,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191631,Devouring Strike,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191634,Call of Blood,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191636,Call of Blood,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191637,Call of Blood,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191638,Hamstring Pursuit,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191640,Hamstring Pursuit,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191641,Twilight Restoration,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191643,Spirit of Winter's Hunt,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191649,Whirlwind of Fury,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191657,Dead Cold Volley,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191658,Dead Cold Volley,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191659,Raise Servants,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191661,Numbing Grasp,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191662,Numbing Grasp,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+191740,Titanic Ram,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191748,Throw,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191773,Mighty Blow,General Bjarngrim,LittleWigs\HeroicPlus\HallsOfLightning\Bjarngrim.lua
+191775,Whirlwind,General Bjarngrim,LittleWigs\HeroicPlus\HallsOfLightning\Bjarngrim.lua
+191780,Steel Renewal,General Bjarngrim,LittleWigs\HeroicPlus\HallsOfLightning\Bjarngrim.lua
+191800,Forge Golems,Volkhan,LittleWigs\HeroicPlus\HallsOfLightning\Volkhan.lua
+191803,Searing Strike,Volkhan,LittleWigs\HeroicPlus\HallsOfLightning\Volkhan.lua
+191804,Shattering Stomp,Volkhan,LittleWigs\HeroicPlus\HallsOfLightning\Volkhan.lua
+191809,Resonance,Volkhan,LittleWigs\HeroicPlus\HallsOfLightning\Volkhan.lua
+191850,Shield Slam,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+191853,Shield Slam,Halls of Lightning Trash,LittleWigs\HeroicPlus\HallsOfLightning\Trash.lua
+192571,Summon Flame,Svala Sorrowgrave,LittleWigs\HeroicPlus\UtgardePinnacle\SvalaSorrowgrave.lua
+192573,Ritual of the Sword,Svala Sorrowgrave,LittleWigs\HeroicPlus\UtgardePinnacle\SvalaSorrowgrave.lua
+192574,Ritual of the Sword,Svala Sorrowgrave,LittleWigs\HeroicPlus\UtgardePinnacle\SvalaSorrowgrave.lua
+192580,Arc Slash,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192582,Impale,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192583,Withering Roar,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192584,Mortal Wound,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192585,Frenzy,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192586,Frenzy,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192587,Chain Lightning,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192589,Enrage,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192590,Fearsome Roar,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192592,Acid Spit,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192597,Gore,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192598,Grievous Wound,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192599,Grievous Wound,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192601,Stomp,Gortok Palehoof,LittleWigs\HeroicPlus\UtgardePinnacle\GortokPalehoof.lua
+192606,Smash,Skadi the Ruthless,LittleWigs\HeroicPlus\UtgardePinnacle\Skadi.lua
+192607,Poisoned Dart,Skadi the Ruthless,LittleWigs\HeroicPlus\UtgardePinnacle\Skadi.lua
+192609,Whirlwind,Skadi the Ruthless,LittleWigs\HeroicPlus\UtgardePinnacle\Skadi.lua
+192610,Whirlwind,Skadi the Ruthless,LittleWigs\HeroicPlus\UtgardePinnacle\Skadi.lua
+192611,Whirlwind,Skadi the Ruthless,LittleWigs\HeroicPlus\UtgardePinnacle\Skadi.lua
+192614,Shadow Bolt,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+192615,Shrink,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+192616,Harpoon Throw,Utgarde Pinnacle Trash,LittleWigs\HeroicPlus\UtgardePinnacle\Trash.lua
+192619,Bane,King Ymiron,LittleWigs\HeroicPlus\UtgardePinnacle\KingYmiron.lua
+192621,Black Wound,King Ymiron,LittleWigs\HeroicPlus\UtgardePinnacle\KingYmiron.lua
+192622,Fetid Rot,King Ymiron,LittleWigs\HeroicPlus\UtgardePinnacle\KingYmiron.lua
+192623,Cries of the Dead,King Ymiron,LittleWigs\HeroicPlus\UtgardePinnacle\KingYmiron.lua
+192626,Spirit Strike,King Ymiron,LittleWigs\HeroicPlus\UtgardePinnacle\KingYmiron.lua
+192627,Spirit Burst,King Ymiron,LittleWigs\HeroicPlus\UtgardePinnacle\KingYmiron.lua
+192640,Arcane Field,Novos the Summoner,LittleWigs\HeroicPlus\DrakTharonKeep\Novos.lua
+192644,Blizzard,Novos the Summoner,LittleWigs\HeroicPlus\DrakTharonKeep\Novos.lua
+192647,Wrath of Misery,Novos the Summoner,LittleWigs\HeroicPlus\DrakTharonKeep\Novos.lua
+192648,Summon Minions,Novos the Summoner,LittleWigs\HeroicPlus\DrakTharonKeep\Novos.lua
+192660,Curse of Life,The Prophet Tharon'ja,LittleWigs\HeroicPlus\DrakTharonKeep\TheProphetTharonja.lua
+192662,Rain of Fire,The Prophet Tharon'ja,LittleWigs\HeroicPlus\DrakTharonKeep\TheProphetTharonja.lua
+192750,Ball Lightning,Ionar,LittleWigs\HeroicPlus\HallsOfLightning\Ionar.lua
+192754,Disperse,Ionar,LittleWigs\HeroicPlus\HallsOfLightning\Ionar.lua
+192760,Shockwave,Loken,LittleWigs\HeroicPlus\HallsOfLightning\Loken.lua
+192762,Arc Lightning,Loken,LittleWigs\HeroicPlus\HallsOfLightning\Loken.lua
+192765,Lightning Flash,Loken,LittleWigs\HeroicPlus\HallsOfLightning\Loken.lua
+260908,Storm Wing,Ji'arak,BigWigs_Azeroth\Jiarak.lua
+261088,Hurricane Crash,Ji'arak,BigWigs_Azeroth\Jiarak.lua
+261467,Matriarch's Call,Ji'arak,BigWigs_Azeroth\Jiarak.lua
+261552,Terror Wail,T'zane,BigWigs_Azeroth\Tzane.lua
+261600,Coalesced Essence,T'zane,BigWigs_Azeroth\Tzane.lua
+261605,Consuming Spirits,T'zane,BigWigs_Azeroth\Tzane.lua
+262004,Crushing Slam,T'zane,BigWigs_Azeroth\Tzane.lua
+271120,Flame Exhausts,Doom's Howl,BigWigs_Azeroth\DoomsHowl.lua
+271163,Shattering Pulse,Doom's Howl,BigWigs_Azeroth\DoomsHowl.lua
+271164,Mortar Shot,Doom's Howl,BigWigs_Azeroth\DoomsHowl.lua
+271223,Siege Up,Doom's Howl,BigWigs_Azeroth\DoomsHowl.lua
+271800,Battle Field Repair,Doom's Howl,BigWigs_Azeroth\DoomsHowl.lua
+274829,Gale Force,"Azurethos, The Winged Typhoon",BigWigs_Azeroth\Azurethos.lua
+274832,Wing Buffet,"Azurethos, The Winged Typhoon",BigWigs_Azeroth\Azurethos.lua
+274839,Azurethos' Fury,"Azurethos, The Winged Typhoon",BigWigs_Azeroth\Azurethos.lua
+274842,Void Nova,Warbringer Yenajz,BigWigs_Azeroth\Yenajz.lua
+274891,Glacial Breath,Hailstone Construct,BigWigs_Azeroth\Construct.lua
+274895,Freezing Tempest,Hailstone Construct,BigWigs_Azeroth\Construct.lua
+274904,Reality Tear,Warbringer Yenajz,BigWigs_Azeroth\Yenajz.lua
+274932,Endless Abyss,Warbringer Yenajz,BigWigs_Azeroth\Yenajz.lua
+275200,Primal Rage,Dunegorger Kraulok,BigWigs_Azeroth\Kraulok.lua
+276046,Shake Loose,Dunegorger Kraulok,BigWigs_Azeroth\Kraulok.lua

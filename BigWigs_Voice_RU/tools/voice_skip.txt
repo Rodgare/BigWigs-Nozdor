@@ -1,0 +1,4 @@
+# BigWigs_Voice_RU: keys that must not be voiced.
+# One option key per line (usually a spell ID). Lines starting with # are ignored.
+# Example:
+# 190359

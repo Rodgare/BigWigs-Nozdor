@@ -1,0 +1,80 @@
+﻿key,text,module,source
+55699,,Sapphiron,BigWigs_WrathOfTheLichKing\Naxxramas\Sapphiron.lua
+66317,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66330,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66331,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66758,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66759,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66770,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66823,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66869,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+66883,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+68335,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+CASTBAR_COUNTDOWN,,Onyxia,BigWigs_WrathOfTheLichKing\Northrend\Onyxia.lua
+acolyte_shadron,,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+acolyte_vesperon,,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+add,,Anub'Rekhan,BigWigs_WrathOfTheLichKing\Naxxramas\Anubrekhan.lua
+add_death,,Gothik the Harvester,BigWigs_WrathOfTheLichKing\Naxxramas\Gothik.lua
+adds,,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+airphase,,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+animus,,General Vezax,BigWigs_WrathOfTheLichKing\Ulduar\Vezax.lua
+arm,,Kologarn,BigWigs_WrathOfTheLichKing\Ulduar\Kologarn.lua
+avatar,,Exarch Maladaar,LittleWigs\TBC\AuchenaiCrypts\Maladaar.lua
+berserk,,Blood Prince Council,BigWigs_WrathOfTheLichKing\Citadel\BloodCouncil.lua
+blazing,,Valithria Dreamwalker,BigWigs_WrathOfTheLichKing\Citadel\Valithria.lua
+bosses,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+breath,,Malygos,BigWigs_WrathOfTheLichKing\Northrend\Malygos.lua
+burrow,,Anub'arak,BigWigs_WrathOfTheLichKing\Coliseum\Anubarak.lua
+charge,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+confess,,Argent Confessor Paletress,LittleWigs\WotLK\TrialOfTheChampion\Paletress.lua
+custom_off_charge_graphic,,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+custom_off_charge_text,,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+custom_off_charge_voice,,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+custom_on_autotalk,,Old Hillsbrad Foothills Trash,LittleWigs\TBC\OldHillsbradFoothills\Trash.lua
+custom_on_overcharge_mark,,Emalon the Storm Watcher,BigWigs_WrathOfTheLichKing\Northrend\Emalon.lua
+custom_on_valkyr_marker,,The Lich King,BigWigs_WrathOfTheLichKing\Citadel\LichKing.lua
+custom_select_charge_movement,,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+custom_select_charge_position,,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+defender,,Auriaya,BigWigs_WrathOfTheLichKing\Ulduar\Auriaya.lua
+drakes,,Sartharion,BigWigs_WrathOfTheLichKing\Northrend\Sartharion.lua
+eyebeam,,Kologarn,BigWigs_WrathOfTheLichKing\Ulduar\Kologarn.lua
+forms,,Gal'darah,LittleWigs\WotLK\Gundrak\Galdarah.lua
+guardians,,Kel'Thuzad Naxxramas,BigWigs_WrathOfTheLichKing\Naxxramas\Kelthuzad.lua
+hardmode,,Hodir,BigWigs_WrathOfTheLichKing\Ulduar\Hodir.lua
+harpoon,,Razorscale,BigWigs_WrathOfTheLichKing\Ulduar\Razorscale.lua
+health,,Thaddius,BigWigs_WrathOfTheLichKing\Naxxramas\Thaddius.lua
+iconprince,,Blood Prince Council,BigWigs_WrathOfTheLichKing\Citadel\BloodCouncil.lua
+incendiary_bombs,,Old Hillsbrad Foothills Trash,LittleWigs\TBC\OldHillsbradFoothills\Trash.lua
+mage,,Icecrown Gunship Battle,BigWigs_WrathOfTheLichKing\Citadel\Gunship.lua
+mark,,The Four Horsemen,BigWigs_WrathOfTheLichKing\Naxxramas\Horsemen.lua
+next,,The Twin Val'kyr,BigWigs_WrathOfTheLichKing\Coliseum\ValkyrTwins.lua
+ooze,,Rotface,BigWigs_WrathOfTheLichKing\Citadel\Rotface.lua
+phase,,Professor Putricide,BigWigs_WrathOfTheLichKing\Citadel\Putricide.lua
+phase2,,Sindragosa,BigWigs_WrathOfTheLichKing\Citadel\Sindragosa.lua
+portal,,Valithria Dreamwalker,BigWigs_WrathOfTheLichKing\Citadel\Valithria.lua
+portals,,The Violet Hold Trash,LittleWigs\WotLK\TheVioletHold\Trash.lua
+proximity,,Blood Prince Council,BigWigs_WrathOfTheLichKing\Citadel\BloodCouncil.lua
+shield,,The Twin Val'kyr,BigWigs_WrathOfTheLichKing\Coliseum\ValkyrTwins.lua
+small_tentacles,,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+snobold,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+sparkbuff,,Malygos,BigWigs_WrathOfTheLichKing\Northrend\Malygos.lua
+sparks,,Malygos,BigWigs_WrathOfTheLichKing\Northrend\Malygos.lua
+spew,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+spiders,,Maexxna,BigWigs_WrathOfTheLichKing\Naxxramas\Maexxna.lua
+sprays,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+stages,,Lady Deathwhisper,BigWigs_WrathOfTheLichKing\Citadel\Deathwhisper.lua
+state,,Lord Ahune,LittleWigs\TBC\TheSlavePens\Ahune.lua
+submerge,,The Beasts of Northrend,BigWigs_WrathOfTheLichKing\Coliseum\Beasts.lua
+suppresser,,Valithria Dreamwalker,BigWigs_WrathOfTheLichKing\Citadel\Valithria.lua
+surge,,Malygos,BigWigs_WrathOfTheLichKing\Northrend\Malygos.lua
+tentacle,,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+timers,,Tribunal of Ages,LittleWigs\HeroicPlus\HallsOfStone\TribunalOfAges.lua
+touch,,The Twin Val'kyr,BigWigs_WrathOfTheLichKing\Coliseum\ValkyrTwins.lua
+tree,,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
+vapor,,General Vezax,BigWigs_WrathOfTheLichKing\Ulduar\Vezax.lua
+vaporstack,,General Vezax,BigWigs_WrathOfTheLichKing\Ulduar\Vezax.lua
+vortex,,The Twin Val'kyr,BigWigs_WrathOfTheLichKing\Coliseum\ValkyrTwins.lua
+warmup,,Icecrown Gunship Battle,BigWigs_WrathOfTheLichKing\Citadel\Gunship.lua
+wave,,Freya,BigWigs_WrathOfTheLichKing\Ulduar\Freya.lua
+weakened,,Yogg-Saron,BigWigs_WrathOfTheLichKing\Ulduar\YoggSaron.lua
+web_wrap,,Maexxna,BigWigs_WrathOfTheLichKing\Naxxramas\Maexxna.lua

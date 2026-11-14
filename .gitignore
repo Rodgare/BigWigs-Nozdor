@@ -18,3 +18,5 @@
 !.gitignore
 BigWigs_WrathOfTheLichKing/Dalaran/HOGAN_NOTES.md
 APIDocumentation/
+!BigWigs_Voice_RU
+!BigWigs_Voice_RU/**
