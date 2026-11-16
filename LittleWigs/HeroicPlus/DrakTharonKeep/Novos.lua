@@ -20,10 +20,10 @@ local crystalHandlersLeft = 4 -- to display CL.mob_remaining messages
 --
 
 local L = mod:GetLocale()
-if L then
-	L.adds = -6378 -- Crystal Handler
-	L.adds_desc = -6375 -- The description of the first stage that mentions that 4 of those need to be killed.
-end
+-- if L then
+-- 	L.adds = -6378 -- Crystal Handler
+-- 	L.adds_desc = -6375 -- The description of the first stage that mentions that 4 of those need to be killed.
+-- end
 
 -------------------------------------------------------------------------------
 --  Initialization
@@ -68,7 +68,7 @@ function mod:OnEngage()
 	crystalHandlersSpawned = 1
 	crystalHandlersLeft = 4
 	self:Message("stages", "cyan", "Info", CL.stage:format(1), false)
-	self:CDBar("adds", 15.5, CL.count:format(self:SpellName(-6378), crystalHandlersSpawned), "spell_shadow_raisedead")
+	-- self:CDBar("adds", 15.5, CL.count:format(self:SpellName(-6378), crystalHandlersSpawned), "spell_shadow_raisedead")
 end
 
 -------------------------------------------------------------------------------

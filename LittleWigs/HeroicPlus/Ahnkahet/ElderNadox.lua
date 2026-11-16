@@ -14,7 +14,7 @@ mod:RegisterEnableMob(29309)
 function mod:GetOptions()
 	return {
 		56130, -- Brood Plague
-		-6042, -- Ahn'kahar Guardian
+		-- -6042, -- Ahn'kahar Guardian
 	}
 end
 
@@ -30,9 +30,9 @@ end
 -- Event Handlers
 --
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
-	self:Message(-6042, "orange", "Warning", msg, false)
-end
+-- function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
+-- 	self:Message(-6042, "orange", "Warning", msg, false)
+-- end
 
 function mod:BroodPlague(args)
 	self:TargetMessage(56130, args.destName, "yellow", "Info")

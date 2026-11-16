@@ -20,7 +20,7 @@ local splitPhase = 0
 
 function mod:GetOptions()
 	return {
-		-7395, -- Mirror Images
+		-- -7395, -- Mirror Images
 		47731, -- Critter
 		192510, -- Fire Bomb
 		192511, -- Frost Flash
@@ -57,7 +57,7 @@ function mod:UNIT_HEALTH_FREQUENT(event, unit)
 		if splitPhase > 1 or self:Normal() then -- No 2nd split on Normal mode
 			self:UnregisterUnitEvent(event, unit)
 		end
-		self:Message(-7395, "green", "Info", CL.soon:format(self:SpellName(-7395)), false)
+		-- self:Message(-7395, "green", "Info", CL.soon:format(self:SpellName(-7395)), false)
 	end
 end
 
