@@ -2772,9 +2772,10 @@ function boss:Berserk(seconds, noEngageMessage, customBoss, customBerserk, custo
 
 	-- There are many Berserks, but we use 26662 because Brutallus uses this one.
 	-- Brutallus is da bomb.
-	-- Nozdor 3.3.5: spell 26662 often has no usable texture, which renders as a
-	-- red square, so the default bar uses a texture that ships with the client.
-	local icon = "Ability_Warrior_EndlessRage"
+	-- Nozdor 3.3.5: spell 26662 often has no usable texture, and the old
+	-- Ability_Warrior_EndlessRage fallback is a bright red icon that reads like
+	-- a missing texture. Use a dragon head, the usual "enrage" symbol.
+	local icon = "INV_Misc_Head_Dragon_01"
 	local berserk = spells[26662]
 	if type(customBerserk) == "number" then
 		key = customBerserk

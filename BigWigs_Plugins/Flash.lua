@@ -121,7 +121,7 @@ end
 
 function mod:BigWigs_Pulse(event, _, _, icon)
 	pulser:Stop()
-	pulseFrame:SetTexture(icon or 134400) -- Interface\\Icons\\INV_Misc_QuestionMark
+	pulseFrame:SetTexture(icon or "Interface\\Icons\\INV_Misc_QuestionMark")
 	pulseFrame:Show()
 	pulser:Play()
 end

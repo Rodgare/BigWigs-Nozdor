@@ -1230,7 +1230,7 @@ local function sortBars(info, value)
 							for bar in next, normalAnchor.bars do
 								currentBarStyler.BarStopped(bar)
 								if value then
-									bar:SetIcon(bar:Get("bigwigs:iconoptionrestore") or 134337) -- Interface/Icons/INV_Misc_Orb_05
+									bar:SetIcon(bar:Get("bigwigs:iconoptionrestore") or "Interface\\Icons\\INV_Misc_Orb_05") -- Interface/Icons/INV_Misc_Orb_05
 								else
 									bar:Set("bigwigs:iconoptionrestore", bar:GetIcon())
 									bar:SetIcon(nil)
@@ -1240,7 +1240,7 @@ local function sortBars(info, value)
 							for bar in next, emphasizeAnchor.bars do
 								currentBarStyler.BarStopped(bar)
 								if value then
-									bar:SetIcon(bar:Get("bigwigs:iconoptionrestore") or 134337) -- Interface/Icons/INV_Misc_Orb_05
+									bar:SetIcon(bar:Get("bigwigs:iconoptionrestore") or "Interface\\Icons\\INV_Misc_Orb_05") -- Interface/Icons/INV_Misc_Orb_05
 								else
 									bar:Set("bigwigs:iconoptionrestore", bar:GetIcon())
 									bar:SetIcon(nil)

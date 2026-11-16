@@ -472,9 +472,11 @@ do
 	end
 
 	-- Adding core generic toggles
-	core:RegisterBossOption("berserk", L.berserk, L.berserk_desc, nil, 136224) -- 136224 = "Interface\\Icons\\spell_shadow_unholyfrenzy"
-	core:RegisterBossOption("altpower", L.altpower, L.altpower_desc, nil, 429383) -- 429383 = "Interface\\Icons\\spell_arcane_invocation"
-	core:RegisterBossOption("infobox", L.infobox, L.infobox_desc, nil, 443374) -- Interface\\Icons\\INV_MISC_CAT_TRINKET05
+	-- 3.3.5 has no FileDataIDs, so these must be real texture paths or the
+	-- options window renders the checkbox image as a red square.
+	core:RegisterBossOption("berserk", L.berserk, L.berserk_desc, nil, "Interface\\Icons\\INV_Misc_Head_Dragon_01")
+	core:RegisterBossOption("altpower", L.altpower, L.altpower_desc, nil, "Interface\\Icons\\Spell_Arcane_Arcane04")
+	core:RegisterBossOption("infobox", L.infobox, L.infobox_desc, nil, "Interface\\Icons\\INV_Misc_PocketWatch_02")
 	core:RegisterBossOption("stages", L.stages, L.stages_desc)
 	core:RegisterBossOption("warmup", L.warmup, L.warmup_desc)
 end
