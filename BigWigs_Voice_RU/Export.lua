@@ -25,9 +25,13 @@ local function export(silent)
 		-- enabled in town, so call GetOptions() directly to export every key.
 		local options = module.toggleOptions
 		if not options and module.GetOptions then
-			options = module:GetOptions(CL)
+			-- GetOptions() of an arbitrary module may rely on state that is not
+			-- ready yet when this runs on PLAYER_ENTERING_WORLD; one broken
+			-- module must not abort the export (or the loading screen).
+			local ok, result = pcall(module.GetOptions, module, CL)
+			if ok then options = result end
 		end
-		if options then
+		if type(options) == "table" then
 			for _, entry in ipairs(options) do
 				local key = type(entry) == "table" and entry[1] or entry
 				if type(key) == "number" and key > 0 then
@@ -60,7 +64,10 @@ local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
-	export(true)
+	local ok, err = pcall(export, true)
+	if not ok then
+		print("|cff33ff99BigWigs_Voice_RU|r: export skipped: " .. tostring(err))
+	end
 end)
 
 local function testSound(key, extension)
