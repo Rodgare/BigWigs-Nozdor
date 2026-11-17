@@ -1,12 +1,3 @@
--- Общий слой для боссов Осады Даларана (клиент 3.3.5 Nozdor).
--- Подключается в BigWigs_WrathOfTheLichKing.toc ДО боссовых файлов.
---
--- Правила:
---   * одна способность = один канонический key (обычно основной spellID);
---   * все варианты ID (ранги/дубли/каст+канал) перечисляются в ids;
---   * дебафф пишет текст только тому, на кого он лёг;
---   * никаких списков игроков и InfoBox — только личные сообщения и таймеры.
-
 DalaranFW = {}
 local D = DalaranFW
 local GetTime = GetTime
@@ -16,10 +7,6 @@ local function newState()
 	return { seen = {}, stacks = {} }
 end
 
---- Собрать toggleOptions и карты spellID -> ability.
--- @param mod модуль BigWigs
--- @param abilities список описаний способностей
--- @param extraOptions дополнительные опции (строки вроде "stages")
 function D:Setup(mod, abilities, extraOptions)
 	mod.__dalaran = {
 		abilities = abilities,
@@ -65,7 +52,6 @@ local function sortedKeys(tbl)
 	return list
 end
 
---- Зарегистрировать обработчики. Вызывать из OnBossEnable.
 function D:Enable(mod)
 	local data = mod.__dalaran
 	local auraIds = sortedKeys(data.aura)
@@ -96,13 +82,10 @@ function D:Enable(mod)
 	end
 end
 
---- Сбросить состояние между пуллами. Вызывать из OnEngage.
 function D:Reset(mod)
 	mod.__dalaran.state = newState()
 end
 
---- Защита от дублей CLEU и от парных ID одной способности.
--- @return true если событие нужно пропустить
 function D:Dedupe(mod, key, time, window)
 	local state = mod.__dalaran.state
 	local now = time or GetTime()
@@ -121,8 +104,6 @@ local function personalText(mod, ability, stacks)
 	return text
 end
 
---- Личное сообщение + звук только владельцу дебаффа.
--- @param quiet не играть звук (для обновлений стаков ниже порога)
 function D:Personal(mod, ability, stacks, quiet)
 	mod:PersonalMessage(ability.key, false, personalText(mod, ability, stacks))
 	local warned = ability.warnAt and stacks and stacks >= ability.warnAt
@@ -176,7 +157,6 @@ function D:OnCast(mod, args)
 	if ability.cdBar then mod:CDBar(ability.key, ability.cdBar, name) end
 end
 
---- Анонс для уникальных случаев (HP-фазы, эмоуты, ауры на боссе).
 function D:Announce(mod, key, color, sound, text, bar, cdBar, castBar)
 	local name = mod:SpellName(key)
 	mod:Message(key, color or "orange", sound, text)
