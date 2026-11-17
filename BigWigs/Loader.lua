@@ -1646,6 +1646,11 @@ do
 		local _, instanceType, _, _, _, _, _, id = GetInstanceInfo()
 		if instanceType == "none" then
 			local mapId = GetBestMapForUnit and GetBestMapForUnit("player")
+			-- Nozdor 3.3.5: C_Map.GetBestMapForUnit returns nil on this client, so
+			-- fall back to the zone area id or world boss addons never load on zone in.
+			if not mapId and GetCurrentMapAreaID then
+				mapId = GetCurrentMapAreaID()
+			end
 			if mapId then
 				id = -mapId -- Use map id for world bosses
 			end

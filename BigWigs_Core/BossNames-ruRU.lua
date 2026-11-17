@@ -28,6 +28,7 @@ BigWigs_BossNames_ruRU = {
 	["Broggok"] = "Броггок",
 	["Bronjahm"] = "Броньям",
 	["Captain Skarloc"] = "Капитан Скарлок",
+	["Celestial Tournament"] = "Небесный турнир",
 	["Chrono Lord Deja"] = "Повелитель времени Дежа",
 	["Chrono-Lord Epoch"] = "Хронолорд Эпох",
 	["Commander Sarannis"] = "Командир Сараннис",

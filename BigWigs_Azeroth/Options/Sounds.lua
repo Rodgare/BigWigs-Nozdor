@@ -1,51 +1,21 @@
-
-BigWigs:AddSounds("T'zane", {
-	[261552] = "long",
-	[261600] = "info",
-	[261605] = "alarm",
-	[262004] = "warning",
-})
-
-BigWigs:AddSounds("Ji'arak", {
-	[260908] = "info",
-	[261088] = "long",
-	[261467] = "alert",
-})
-
-BigWigs:AddSounds("Hailstone Construct", {
-	[274891] = "long",
-	[274895] = "warning",
-})
-
-BigWigs:AddSounds("Azurethos, The Winged Typhoon", {
-	[274829] = "warning",
-	[274832] = "long",
-	[274839] = "long",
-})
-
-BigWigs:AddSounds("Doom's Howl", {
-	[271120] = "alarm",
-	[271163] = "alert",
-	[271164] = "info",
-	[271223] = "long",
-	[271800] = "warning",
-})
-
-BigWigs:AddSounds("The Lion's Roar", {
-	[271120] = "alarm",
-	[271163] = "alert",
-	[271164] = "info",
-	[271223] = "long",
-	[271800] = "warning",
-})
-
-BigWigs:AddSounds("Warbringer Yenajz", {
-	[274842] = "info",
-	[274904] = "alarm",
-	[274932] = "long",
-})
-
-BigWigs:AddSounds("Dunegorger Kraulok", {
-	[275200] = "info",
-	[276046] = "long",
+BigWigs:AddSounds("Celestial Tournament", {
+	[83492] = "warning", -- Xuen
+	[83493] = "alert",
+	[83494] = "info",
+	[83813] = "alert",
+	[83819] = "alert",
+	[83512] = "alert", -- Yu'lon
+	[83513] = "long",
+	[83514] = "info",
+	[83515] = "alarm",
+	[83495] = "info", -- Niuzao
+	[83496] = "long",
+	[83497] = "info",
+	[83498] = "warning",
+	[83500] = "info",
+	[83509] = "alert", -- Chi-Ji
+	[83502] = "info",
+	[83503] = "info",
+	[83507] = "info",
+	[83816] = "info",
 })
