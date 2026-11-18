@@ -183,22 +183,11 @@ if not C_ChatInfo.RegisterAddonMessagePrefix then
 	end
 end
 
--- C_CVar: 3.3.5 exposes GetCVar/SetCVar as plain globals.
-if not C_CVar then
-	C_CVar = {}
-end
-if not C_CVar.GetCVar then
-	local gcv = GetCVar
-	C_CVar.GetCVar = function(name)
-		return (gcv and gcv(name)) or nil
-	end
-end
-if not C_CVar.SetCVar then
-	local scv = SetCVar
-	C_CVar.SetCVar = function(name, value)
-		if scv then scv(name, value) end
-	end
-end
+-- C_CVar: 3.3.5 exposes GetCVar/SetCVar as plain globals. NEVER create or write
+-- this global here: this client's SharedXML/FunctionOverride.lua GetCVar() reads
+-- the global C_CVar, so an addon-written table (or field) taints every Blizzard
+-- GetCVar caller and later surfaces as "<addon> is blocked from an action only
+-- available to the Blizzard UI". Callers use the plain globals directly.
 
 -- C_Map: no open-world map API on 3.3.5; callers already guard nils.
 -- (The client provides parts of C_Map, so only fill what is missing.)

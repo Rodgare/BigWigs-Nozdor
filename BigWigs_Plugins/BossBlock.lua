@@ -28,7 +28,7 @@ local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
 plugin.displayName = L.bossBlock
 local GetBestMapForUnit = BigWigsLoader.GetBestMapForUnit
 local GetSubZoneText = GetSubZoneText
-local SetCVar = C_CVar.SetCVar
+local SetCVar = SetCVar
 local CheckElv = nil
 
 -------------------------------------------------------------------------------

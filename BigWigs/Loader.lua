@@ -1161,11 +1161,12 @@ function mod:ADDON_LOADED(addon)
 	end
 	self:BigWigs_CoreOptionToggled(nil, "fakeDBMVersion", self.isFakingDBM)
 
-	-- 3.3.5 has no C_CVar; its GetCVar/SetCVar reject the "64" value anyway.
-	if self.isSoundOn ~= false and C_CVar and C_CVar.GetCVar and C_CVar.SetCVar then
-		local num = tonumber(C_CVar.GetCVar("Sound_NumChannels")) or 0
+	-- 3.3.5 has no C_CVar (defining that global taints Blizzard's GetCVar on
+	-- this client); its SetCVar rejects the "64" value anyway.
+	if self.isSoundOn ~= false and GetCVar and SetCVar then
+		local num = tonumber(GetCVar("Sound_NumChannels")) or 0
 		if num < 64 then
-			C_CVar.SetCVar("Sound_NumChannels", "64") -- Blizzard keeps screwing with addon sound priority so we force this minimum
+			SetCVar("Sound_NumChannels", "64") -- Blizzard keeps screwing with addon sound priority so we force this minimum
 		end
 	end
 
