@@ -1624,7 +1624,25 @@ do
 	local warnedThisZone = {}
 
 	local UnitGUID = UnitGUID
-	function mod:UNIT_TARGET(unit)
+	local InCombatLockdown = InCombatLockdown
+	-- Nozdor 3.3.5: the world-boss branch below is the only place in the loader
+	-- that can enable/load addons from an in-world UNIT_TARGET. 3.3.5 has no
+	-- Frame:RegisterUnitEvent, so this event also fires for focus, party and
+	-- raid units, including mid-fight. Loading/enabling addons under combat
+	-- lockdown is what produces "BigWigs is blocked from an action only
+	-- available to the Blizzard UI", so defer the whole check to
+	-- PLAYER_REGEN_ENABLED instead of running it in combat.
+	local pendingWorldBossUnit
+	local deferred = CreateFrame("Frame")
+	deferred:Hide()
+	deferred:SetScript("OnEvent", function(self)
+		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		local unit = pendingWorldBossUnit
+		pendingWorldBossUnit = nil
+		if unit then mod:UNIT_TARGET(unit) end
+	end)
+
+	local function handleWorldBossTarget(unit)
 		local guid = UnitGUID(unit.."target")
 		if guid then
 			local _, _, _, _, _, mobId = strsplit("-", guid)
@@ -1651,6 +1669,15 @@ do
 				end
 			end
 		end
+	end
+
+	function mod:UNIT_TARGET(unit)
+		if InCombatLockdown() then
+			pendingWorldBossUnit = unit
+			deferred:RegisterEvent("PLAYER_REGEN_ENABLED")
+			return
+		end
+		handleWorldBossTarget(unit)
 	end
 
 	function mod:ZONE_CHANGED_NEW_AREA()
