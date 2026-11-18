@@ -118,9 +118,16 @@ end
 -- nil, fall back to GetSpellInfo(id)'s icon at return 3 — the same thing DBM
 -- uses on 3.3.5 (DBM:GetSpellInfo returns name, rank, icon, ...). Never return
 -- nil here: callers treat nil as "no icon" and skip rendering.
+--
+-- Taint: never replace the client global itself. Blizzard's action bars, unit
+-- frames, buff frame and tooltips all call GetSpellTexture; wrapping the global
+-- with addon code taints every one of those secure code paths and surfaces as
+-- "Модификация BigWigs заблокирована" on any protected action (targeting,
+-- focusing, casting) later in the fight. Expose the wrapper under a private
+-- BigWigs name instead and bind it to a local where it is used.
 do
 	local originalGetSpellTexture = GetSpellTexture
-	GetSpellTexture = function(id)
+	function BigWigsGetSpellTexture(id)
 		if originalGetSpellTexture then
 			local tex = originalGetSpellTexture(id)
 			if tex then return tex end

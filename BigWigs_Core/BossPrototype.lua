@@ -29,7 +29,7 @@ local L = BigWigsAPI:GetLocale("BigWigs: Common")
 local UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitIsConnected = UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitIsConnected
 -- Nozdor 3.3.5: C_EncounterJournal may be absent (no dungeon journal API); guard.
 local C_EncounterJournal_GetSectionInfo = C_EncounterJournal and C_EncounterJournal.GetSectionInfo
-local GetSpellInfo, GetSpellTexture, GetTime, IsSpellKnown = GetSpellInfo, GetSpellTexture, GetTime, IsSpellKnown
+local GetSpellInfo, GetSpellTexture, GetTime, IsSpellKnown = GetSpellInfo, BigWigsGetSpellTexture or GetSpellTexture, GetTime, IsSpellKnown
 -- Nozdor 3.3.5: UnitGroupRolesAssigned does not exist. There is no role API
 -- on this client, so report "NONE" (BigWigs treats it as unknown) instead of
 -- erroring on every boss module enable.

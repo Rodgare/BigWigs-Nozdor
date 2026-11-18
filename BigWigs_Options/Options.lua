@@ -1130,7 +1130,9 @@ do
 	-- Nozdor 3.3.5 compat: GetAddOnEnableState does not exist (or has a different
 	-- signature) on WotLK. Force a permissive check (treated as enabled) so the
 	-- expansion branches always render regardless of the built-in's behavior.
-	GetAddOnEnableState = function(player, addon) return 1 end
+	-- Keep it local: assigning the global would taint any Blizzard/other-addon
+	-- code that later looks the name up.
+	local function GetAddOnEnableState(player, addon) return 1 end
 
 	local statusTable = {}
 	local playerName = nil

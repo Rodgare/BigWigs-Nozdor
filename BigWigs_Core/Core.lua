@@ -290,12 +290,12 @@ do
 		-- passes the highest existing spell id, which turns the old scan
 		-- into an infinite loop and freezes the client. Bound the search and
 		-- fall back to a known-good texture instead of hanging.
-		local icon = GetSpellTexture(lastSpell)
+		local icon = (BigWigsGetSpellTexture or GetSpellTexture)(lastSpell)
 		local scanGuard = 0
 		while scanGuard < 200 and (not icon or icon == 136243) do -- 136243 = cogwheel
 			scanGuard = scanGuard + 1
 			lastSpell = lastSpell + 1
-			icon = GetSpellTexture(lastSpell)
+			icon = (BigWigsGetSpellTexture or GetSpellTexture)(lastSpell)
 		end
 		if not icon or icon == 136243 then
 			icon = "Interface\\Icons\\INV_Misc_PocketWatch_01"
