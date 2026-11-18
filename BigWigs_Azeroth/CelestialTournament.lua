@@ -185,6 +185,7 @@ function mod:Fortitude(args)
 	self:Message2(args.spellId, "cyan", CL.casting:format(args.spellName))
 	self:PlaySound(args.spellId, "long")
 	self:CastBar(args.spellId, 1.5) -- 159.2 -> 160.7
+	self:CDBar(args.spellId, 7) -- 109.1, 116.1 (7.0)
 end
 
 function mod:Charge(args)

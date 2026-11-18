@@ -1628,6 +1628,17 @@ do
 		if guid then
 			local _, _, _, _, _, mobId = strsplit("-", guid)
 			mobId = tonumber(mobId)
+			-- Nozdor 3.3.5: UnitGUID() is "0xF130006D3900001A", not retail "Creature-...-id",
+			-- so decode the creature entry from the hex guid or world boss packs never load.
+			if not mobId then
+				local prefix = guid:sub(3, 5):lower()
+				if prefix == "f13" or prefix == "f14" or prefix == "f15" then
+					local entry = tonumber(guid:sub(5, 12), 16)
+					if entry then
+						mobId = entry % 65536
+					end
+				end
+			end
 			local id = mobId and worldBosses[mobId]
 			if id then
 				if loadAndEnableCore() then
