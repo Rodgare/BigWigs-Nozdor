@@ -74,7 +74,7 @@ function mod:BombPlanted(id, text)
 	local bomb = text:match("(%d+).+5")
 	if bomb then
 		bomb = tonumber(bomb)
-		self:Message("incendiary_bombs", "cyan", "Info", CL.count:format(self:SpellName(256798), bomb), L.incendiary_bombs_icon)
+		self:Message("incendiary_bombs", "cyan", "Info", CL.count:format(self:SpellName(256798) or (L and L.incendiary_bombs) or "Incendiary Bombs", bomb), L.incendiary_bombs_icon)
 
 		if bomb == 5 then
 			self:UnregisterWidgetEvent(id)

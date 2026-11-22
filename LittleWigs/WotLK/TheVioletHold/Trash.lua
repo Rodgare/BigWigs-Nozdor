@@ -40,6 +40,12 @@ local L = mod:GetLocale()
 if L then
 	L.portals = "Portals"
 	L.portals_desc = "Information about portals."
+	L.portal = "Portal"
+end
+
+-- 216299 is a Retail spell id, 3.3.5 does not know it, so SpellName() returns nil.
+local function portalName(self)
+	return self:SpellName(216299) or (L and L.portal) or "Portal"
 end
 
 --------------------------------------------------------------------------------
@@ -72,7 +78,7 @@ function mod:UpdateWaveTimers(id, text)
 		local currentWave = tonumber(wave)
 		if currentWave and currentWave ~= prevWave then
 			prevWave = currentWave
-			local portal = self:SpellName(216299) -- Portal
+			local portal = portalName(self) -- Portal
 			if currentWave == 6 or currentWave == 12 then
 				self:Message("portals", "yellow", "Info", CL.incoming:format(_G.BOSS), false)
 				self:StopBar(CL.count:format(portal, currentWave))
@@ -93,6 +99,6 @@ end
 
 function mod:BossDeaths()
 	local count = prevWave+1
-	self:Bar("portals", count == 7 and 35 or 30, CL.count:format(self:SpellName(216299), count), "spell_arcane_portaldalaran") -- (20s or 15s) + 15s
+	self:Bar("portals", count == 7 and 35 or 30, CL.count:format(portalName(self), count), "spell_arcane_portaldalaran") -- (20s or 15s) + 15s
 end
 
