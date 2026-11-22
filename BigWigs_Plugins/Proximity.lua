@@ -79,7 +79,16 @@ local OnOptionToggled = nil -- Function invoked when the proximity option is tog
 -- GLOBALS: BigWigs CUSTOM_CLASS_COLORS GameTooltip GameFontNormalHuge RAID_CLASS_COLORS SLASH_BigWigs_Proximity1 SLASH_BigWigs_Proximity2 UIParent
 
 -- XXX Fix after Beta
-UnitInPhase = UnitInPhase or function(unit) return not UnitPhaseReason(unit) end
+-- Local fallback only: never write a global. If the client has no phase API at
+-- all, treat everyone as in phase instead of erroring on a nil UnitPhaseReason.
+if not UnitInPhase then
+	local GetPhaseReason = UnitPhaseReason
+	if GetPhaseReason then
+		UnitInPhase = function(unit) return not GetPhaseReason(unit) end
+	else
+		UnitInPhase = function() return true end
+	end
+end
 
 --------------------------------------------------------------------------------
 -- Range Checking

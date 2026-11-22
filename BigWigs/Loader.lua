@@ -117,6 +117,13 @@ local CTimer = C_Timer or {}
 local CMap = C_Map or {}
 
 local function CompatSendAddonMessage(prefix, msg, channel)
+	-- Nozdor's AddonComm has no "INSTANCE_CHAT" distribution and throws
+	-- "Unknown addon chat type" when it is passed (BigWigs uses it for instance
+	-- raid-sync/version queries). Normalize here, in our own local wrapper,
+	-- instead of patching the shared C_ChatInfo namespace for every addon.
+	if channel == "INSTANCE_CHAT" then
+		channel = IsInRaid() and "RAID" or "PARTY"
+	end
 	if CChatInfo.SendAddonMessage then
 		return CChatInfo.SendAddonMessage(prefix, msg, channel)
 	end

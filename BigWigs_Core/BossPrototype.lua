@@ -600,21 +600,33 @@ do
 	local CLEU = CombatLogGetCurrentEventInfo
 	local hasEventInfo = type(CLEU) == "function"
 	bossUtilityFrame:SetScript("OnEvent", function(_, event, ...)
-		local sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, spellId, spellName, extraSpellId, amount, time
+		local sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, spellId, spellName, extraSpellId, extraSpellName, amount, time
+		local arg11, arg12
 		if hasEventInfo then
-			local primary
-			time, event, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, _, primary = CLEU()
-			extraSpellId, amount = primary, primary
+			time, event, _, sourceGUID, sourceName, sourceFlags, _, destGUID, destName, destFlags, _, spellId, spellName, _, arg11, arg12 = CLEU()
 		else
 			-- 3.3.5 has no CombatLogGetCurrentEventInfo: the payload is passed
 			-- directly to the OnEvent handler. 3.3.5 also omits the source and
 			-- destination raid flag arguments, which are unused here anyway.
-			local t, subevent, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, id, name, _, primary = ...
+			local t, subevent, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, id, name, _, primary, secondary = ...
 			time, event = t, subevent
 			sourceGUID, sourceName, sourceFlags = srcGUID, srcName, srcFlags
 			destGUID, destName, destFlags = dstGUID, dstName, dstFlags
 			spellId, spellName = id, name
-			extraSpellId, amount = primary, primary
+			arg11, arg12 = primary, secondary
+		end
+		-- The two fields after spellSchool are event specific. On damage events
+		-- the first one is the damage amount (boss modules read it as
+		-- args.extraSpellId), on dispel/interrupt it is extraSpellId and the
+		-- second is extraSpellName. On aura events the first one is auraType
+		-- ("BUFF"/"DEBUFF") and the second one is the stack count/amount, so
+		-- taking auraType as `amount` made every `args.amount > N` comparison
+		-- in boss modules throw "attempt to compare number with string".
+		extraSpellId, amount = arg11, arg11
+		extraSpellName = arg12
+		if event and event:sub(1, 11) == "SPELL_AURA_" and event ~= "SPELL_AURA_BROKEN" and event ~= "SPELL_AURA_BROKEN_SPELL" then
+			amount = tonumber(arg12) or 0
+			extraSpellName = nil
 		end
 		if allowedEvents[event] then
 			if event == "UNIT_DIED" then
@@ -643,7 +655,7 @@ do
 						-- DEVS! Please ask if you need args attached to the table that we've missed out!
 						args.sourceGUID, args.sourceName, args.sourceFlags, args.sourceRaidFlags = sourceGUID, sourceName, sourceFlags, sourceRaidFlags
 						args.destGUID, args.destName, args.destFlags, args.destRaidFlags = destGUID, destName, destFlags, destRaidFlags
-						args.time, args.spellId, args.spellName, args.extraSpellId, args.extraSpellName, args.amount = time, spellId, spellName, extraSpellId, amount, amount
+						args.time, args.spellId, args.spellName, args.extraSpellId, args.extraSpellName, args.amount = time, spellId, spellName, extraSpellId, extraSpellName, amount
 						if type(func) == "function" then
 							func(args)
 						else

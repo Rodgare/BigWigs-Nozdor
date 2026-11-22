@@ -151,6 +151,16 @@ function plugin:OnPluginEnable()
 	BigWigs.db.global.watchedMovies[-593] = nil -- Auchindoun temp reset
 end
 
+function plugin:OnPluginDisable()
+	-- Never leave the client's CVars altered after the plugin is turned off.
+	if self.db.profile.disableSfx then
+		SetCVar("Sound_EnableSFX", "1")
+	end
+	if self.db.profile.blockTooltipQuests then
+		SetCVar("showQuestTrackingTooltips", "1")
+	end
+end
+
 -------------------------------------------------------------------------------
 -- Event Handlers
 --
@@ -158,6 +168,9 @@ end
 do
 	local trackerHider = CreateFrame("Frame")
 	trackerHider:Hide()
+	-- Single reusable detached parent instead of one CreateFrame per engage.
+	local elvDetachParent = CreateFrame("Frame")
+	elvDetachParent:Hide()
 	local unregisteredEvents = {}
 	local function IsEventRegisteredLegacy(frame, event)
 		-- 3.3.5 has no Frame:IsEventRegistered. There is no query API for it, so
@@ -180,12 +193,6 @@ do
 			unregisteredEvents[event] = nil
 		end
 	end
-	local function RestoreEvent(frame, event)
-		if unregisteredEvents[event] then
-			trackerHider.RegisterEvent(frame, event)
-			unregisteredEvents[event] = nil
-		end
-	end
 
 	function CheckElv(self)
 		-- Undo damage by ElvUI (This frame makes the Objective Tracker protected)
@@ -194,16 +201,16 @@ do
 		if ObjectiveTrackerFrame and type(ObjectiveTrackerFrame.AutoHider) == "table" and trackerHider.GetParent(ObjectiveTrackerFrame.AutoHider) == ObjectiveTrackerFrame then
 			if InCombatLockdown() or UnitAffectingCombat("player") then
 				self:RegisterEvent("PLAYER_REGEN_ENABLED", function()
-					trackerHider.SetParent(ObjectiveTrackerFrame.AutoHider, (CreateFrame("Frame")))
+					trackerHider.SetParent(ObjectiveTrackerFrame.AutoHider, elvDetachParent)
 					self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 				end)
 			else
-				trackerHider.SetParent(ObjectiveTrackerFrame.AutoHider, (CreateFrame("Frame")))
+				trackerHider.SetParent(ObjectiveTrackerFrame.AutoHider, elvDetachParent)
 			end
 		end
 	end
 
-	local restoreObjectiveTracker = nil
+	local restoreObjectiveTracker, restoreObjectiveTrackerParent = nil, nil
 	function plugin:BigWigs_OnBossEngage()
 		if self.db.profile.blockEmotes and not (IsTestBuild and IsTestBuild()) then -- Don't block emotes on WoW beta.
 			KillEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
@@ -237,6 +244,7 @@ do
 		if tracker and self.db.profile.blockObjectiveTracker and not (GetTrackedAchievements and GetTrackedAchievements()) and diff ~= 8 and not trackerHider.IsProtected(tracker) then
 			restoreObjectiveTracker = trackerHider.GetParent(tracker)
 			if restoreObjectiveTracker then
+				restoreObjectiveTrackerParent = tracker
 				trackerHider.SetParent(tracker, trackerHider)
 			end
 		end
@@ -266,8 +274,10 @@ do
 			SetCVar("showQuestTrackingTooltips", "1")
 		end
 		if restoreObjectiveTracker then
-			trackerHider.SetParent(ObjectiveTrackerFrame, restoreObjectiveTracker)
-			restoreObjectiveTracker = nil
+			-- Restore the exact frame we detached, not the (possibly nil on 3.3.5)
+			-- global, so a swapped tracker instance cannot be reparented by mistake.
+			trackerHider.SetParent(restoreObjectiveTrackerParent or ObjectiveTrackerFrame, restoreObjectiveTracker)
+			restoreObjectiveTracker, restoreObjectiveTrackerParent = nil, nil
 		end
 	end
 end

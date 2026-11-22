@@ -1714,6 +1714,9 @@ do
 		local unit = findUnitByGUID(guid)
 		if not unit then return end
 		local nameplate = GetNamePlateForUnit and GetNamePlateForUnit(unit) or nil
+		-- 3.3.5 has no C_NamePlate, so nameplate is nil here: never SetParent(nil)
+		-- or anchor to a nil frame, just leave the bars where they already are.
+		if not nameplate then return end
 		local unitBars = nameplateBars[guid]
 		if unitBars then
 			local sorted = getOrder(nameplateBars[guid])

@@ -154,34 +154,15 @@ end
 -- (or another addon) already defines is left untouched.
 --------------------------------------------------------------------------------
 
--- C_ChatInfo: the BigWigs/LittleWigs set calls SendAddonMessage in the classic
--- 3.3.5 order (prefix, message, distribution [,target]). BigWigsLoader binds
--- C_ChatInfo.SendAddonMessage as the upvalue every plugin sends through, so a
--- single wrapper here fixes every sender.
+-- C_ChatInfo: deliberately NOT created or patched here. Writing into the shared
+-- C_ChatInfo namespace leaks into every other addon, and replacing
+-- C_ChatInfo.SendAddonMessage (which BigWigs/LittleWigs and DBM-style messages
+-- all go through) would change addon comms for the whole UI.
 --
--- The modern Nozdor AddonComm has no "INSTANCE_CHAT" distribution and throws
--- "Unknown addon chat type" the moment it is passed (BigWigs uses it for
--- instance raid-sync/version queries). AddonComm hooks the raw global
--- SendAddonMessage, which may not exist when this file loads, so normalize the
--- distribution here and always dispatch through the *live* global at call time:
--- RAID for a raid instance, otherwise PARTY, which the client accepts.
-if not C_ChatInfo then
-	C_ChatInfo = {}
-end
-C_ChatInfo.SendAddonMessage = function(prefix, message, distribution, target)
-	if distribution == "INSTANCE_CHAT" then
-		distribution = IsInRaid() and "RAID" or "PARTY"
-	end
-	if SendAddonMessage then
-		SendAddonMessage(prefix, message, distribution, target)
-	end
-end
-if not C_ChatInfo.RegisterAddonMessagePrefix then
-	local register = RegisterAddonMessagePrefix
-	C_ChatInfo.RegisterAddonMessagePrefix = function(prefix)
-		if register then register(prefix) end
-	end
-end
+-- The 3.3.5 Nozdor AddonComm has no "INSTANCE_CHAT" distribution and throws
+-- "Unknown addon chat type" for it, so the normalization BigWigs needs lives in
+-- BigWigsLoader's private CompatSendAddonMessage wrapper (Loader.lua), which is
+-- what every plugin actually binds and calls.
 
 -- C_CVar: 3.3.5 exposes GetCVar/SetCVar as plain globals. NEVER create or write
 -- this global here: this client's SharedXML/FunctionOverride.lua GetCVar() reads
@@ -361,9 +342,6 @@ end
 -- there aborted the enable sequence, leaving BigWigs disabled forever.
 if not IsLoggedIn then
 	IsLoggedIn = function() return true end
-end
-if not IsEncounterInProgress then
-	IsEncounterInProgress = function() return (UnitAffectingCombat and UnitAffectingCombat("player")) and true or false end
 end
 
 -- 3.3.5 has no IsEventRegistered (added in MoP). It is NOT added to the global
