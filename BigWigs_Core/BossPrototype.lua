@@ -161,14 +161,18 @@ local icons = setmetatable({}, {__index =
 		return value
 	end
 })
+-- Names seen in the combat log, keyed by spell id. On this 3.3.5 client many
+-- (custom/server) spell ids are missing from the DBC, so GetSpellInfo returns
+-- nil even though the server sends a real name in CLEU. Caching it here keeps
+-- messages readable without ever printing a raw id.
+local logSpellNames = {}
 local spells = setmetatable({}, {__index =
 	function(self, key)
 		local value
 		if key > 0 then
-			value = GetSpellInfo(key)
+			value = GetSpellInfo(key) or logSpellNames[key]
 			if not value then
 				core:Print(format("An invalid spell id (%d) is being used in a boss module.", key))
-				value = tostring(key)
 			end
 		else
 			-- Nozdor 3.3.5: journal sections don't resolve; degrade to the id.
@@ -179,7 +183,7 @@ local spells = setmetatable({}, {__index =
 				value = tostring(key)
 			end
 		end
-		self[key] = value
+		if value then self[key] = value end
 		return value
 	end
 })
@@ -628,6 +632,11 @@ do
 		if event and event:sub(1, 11) == "SPELL_AURA_" and event ~= "SPELL_AURA_BROKEN" and event ~= "SPELL_AURA_BROKEN_SPELL" then
 			amount = tonumber(arg12) or 0
 			extraSpellName = nil
+		end
+		-- Remember the server-provided spell name so modules can display it even
+		-- when this client's DBC does not know the id (GetSpellInfo returns nil).
+		if type(spellId) == "number" and type(spellName) == "string" and spellName ~= "" then
+			logSpellNames[spellId] = spellName
 		end
 		if allowedEvents[event] then
 			if event == "UNIT_DIED" then
