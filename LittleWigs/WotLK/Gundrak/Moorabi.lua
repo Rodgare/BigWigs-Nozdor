@@ -34,9 +34,13 @@ function mod:Transformation(args)
 	-- live remaining time. UnitCastingInfo() can return nothing (unknown unit
 	-- token / cast already over); it used to feed a nil endTime into arithmetic
 	-- and error on every cast. Fall back to the spell's base cast time.
-	local _, _, _, castTime = GetSpellInfo(args.spellId)
+	-- 3.3.5: GetSpellInfo = name, rank, icon, powerCost, isFunnel, powerType,
+	-- castingTime, ... so the cast time is the 7th return value.
+	local castTime = select(7, GetSpellInfo(args.spellId))
 	local length = castTime and castTime > 0 and castTime / 1000 or nil
-	local _, _, _, _, endTime = UnitCastingInfo("boss1")
+	-- 3.3.5: UnitCastingInfo = name, subText, text, texture, startTime, endTime,
+	-- isTradeSkill, castID, notInterruptible -> endTime is the 6th return value.
+	local endTime = select(6, UnitCastingInfo("boss1"))
 	if endTime then
 		length = endTime / 1000 - GetTime()
 	end

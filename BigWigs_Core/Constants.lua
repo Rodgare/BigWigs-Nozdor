@@ -115,8 +115,9 @@ end
 
 local function replaceIdWithName(msg)
 	local id = tonumber(msg)
+	if not id then return tostring(msg) end
 	if id > 0 then
-		return GetSpellInfo(id) or BigWigs:Print(("No spell name found for boss option using id %d."):format(id))
+		return GetSpellInfo(id) or tostring(id)
 	else
 		-- Nozdor 3.3.5: journal sections don't resolve; degrade to the id instead
 		-- of printing an error for every unresolved boss option.
@@ -127,6 +128,7 @@ local function replaceIdWithName(msg)
 end
 local function replaceIdWithDescription(msg)
 	local id = tonumber(msg)
+	if not id then return nil end
 	if id > 0 then
 		local desc = GetSpellDescription(id)
 		if desc then

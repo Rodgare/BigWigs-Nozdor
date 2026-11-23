@@ -168,6 +168,7 @@ local spells = setmetatable({}, {__index =
 			value = GetSpellInfo(key)
 			if not value then
 				core:Print(format("An invalid spell id (%d) is being used in a boss module.", key))
+				value = tostring(key)
 			end
 		else
 			-- Nozdor 3.3.5: journal sections don't resolve; degrade to the id.
@@ -980,8 +981,7 @@ do
 			local guid = UnitGUID(unit)
 			if guid and not UnitIsPlayer(unit) then
 				if isNumber then
-					local _, _, _, _, _, mobId = strsplit("-", guid)
-					guid = tonumber(mobId)
+					guid = guidToMobId(guid)
 				end
 				if guid == id then return unit end
 			end
@@ -1006,8 +1006,7 @@ do
 			if id == guid then
 				return unit, guid
 			elseif guid and isNumber then
-				local _, _, _, _, _, mobId = strsplit("-", guid)
-				if id == tonumber(mobId) then
+				if id == guidToMobId(guid) then
 					return unit, guid
 				end
 			end
@@ -1368,14 +1367,16 @@ do
 			end
 			local t1, t2, t3, t4, t5
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HELPFUL")
+				-- Nozdor 3.3.5 returns name, rank, icon, count, debuffType, duration,
+				-- expires, caster, isStealable, shouldConsolidate, spellID.
+				local name, _, _, stack, _, duration, expirationTime, _, _, _, spellId = UnitAura(unit, i, "HELPFUL")
 
 				if name == spell then
 					if not blacklist[spellId] then
 						blacklist[spellId] = true
-						BigWigs:Error(format("Found spell '%s' using id %d on %d, tell the authors!", name, spellId, self:Difficulty()))
+						BigWigs:Error(format("Found spell '%s' using id %s on %d, tell the authors!", tostring(name), tostring(spellId), self:Difficulty()))
 					end
-					t1, t2, t3, t4, t5 = name, stack, duration, expirationTime, value
+					t1, t2, t3, t4 = name, stack, duration, expirationTime
 				end
 
 				if not spellId then
@@ -1384,12 +1385,12 @@ do
 			end
 		else
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HELPFUL")
+				local name, _, _, stack, _, duration, expirationTime, _, _, _, spellId = UnitAura(unit, i, "HELPFUL")
 
 				if not spellId then
 					return
 				elseif spellId == spell then
-					return name, stack, duration, expirationTime, value
+					return name, stack, duration, expirationTime
 				end
 			end
 		end
@@ -1409,14 +1410,14 @@ do
 			end
 			local t1, t2, t3, t4, t5
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HARMFUL")
+				local name, _, _, stack, _, duration, expirationTime, _, _, _, spellId = UnitAura(unit, i, "HARMFUL")
 
 				if name == spell then
 					if not blacklist[spellId] then
 						blacklist[spellId] = true
-						BigWigs:Error(format("Found spell '%s' using id %d on %d, tell the authors!", name, spellId, self:Difficulty()))
+						BigWigs:Error(format("Found spell '%s' using id %s on %d, tell the authors!", tostring(name), tostring(spellId), self:Difficulty()))
 					end
-					t1, t2, t3, t4, t5 = name, stack, duration, expirationTime, value
+					t1, t2, t3, t4 = name, stack, duration, expirationTime
 				end
 
 				if not spellId then
@@ -1425,12 +1426,12 @@ do
 			end
 		else
 			for i = 1, 100 do
-				local name, _, stack, _, duration, expirationTime, _, _, spellId, _, _, _, _, _, value = UnitAura(unit, i, "HARMFUL")
+				local name, _, _, stack, _, duration, expirationTime, _, _, _, spellId = UnitAura(unit, i, "HARMFUL")
 
 				if not spellId then
 					return
 				elseif spellId == spell then
-					return name, stack, duration, expirationTime, value
+					return name, stack, duration, expirationTime
 				end
 			end
 		end

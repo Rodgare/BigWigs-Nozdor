@@ -306,12 +306,15 @@ do
 
 	function plugin:CHAT_MSG_WHISPER(event, _, sender, _, _, _, flag, _, _, _, _, _, guid)
 		if curDiff > 0 and flag ~= "GM" and flag ~= "DEV" then
-			local trimmedPlayer = Ambiguate(sender, "none")
+			-- 3.3.5: CHAT_MSG_WHISPER sender is already a plain unit name and
+			-- Ambiguate()/IsGuildMember() don't exist on this client.
+			local trimmedPlayer = sender
 			if not UnitInRaid(trimmedPlayer) and not UnitInParty(trimmedPlayer) and (not throttle[sender] or GetTime() - throttle[sender] > 30) then
 				throttle[sender] = GetTime()
-				local isBnetFriend = C_BattleNet.GetGameAccountInfoByGUID(guid)
+				local isBnetFriend = C_BattleNet and C_BattleNet.GetGameAccountInfoByGUID and C_BattleNet.GetGameAccountInfoByGUID(guid)
+				local isFriend = C_FriendList and C_FriendList.IsFriend and C_FriendList.IsFriend(guid)
 				local msg
-				if isBnetFriend or IsGuildMember(guid) or C_FriendList.IsFriend(guid) then
+				if isBnetFriend or isFriend then
 					friendlies[sender] = true
 					msg = CreateResponse(self.db.profile.mode)
 					if not timer and self.db.profile.exitCombat == 4 then
@@ -333,7 +336,7 @@ do
 			if not throttleBN[bnSenderID] or GetTime() - throttleBN[bnSenderID] > 30 then
 				throttleBN[bnSenderID] = GetTime()
 				local index = BNGetFriendIndex(bnSenderID)
-				local gameAccs = C_BattleNet.GetFriendNumGameAccounts(index)
+				local gameAccs = C_BattleNet and C_BattleNet.GetFriendNumGameAccounts and C_BattleNet.GetFriendNumGameAccounts(index) or 0
 				for i=1, gameAccs do
 					local gameAccountInfo = C_BattleNet.GetFriendGameAccountInfo(index, i)
 					-- Play on retail and get a whisper from Classic, seems to lack realmName, WoW 8.3
