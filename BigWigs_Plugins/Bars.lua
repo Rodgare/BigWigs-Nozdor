@@ -842,103 +842,17 @@ local function sortBars(info, value)
 			end
 		end,
 		args = {
-			custom = {
+			timeline = {
 				type = "group",
-				name = L.general,
-				order = 1,
+				name = L.timelineMode,
+				order = 0,
 				args = {
-					fontName = {
-						type = "select",
-						name = L.font,
-						order = 1,
-						values = media:List(FONT),
-						itemControl = "DDI-Font",
-						get = function(info)
-							for i, v in next, media:List(FONT) do
-								if v == db.fontName then return i end
-							end
-						end,
-						set = updateFont,
-					},
-					outline = {
-						type = "select",
-						name = L.outline,
-						order = 2,
-						values = {
-							NONE = L.none,
-							OUTLINE = L.thin,
-							THICKOUTLINE = L.thick,
-						},
-						set = updateFont,
-					},
-					monochrome = {
-						type = "toggle",
-						name = L.monochrome,
-						desc = L.monochromeDesc,
-						order = 3,
-						set = updateFont,
-					},
-					header1 = {
-						type = "header",
-						name = "",
-						order = 4,
-					},
-					barStyle = {
-						type = "select",
-						name = L.style,
-						order = 5,
-						values = barStyleRegister,
-						set = function(info, value)
-							db[info[#info]] = value
-							plugin:SetBarStyle(value)
-							local style = barStyles[value]
-							if style then
-								if style.barSpacing then
-									db.spacing = style.barSpacing
-								else
-									db.spacing = 1
-								end
-								rearrangeBars(normalAnchor)
-								rearrangeBars(emphasizeAnchor)
-
-								if style.barHeight then
-									db.BigWigsAnchor_height = style.barHeight
-									db.BigWigsEmphasizeAnchor_height = style.barHeight * 1.1
-								else
-									db.BigWigsAnchor_height = 16
-									db.BigWigsEmphasizeAnchor_height = 22
-								end
-								if style.fontSizeNormal then
-									db.fontSize = style.fontSizeNormal
-									updateFont()
-								end
-								if style.fontSizeEmphasized then
-									db.fontSizeEmph = style.fontSizeEmphasized
-									updateFont()
-								end
-
-								for bar in next, normalAnchor.bars do
-									currentBarStyler.BarStopped(bar)
-									bar:SetHeight(db.BigWigsAnchor_height)
-									currentBarStyler.ApplyStyle(bar)
-								end
-								for bar in next, emphasizeAnchor.bars do
-									currentBarStyler.BarStopped(bar)
-									bar:SetHeight(db.BigWigsEmphasizeAnchor_height)
-									currentBarStyler.ApplyStyle(bar)
-								end
-
-								BigWigsAnchor:RefixPosition()
-								BigWigsEmphasizeAnchor:RefixPosition()
-								plugin:UpdateGUI()
-							end
-						end,
-					},
 					timelineMode = {
 						type = "toggle",
-						name = L.timelineMode,
+						name = L.enable,
 						desc = L.timelineModeDesc,
-						order = 5.5,
+						order = 1,
+						width = "full",
 						set = function(info, value)
 							db.timelineMode = value
 							local bars = {}
@@ -967,7 +881,7 @@ local function sortBars(info, value)
 					timelineOpts = {
 						type = "group",
 						name = L.timelineOptions,
-						order = 5.6,
+						order = 2,
 						inline = true,
 						disabled = function() return not db.timelineMode end,
 						args = {
@@ -1062,6 +976,100 @@ local function sortBars(info, value)
 								set = timelineStyleSet,
 							},
 						},
+					},
+				},
+			},
+			custom = {
+				type = "group",
+				name = L.general,
+				order = 1,
+				args = {
+					fontName = {
+						type = "select",
+						name = L.font,
+						order = 1,
+						values = media:List(FONT),
+						itemControl = "DDI-Font",
+						get = function(info)
+							for i, v in next, media:List(FONT) do
+								if v == db.fontName then return i end
+							end
+						end,
+						set = updateFont,
+					},
+					outline = {
+						type = "select",
+						name = L.outline,
+						order = 2,
+						values = {
+							NONE = L.none,
+							OUTLINE = L.thin,
+							THICKOUTLINE = L.thick,
+						},
+						set = updateFont,
+					},
+					monochrome = {
+						type = "toggle",
+						name = L.monochrome,
+						desc = L.monochromeDesc,
+						order = 3,
+						set = updateFont,
+					},
+					header1 = {
+						type = "header",
+						name = "",
+						order = 4,
+					},
+					barStyle = {
+						type = "select",
+						name = L.style,
+						order = 5,
+						values = barStyleRegister,
+						set = function(info, value)
+							db[info[#info]] = value
+							plugin:SetBarStyle(value)
+							local style = barStyles[value]
+							if style then
+								if style.barSpacing then
+									db.spacing = style.barSpacing
+								else
+									db.spacing = 1
+								end
+								rearrangeBars(normalAnchor)
+								rearrangeBars(emphasizeAnchor)
+
+								if style.barHeight then
+									db.BigWigsAnchor_height = style.barHeight
+									db.BigWigsEmphasizeAnchor_height = style.barHeight * 1.1
+								else
+									db.BigWigsAnchor_height = 16
+									db.BigWigsEmphasizeAnchor_height = 22
+								end
+								if style.fontSizeNormal then
+									db.fontSize = style.fontSizeNormal
+									updateFont()
+								end
+								if style.fontSizeEmphasized then
+									db.fontSizeEmph = style.fontSizeEmphasized
+									updateFont()
+								end
+
+								for bar in next, normalAnchor.bars do
+									currentBarStyler.BarStopped(bar)
+									bar:SetHeight(db.BigWigsAnchor_height)
+									currentBarStyler.ApplyStyle(bar)
+								end
+								for bar in next, emphasizeAnchor.bars do
+									currentBarStyler.BarStopped(bar)
+									bar:SetHeight(db.BigWigsEmphasizeAnchor_height)
+									currentBarStyler.ApplyStyle(bar)
+								end
+
+								BigWigsAnchor:RefixPosition()
+								BigWigsEmphasizeAnchor:RefixPosition()
+								plugin:UpdateGUI()
+							end
+						end,
 					},
 					spacing = {
 						type = "range",
