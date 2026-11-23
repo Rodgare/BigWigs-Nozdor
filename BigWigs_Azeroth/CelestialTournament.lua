@@ -15,6 +15,13 @@ mod.worldBoss = 60615
 local L = mod:GetLocale() or {}
 local ACTIVE = L.active or "Активен: %s"
 
+-- Nozdor 3.3.5: the client's spell DB doesn't know these MoP ids, so the options
+-- panel would show bare ids. Core falls back to these entries when both
+-- GetSpellInfo() and GetSpellDescription() return nil. Uncomment and fill in.
+-- L[83492] = "Название способности"
+-- L["83492_desc"] = "Описание способности."
+L["83515_desc"] = "Волны"
+
 local XUEN, YULON, NIUZAO, CHIJI = 60615, 60612, 60614, 60613
 
 local BOSS_NAMES = {
@@ -52,17 +59,20 @@ function mod:GetOptions()
 		83495, 83496, 83497, 83498, 83500,
 		83509, 83502, 83503, 83507, 83816,
 	}
+	
 	local headers = {
 		["stages"] = "general",
-		[83492] = "Сюэнь", [83493] = "Сюэнь", [83494] = "Сюэнь", [83813] = "Сюэнь", [83819] = "Сюэнь",
-		[83512] = "Юй-лун", [83513] = "Юй-лун", [83514] = "Юй-лун", [83515] = "Юй-лун",
-		[83495] = "Нюцзао", [83496] = "Нюцзао", [83497] = "Нюцзао", [83498] = "Нюцзао", [83500] = "Нюцзао",
-		[83509] = "Чи-Цзи", [83502] = "Чи-Цзи", [83503] = "Чи-Цзи", [83507] = "Чи-Цзи", [83816] = "Чи-Цзи",
+		[83492] = "Сюэнь",
+		[83512] = "Юй-лун",
+		[83495] = "Нюцзао",
+		[83509] = "Чи-Цзи",
 	}
 	local altNames = {}
 	for i = 1, #options do
 		local id = options[i]
-		if type(id) == "number" then
+		-- Only add an alternative label when the name is still unknown, so a
+		-- hardcoded L[id] name doesn't render as "Name (83492)".
+		if type(id) == "number" and not L[id] then
 			altNames[id] = tostring(id)
 		end
 	end

@@ -211,20 +211,25 @@ function BigWigs:GetBossOptionDetails(module, option)
 		end
 	elseif optionType == "number" then
 		if option > 0 then
+			-- Nozdor 3.3.5: the client DB may not know custom/MoP spell ids, so
+			-- GetSpellInfo/GetSpellDescription return nil. Allow the module to
+			-- hardcode a fallback in its own locale table (L[id] / L[id.."_desc"]).
+			local L = module.GetLocale and module:GetLocale(true)
 			local spellName, _, icon = GetSpellInfo(option)
 			if not spellName then
-				-- Nozdor 3.3.5: many WotLK spell ids have no name here; degrade
-				-- to the id instead of erroring for every boss the user clicks.
-				spellName = tostring(option)
+				spellName = L and L[option] or tostring(option)
+			end
+			if type(spellName) ~= "string" then
+				spellName = tostring(spellName)
 			end
 			local desc = GetSpellDescription(option)
 			if not desc then
-				-- GetSpellDescription returns nil for a lot of WotLK spells on this
-				-- client, so treat it as a missing tooltip, not a hard error. Use a
-				-- string so the roleDesc..desc concat below can never fail.
-				desc = tostring(option)
+				desc = L and L[option .. "_desc"] or tostring(option)
 			else
 				desc = desc:gsub("[\r\n]+$", "") -- Remove stray CR+LF for e.g. 299250 spells that show another spell in their tooltip which isn't part of GetSpellDescription
+			end
+			if type(desc) ~= "string" then
+				desc = tostring(desc)
 			end
 			local roleDesc = getRoleStrings(module, option)
 			return option, spellName, roleDesc..desc, icon or defaultIcon, alternativeName
