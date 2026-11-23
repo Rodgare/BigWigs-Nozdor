@@ -324,7 +324,7 @@ function mod:Cast(args)
 
 
 
-	self:Message(id, "yellow", "Info", ("%s |cff808080(id %d, %s)|r"):format(text, id, args.sourceName or "?"))
+	self:Message(id, "yellow", "Info", text)
 
 end
 
