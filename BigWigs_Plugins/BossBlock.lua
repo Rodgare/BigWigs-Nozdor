@@ -213,8 +213,10 @@ do
 	local restoreObjectiveTracker, restoreObjectiveTrackerParent = nil, nil
 	function plugin:BigWigs_OnBossEngage()
 		if self.db.profile.blockEmotes and not (IsTestBuild and IsTestBuild()) then -- Don't block emotes on WoW beta.
-			KillEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
-			KillEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+			-- Nozdor 3.3.5: RaidBossEmoteFrame is driven by the chat events on this
+			-- client, not the newer RAID_BOSS_EMOTE/RAID_BOSS_WHISPER payload events.
+			KillEvent(RaidBossEmoteFrame, "CHAT_MSG_RAID_BOSS_EMOTE")
+			KillEvent(RaidBossEmoteFrame, "CHAT_MSG_RAID_BOSS_WHISPER")
 		end
 		if self.db.profile.blockGarrison then
 			KillEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
@@ -252,8 +254,8 @@ do
 
 	function plugin:BigWigs_OnBossWin()
 		if self.db.profile.blockEmotes then
-			RestoreEvent(RaidBossEmoteFrame, "RAID_BOSS_EMOTE")
-			RestoreEvent(RaidBossEmoteFrame, "RAID_BOSS_WHISPER")
+			RestoreEvent(RaidBossEmoteFrame, "CHAT_MSG_RAID_BOSS_EMOTE")
+			RestoreEvent(RaidBossEmoteFrame, "CHAT_MSG_RAID_BOSS_WHISPER")
 		end
 		if self.db.profile.blockGarrison then
 			RestoreEvent(AlertFrame, "GARRISON_MISSION_FINISHED")
