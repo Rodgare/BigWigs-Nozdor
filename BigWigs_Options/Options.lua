@@ -1106,6 +1106,7 @@ do
 		"Classic",
 		"BurningCrusade",
 		"WrathOfTheLichKing",
+		"Azeroth",
 		"HeroicPlus",
 		-- "MistsOfPandaria",
 		-- "WarlordsOfDraenor",
@@ -1113,6 +1114,16 @@ do
 		-- "BattleForAzeroth",
 		-- "Shadowlands"
 	}
+
+	-- Nozdor: custom display names for headers that EJ_GetTierInfo does not know
+	-- on this client (especially the BigWigs_Azeroth world-content pack).
+	local expansionTitles = {
+		HeroicPlus = "Heroic+",
+		Azeroth = "Открытый мир",
+	}
+	local function expansionTitle(name, index)
+		return expansionTitles[name] or (EJ_GetTierInfo and EJ_GetTierInfo(index))
+	end
 
 	-- Nozdor 3.3.5 compat: pick the default expansion header from the client's
 	-- interface number instead of hardcoding it to the latest expansion.
@@ -1207,7 +1218,7 @@ do
 				for i = 1, #expansionHeader do
 					local value = "BigWigs_" .. expansionHeader[i]
 					treeTbl[i] = {
-						text = (expansionHeader[i] == "HeroicPlus" and "Heroic+" or EJ_GetTierInfo(i)),
+						text = expansionTitle(expansionHeader[i], i),
 						value = value,
 						enabled = (value == defaultHeader or GetAddOnEnableState(playerName, value) > 0),
 					}
@@ -1220,7 +1231,7 @@ do
 				for i = 1, #expansionHeader do
 					local value = "LittleWigs_" .. expansionHeader[i]
 					treeTbl[i] = {
-						text = (expansionHeader[i] == "HeroicPlus" and "Heroic+" or EJ_GetTierInfo(i)),
+						text = expansionTitle(expansionHeader[i], i),
 						value = value,
 						enabled = enabled,
 					}
@@ -1238,11 +1249,12 @@ do
 					if id then
 					local zone
 					if id < 0 then
-						local tbl = GetMapInfo(-id)
-						if tbl then
-							zone = tbl.name
-						else
-							zone = tostring(id)
+						-- Nozdor: world/fake menus (e.g. -947 "Открытый мир") have
+						-- no client map info on 3.3.5, so prefer our own name table.
+						zone = loader.zoneNames[id]
+						if not zone then
+							local tbl = GetMapInfo(-id)
+							zone = tbl and tbl.name or tostring(id)
 						end
 else
 					-- Nozdor 3.3.5 fix: GetRealZoneText(id) and the C_Map* functions

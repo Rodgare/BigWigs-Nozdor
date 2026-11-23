@@ -287,6 +287,7 @@ do
 	local wod = "BigWigs_WarlordsOfDraenor"
 	local l = "BigWigs_Legion"
 	local bfa = "BigWigs_BattleForAzeroth"
+	local azeroth = "BigWigs_Azeroth"
 	local s = "BigWigs_Shadowlands"
 	local lw_c = "LittleWigs_Classic"
 	local lw_bc = "LittleWigs_BurningCrusade"
@@ -354,7 +355,7 @@ do
 		-- [1712] = l, -- Antorus, the Burning Throne
 		-- [1779] = l, -- Invasion Points
 		--[[ BigWigs: Battle for Azeroth ]]--
-		-- [-947] = bfa, -- Azeroth (Fake Menu)
+		[-947] = azeroth, -- Azeroth / Open World (Fake Menu, custom Nozdor pack)
 		-- [1861] = bfa, -- Uldir
 		-- [2070] = bfa, -- Battle Of Dazar'alor
 		-- [2096] = bfa, -- Crucible of Storms
@@ -495,6 +496,7 @@ do
 		[649] = "Испытание крестоносца",
 		[724] = "Рубиновое святилище",
 		[961] = "Осада Даларана",
+		[-947] = "Небесный турнир", -- BigWigs_Azeroth world content
 		[574] = "Крепость Утгард",
 		[575] = "Вершина Утгард",
 		[576] = "Нексус",
