@@ -71,6 +71,7 @@ function mod:GOSSIP_SHOW()
 end
 
 function mod:BombPlanted(id, text)
+	if not text then return end -- widget payload can be empty on this client
 	local bomb = text:match("(%d+).+5")
 	if bomb then
 		bomb = tonumber(bomb)

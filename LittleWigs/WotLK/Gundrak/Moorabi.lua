@@ -30,9 +30,19 @@ end
 
 function mod:Transformation(args)
 	self:Message(args.spellId, "orange", "Warning", CL.casting:format(args.spellName))
-	local _, _, _, _, endTime = UnitCastingInfo("boss1") -- cast time is different on each cast, at least on heroic/tw
-	local remaining = endTime / 1000 - GetTime()
-	self:Bar(args.spellId, remaining)
+	-- Cast time is different on each cast, at least on heroic/TW, so prefer the
+	-- live remaining time. UnitCastingInfo() can return nothing (unknown unit
+	-- token / cast already over); it used to feed a nil endTime into arithmetic
+	-- and error on every cast. Fall back to the spell's base cast time.
+	local _, _, _, castTime = GetSpellInfo(args.spellId)
+	local length = castTime and castTime > 0 and castTime / 1000 or nil
+	local _, _, _, _, endTime = UnitCastingInfo("boss1")
+	if endTime then
+		length = endTime / 1000 - GetTime()
+	end
+	if length and length > 0 then
+		self:Bar(args.spellId, length)
+	end
 end
 
 function mod:Interrupt(args)

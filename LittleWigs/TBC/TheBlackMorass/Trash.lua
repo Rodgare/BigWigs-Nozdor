@@ -30,6 +30,10 @@ if L then
 	L.wave_desc = "Announce approximate warning messages for the waves."
 
 	L.medivh = "Medivh"
+	L.time_rift = "Time Rift"
+	L.chrono_lord_deja = "Chrono Lord Deja"
+	L.temporus = "Temporus"
+	L.aeonus = "Aeonus"
 end
 
 --------------------------------------------------------------------------------
@@ -59,22 +63,23 @@ end
 --
 
 function mod:UpdateWaveTimers(id, text)
+	if not text then return end -- widget payload can be empty on this client
 	local wave = text:match("(%d+).+18")
 	if wave then
 		local currentWave = tonumber(wave)
 		if currentWave and currentWave ~= prevWave then
 			prevWave = currentWave
-			local rift = self:SpellName(147840) -- Time Rift
+			local rift = self:SpellName(147840) or L.time_rift -- Time Rift (Retail id, nil on 3.3.5)
 			self:Bar("wave", 15, CL.count:format(rift, currentWave), "INV_Misc_ShadowEgg")
 			if currentWave == 6 then
-				local chronoLordDeja = EJ_GetEncounterInfo(552)
+				local chronoLordDeja = EJ_GetEncounterInfo(552) or L.chrono_lord_deja
 				self:Message("wave", "yellow", "Info", CL.custom_sec:format(chronoLordDeja, 15), false)
 			elseif currentWave == 12 then
-				local temporus = EJ_GetEncounterInfo(553)
+				local temporus = EJ_GetEncounterInfo(553) or L.temporus
 				self:Message("wave", "yellow", "Info", CL.custom_sec:format(temporus, 15), false)
 			elseif currentWave == 18 then
 				self:UnregisterWidgetEvent(id)
-				local aeonus = EJ_GetEncounterInfo(554)
+				local aeonus = EJ_GetEncounterInfo(554) or L.aeonus
 				self:Message("wave", "yellow", "Info", CL.custom_sec:format(aeonus, 15), false)
 			else
 				self:Message("wave", "yellow", "Info", CL.custom_sec:format(CL.count:format(rift, currentWave), 15), false)
@@ -85,7 +90,7 @@ function mod:UpdateWaveTimers(id, text)
 end
 
 function mod:BossDeath(args)
-	self:Bar("wave", 45, CL.count:format(self:SpellName(147840), args.mobId == 17879 and 7 or 13), "INV_Misc_ShadowEgg") -- 30s + 15s
+	self:Bar("wave", 45, CL.count:format(self:SpellName(147840) or L.time_rift, args.mobId == 17879 and 7 or 13), "INV_Misc_ShadowEgg") -- 30s + 15s
 end
 
 function mod:MedivhDies()

@@ -41,6 +41,7 @@ if L then
 	L.portals = "Portals"
 	L.portals_desc = "Information about portals."
 	L.portal = "Portal"
+	L.cyanigosa = "Cyanigosa"
 end
 
 -- 216299 is a Retail spell id, 3.3.5 does not know it, so SpellName() returns nil.
@@ -73,6 +74,7 @@ end
 --
 
 function mod:UpdateWaveTimers(id, text)
+	if not text then return end -- widget payload can be empty on this client
 	local wave = text:match("(%d+).+18")
 	if wave then
 		local currentWave = tonumber(wave)
@@ -84,7 +86,7 @@ function mod:UpdateWaveTimers(id, text)
 				self:StopBar(CL.count:format(portal, currentWave))
 			elseif currentWave == 18 then
 				self:UnregisterWidgetEvent(id)
-				local cyanigosa = EJ_GetEncounterInfo(632)
+				local cyanigosa = EJ_GetEncounterInfo(632) or L.cyanigosa
 				self:Message("portals", "yellow", "Info", CL.custom_sec:format(cyanigosa, 17), false)
 				self:Bar("portals", 17, CL.count:format(portal, currentWave), "spell_arcane_portaldalaran")
 			else

@@ -30,6 +30,7 @@ if L then
 	L.warmup_trigger = "the mighty Legion"
 
 	L.prison_cell = "Prison Cell"
+	L.split = "Split"
 end
 
 --------------------------------------------------------------------------------
@@ -101,7 +102,7 @@ function mod:UNIT_HEALTH_FREQUENT(event, unit)
 	local hp = UnitHealth(unit) / UnitHealthMax(unit) * 100
 	if hp < nextSplitWarning then
 		nextSplitWarning = nextSplitWarning - 33
-		self:Message(-5335, "green", nil, CL.soon:format(self:SpellName(143024)), false) -- 143024 = Split
+		self:Message(-5335, "green", nil, CL.soon:format(self:SpellName(143024) or L.split), false) -- 143024 = Split (Retail id, nil on 3.3.5)
 		if nextSplitWarning < 33 then
 			self:UnregisterUnitEvent(event, unit)
 		end
