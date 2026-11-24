@@ -299,6 +299,9 @@ SlashCmdList.BIGWIGSPULL = function(input)
 			local _, _, _, _, _, _, _, id = GetInstanceInfo()
 			local instanceId = tonumber(id) or 0
 			SendAddonMessage("D4", ("PT\t%s\t%d"):format(input, instanceId), IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- DBM message
+			-- Modern DBM listens on its own "DBMv4-*" prefix, not on legacy "D4".
+			-- No map id is sent so the receiver's optional map filter never drops it.
+			SendAddonMessage("DBMv4-PT", tostring(seconds), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 		end
 	else
 		BigWigs:Print(L.requiresLeadOrAssist)

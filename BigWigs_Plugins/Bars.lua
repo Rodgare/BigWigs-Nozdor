@@ -1987,6 +1987,10 @@ do
 	timelineAnchor:SetMinResize(80, 40)
 	timelineAnchor:EnableMouse(true)
 	timelineAnchor:RegisterForDrag("LeftButton")
+	-- Keep the timeline's dark strip below unit frames (MEDIUM): it spans a
+	-- large area and used to cover things like the target-of-target frame
+	-- while bars were active during an encounter.
+	timelineAnchor:SetFrameStrata("LOW")
 	timelineAnchor:SetFrameLevel(21)
 
 	local bg = timelineAnchor:CreateTexture(nil, "BACKGROUND")
@@ -2131,6 +2135,7 @@ do
 	timelineLanding = CreateFrame("Frame", "BigWigsTimelineLanding", UIParent)
 	timelineLanding:SetClampedToScreen(true)
 	timelineLanding:SetMovable(true)
+	timelineLanding:SetFrameStrata("LOW")
 	timelineLanding:SetFrameLevel(22)
 	timelineLanding:RegisterForDrag("LeftButton")
 	timelineLanding:SetBackdrop(backdrop)
@@ -3169,6 +3174,8 @@ do
 			BigWigs:Print(L.sendCustomBar:format(barText))
 			plugin:Sync("CBar", input)
 			SendAddonMessage("D4", ("U\t%d\t%s"):format(seconds, barText), IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- DBM message
+			-- Modern DBM shows custom timers received as "pizza" timers.
+			SendAddonMessage("DBMv4-Pizza", ("%d\t%s"):format(seconds, barText), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 		end
 	end
 	SLASH_BIGWIGSRAIDBAR1 = "/raidbar"
@@ -3202,6 +3209,8 @@ SlashCmdList.BIGWIGSBREAK = function(input)
 
 		if IsInGroup() then
 			SendAddonMessage("D4", ("BT\t%d"):format(seconds), IsInGroup(2) and "INSTANCE_CHAT" or "RAID") -- DBM message
+			-- Modern DBM listens on its own "DBMv4-*" prefix.
+			SendAddonMessage("DBMv4-BT", tostring(seconds), IsInGroup(2) and "INSTANCE_CHAT" or "RAID")
 		end
 	else
 		BigWigs:Print(L.requiresLeadOrAssist)

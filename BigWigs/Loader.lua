@@ -1626,6 +1626,41 @@ function mod:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 			end
 			public:SendMessage("DBM_AddonMessage", sender, dbmPrefix, arg1, arg2, arg3, arg4)
 		end
+	elseif prefix == "DBMv4-Pizza" then
+		-- Modern DBM (including this private-server port) sends pull / pizza /
+		-- break timers under its own "DBMv4-*" prefix instead of the legacy "D4"
+		-- one. Translate them back into the DBM_AddonMessage prefixes our Pull
+		-- and Bars plugins already understand.
+		local seconds, text = strsplit("\t", msg)
+		local t = tonumber(seconds)
+		if t then
+			sender = Ambiguate(sender, "none")
+			-- Same language-independent names DBM uses to recognise its own
+			-- pull/break timers (sent in the sender's locale).
+			local dbmPull = {
+				["Атака"] = true, ["Pull in"] = true, ["Pull en"] = true,
+				["Pull dans"] = true, ["Iniciando en"] = true,
+				["开怪倒计时"] = true, ["풀링"] = true,
+				["풀링 중 입니다"] = true, ["戰鬥準備"] = true,
+			}
+			local dbmBreak = {
+				["Перерыв!"] = true, ["Break time!"] = true,
+				["Pause!"] = true, ["Pause"] = true, ["Pause !"] = true,
+				["¡Toca descanso!"] = true, ["¡Descanso!"] = true,
+				["休息时间！"] = true, ["休息時間!"] = true,
+				["쉬는 시간!"] = true,
+			}
+			text = text or ""
+			if dbmPull[text] then
+				loadAndEnableCore()
+				public:SendMessage("DBM_AddonMessage", sender, "PT", t, text)
+			elseif dbmBreak[text] then
+				loadAndEnableCore()
+				public:SendMessage("DBM_AddonMessage", sender, "BT", t, text)
+			else
+				public:SendMessage("DBM_AddonMessage", sender, "U", t, text)
+			end
+		end
 	end
 end
 
