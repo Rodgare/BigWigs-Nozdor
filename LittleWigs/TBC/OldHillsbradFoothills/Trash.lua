@@ -4,6 +4,8 @@
 
 local mod, CL = BigWigs:NewBoss("Old Hillsbrad Foothills Trash", 560)
 if not mod then return end
+local GetNumGroupMembers = BigWigsAPI.GetNumGroupMembers
+local C_Scenario = BigWigsAPI.C_Scenario
 mod.displayName = CL.trash
 mod:RegisterEnableMob(
 	18723, -- Erozion

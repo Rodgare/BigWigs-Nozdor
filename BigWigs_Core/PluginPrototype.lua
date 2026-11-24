@@ -4,6 +4,7 @@
 -- @alias plugin
 
 local plugin = {}
+local GetNumGroupMembers, IsInGroup, IsInRaid = BigWigsAPI.GetNumGroupMembers, BigWigsAPI.IsInGroup, BigWigsAPI.IsInRaid
 local core
 do
 	local _, tbl =...

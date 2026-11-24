@@ -85,6 +85,10 @@ end
 -- Global
 --
 
+-- Private storage shared with BigWigs_Core/modules (BigWigsAPI itself is a
+-- read-only proxy: __newindex drops writes, so internal data lives here).
+API.internal = {}
+
 BigWigsAPI = setmetatable({}, { __index = API, __newindex = function() end, __metatable = false })
 
 --------------------------------------------------------------------------------
@@ -97,32 +101,30 @@ BigWigsAPI = setmetatable({}, { __index = API, __newindex = function() end, __me
 -- so it never overrides what the client or another addon already provides.
 --------------------------------------------------------------------------------
 
--- C_EncounterJournal.GetSectionInfo: the core binds this as an upvalue at file-load
--- time (Constants.lua, BossPrototype.lua, Core.lua). If the table is nil the whole
--- core fails to load, so always guarantee a table with a safe stub.
-if not C_EncounterJournal then
-	C_EncounterJournal = {}
-end
-if not C_EncounterJournal.GetSectionInfo then
-	C_EncounterJournal.GetSectionInfo = function() return nil end
+-- C_EncounterJournal.GetSectionInfo: BigWigs binds this privately. Never
+-- create the client namespace globally; custom FrameXML does `if C_Foo then`
+-- checks and a partial table can silently send it down a broken path.
+do
+	local ej = C_EncounterJournal
+	API.C_EncounterJournal = {
+		GetSectionInfo = (ej and ej.GetSectionInfo) or function() return nil end,
+	}
 end
 
 -- GetSpellDescription: added in a later expansion. Only used for boss-option
--- tooltips; returning nil degrades cleanly.
-if not GetSpellDescription then
-	GetSpellDescription = function() return nil end
-end
+-- tooltips; returning nil degrades cleanly. Keep it private for the same reason.
+API.GetSpellDescription = GetSpellDescription or function() return nil end
 
 -- GetSpellTexture: try the stock function first (it returns a renderable icon
 -- path for most spells). For the few encounter/target spells where it returns
--- nil, fall back to GetSpellInfo(id)'s icon at return 3 — the same thing DBM
+-- nil, fall back to GetSpellInfo(id)'s icon at return 3 вЂ” the same thing DBM
 -- uses on 3.3.5 (DBM:GetSpellInfo returns name, rank, icon, ...). Never return
 -- nil here: callers treat nil as "no icon" and skip rendering.
 --
 -- Taint: never replace the client global itself. Blizzard's action bars, unit
 -- frames, buff frame and tooltips all call GetSpellTexture; wrapping the global
 -- with addon code taints every one of those secure code paths and surfaces as
--- "Модификация BigWigs заблокирована" on any protected action (targeting,
+-- "РњРѕРґРёС„РёРєР°С†РёСЏ BigWigs Р·Р°Р±Р»РѕРєРёСЂРѕРІР°РЅР°" on any protected action (targeting,
 -- focusing, casting) later in the fight. Expose the wrapper under a private
 -- BigWigs name instead and bind it to a local where it is used.
 do
@@ -141,12 +143,11 @@ end
 -- the custom Nozdor FrameXML does `if IsEncounterInProgress then` checks and a
 -- false-returning stub can silently send Blizzard UI code down the wrong path.
 -- Expose it privately for BigWigs callers instead.
-BigWigsAPI.IsEncounterInProgress = IsEncounterInProgress or function() return false end
+API.IsEncounterInProgress = IsEncounterInProgress or function() return false end
 
--- IsSpellKnown: guarded here so callers never hit a nil global.
-if not IsSpellKnown then
-	IsSpellKnown = function() return false end
-end
+-- IsSpellKnown: exists natively on this client; expose it privately so the
+-- global namespace is never touched.
+API.IsSpellKnown = IsSpellKnown or function() return false end
 
 --------------------------------------------------------------------------------
 -- Nozdor 3.3.5 compatibility: modern "C_*" namespaces the client does not
@@ -170,24 +171,25 @@ end
 -- GetCVar caller and later surfaces as "<addon> is blocked from an action only
 -- available to the Blizzard UI". Callers use the plain globals directly.
 
--- C_Map: no open-world map API on 3.3.5; callers already guard nils.
--- (The client provides parts of C_Map, so only fill what is missing.)
-if not C_Map then
-	C_Map = {}
-end
-if not C_Map.GetBestMapForUnit then
-	C_Map.GetBestMapForUnit = function() return nil end
-end
-if not C_Map.GetMapInfo then
-	C_Map.GetMapInfo = function() return nil end
+-- C_Map: no open-world map API on 3.3.5. Expose only the two methods BigWigs
+-- uses through BigWigsAPI; never create or mutate the client namespace.
+do
+	local cm = C_Map
+	API.C_Map = {
+		GetBestMapForUnit = (cm and cm.GetBestMapForUnit) or function() return nil end,
+		GetMapInfo = (cm and cm.GetMapInfo) or function() return nil end,
+	}
 end
 
 -- C_Timer: normally provided by the client, but fill any missing method with a
 -- frame-based scheduler. Returns timer objects with :Cancel() like the real API.
-if not C_Timer then
-	C_Timer = {}
-end
+-- Private: do not create the global namespace.
 do
+	local timer = {
+		After = C_Timer and C_Timer.After,
+		NewTicker = C_Timer and C_Timer.NewTicker,
+		NewTimer = C_Timer and C_Timer.NewTimer,
+	}
 	local frame = CreateFrame("Frame")
 	frame:Hide()
 	local jobs = {}
@@ -228,15 +230,16 @@ do
 			self:Hide()
 		end
 	end)
-	if not C_Timer.After then
-		C_Timer.After = function(delay, func) return schedule(delay, func, nil) end
+	if not timer.After then
+		timer.After = function(delay, func) return schedule(delay, func, nil) end
 	end
-	if not C_Timer.NewTicker then
-		C_Timer.NewTicker = function(delay, func, count) return schedule(delay, func, count) end
+	if not timer.NewTicker then
+		timer.NewTicker = function(delay, func, count) return schedule(delay, func, count) end
 	end
-	if not C_Timer.NewTimer then
-		C_Timer.NewTimer = function(delay, func) return schedule(delay, func, 1) end
+	if not timer.NewTimer then
+		timer.NewTimer = function(delay, func) return schedule(delay, func, 1) end
 	end
+	API.C_Timer = timer
 end
 
 -- C_Spell: only used by BigWigs_Options for spell-data prefetch. Keep it
@@ -244,9 +247,18 @@ end
 -- take a modern path that expects real spell data on 3.3.5.
 do
 	local realCSpell = C_Spell
-	BigWigsAPI.C_Spell = {
+	API.C_Spell = {
 		IsSpellDataCached = (realCSpell and realCSpell.IsSpellDataCached) or function() return true end,
 		RequestLoadSpellData = (realCSpell and realCSpell.RequestLoadSpellData) or function() end,
+	}
+end
+
+-- C_Scenario: LittleWigs uses GetCriteriaInfo to distinguish encounter phases.
+-- Missing on 3.3.5, so keep a private stub; never create the global namespace.
+do
+	local cs = C_Scenario
+	API.C_Scenario = {
+		GetCriteriaInfo = (cs and cs.GetCriteriaInfo) or function() return nil end,
 	}
 end
 
@@ -265,23 +277,21 @@ end
 -- dungeon tree calls it unguarded, so it would crash the whole tab and the
 -- "Raid Bosses"/"Dungeons" sections would never render. Provide an equivalent
 -- that returns a localized expansion name for the tier index.
-if not EJ_GetTierInfo then
-	local EJ_GetTierInfoNames = {
-		{ -- enUS fallback
-			[1] = "Classic", [2] = "The Burning Crusade", [3] = "Wrath of the Lich King",
-			[4] = "Cataclysm", [5] = "Mists of Pandaria", [6] = "Warlords of Draenor",
-			[7] = "Legion", [8] = "Battle for Azeroth", [9] = "Shadowlands",
-		},
-		ruRU = {
-			[1] = "Классика", [2] = "Пылающий клинок", [3] = "Гнев Короля-лича",
-			[4] = "Катаклизм", [5] = "Туман Пандарии", [6] = "Дренаор",
-			[7] = "Легион", [8] = "Битва за Азерот", [9] = "Темные земли",
-		},
-	}
-	local tierNames = EJ_GetTierInfoNames[GetLocale()] or EJ_GetTierInfoNames[1]
-	EJ_GetTierInfo = function(tier)
-		return tierNames[tier]
-	end
+local EJ_GetTierInfoNames = {
+	{ -- enUS fallback
+		[1] = "Classic", [2] = "The Burning Crusade", [3] = "Wrath of the Lich King",
+		[4] = "Cataclysm", [5] = "Mists of Pandaria", [6] = "Warlords of Draenor",
+		[7] = "Legion", [8] = "Battle for Azeroth", [9] = "Shadowlands",
+	},
+	ruRU = {
+		[1] = "РљР»Р°СЃСЃРёРєР°", [2] = "РџС‹Р»Р°СЋС‰РёР№ РєР»РёРЅРѕРє", [3] = "Р“РЅРµРІ РљРѕСЂРѕР»СЏ-Р»РёС‡Р°",
+		[4] = "РљР°С‚Р°РєР»РёР·Рј", [5] = "РўСѓРјР°РЅ РџР°РЅРґР°СЂРёРё", [6] = "Р”СЂРµРЅР°РѕСЂ",
+		[7] = "Р›РµРіРёРѕРЅ", [8] = "Р‘РёС‚РІР° Р·Р° РђР·РµСЂРѕС‚", [9] = "РўРµРјРЅС‹Рµ Р·РµРјР»Рё",
+	},
+}
+local ejTierNames = EJ_GetTierInfoNames[GetLocale()] or EJ_GetTierInfoNames[1]
+API.EJ_GetTierInfo = EJ_GetTierInfo or function(tier)
+	return ejTierNames[tier]
 end
 
 --------------------------------------------------------------------------------
@@ -292,40 +302,32 @@ end
 -- every encounter throw before any bar could be created -> no indicators.
 --------------------------------------------------------------------------------
 
-if not GetNumGroupMembers then
-	GetNumGroupMembers = function()
-		if GetNumRaidMembers and GetNumRaidMembers() > 0 then
-			return GetNumRaidMembers()
-		end
-		if GetNumPartyMembers then
-			return GetNumPartyMembers() + 1
-		end
-		return 0
+API.GetNumGroupMembers = GetNumGroupMembers or function()
+	if GetNumRaidMembers and GetNumRaidMembers() > 0 then
+		return GetNumRaidMembers()
 	end
+	if GetNumPartyMembers then
+		return GetNumPartyMembers() + 1
+	end
+	return 0
 end
 
-if not IsInRaid then
-	IsInRaid = function()
-		return (GetNumRaidMembers and GetNumRaidMembers() > 0) and true or false
-	end
+API.IsInRaid = IsInRaid or function()
+	return (GetNumRaidMembers and GetNumRaidMembers() > 0) and true or false
 end
 
-if not IsInGroup then
-	IsInGroup = function()
-		if GetNumRaidMembers and GetNumRaidMembers() > 0 then return true end
-		if GetNumPartyMembers and GetNumPartyMembers() > 0 then return true end
-		return false
-	end
+API.IsInGroup = IsInGroup or function()
+	if GetNumRaidMembers and GetNumRaidMembers() > 0 then return true end
+	if GetNumPartyMembers and GetNumPartyMembers() > 0 then return true end
+	return false
 end
 
-if not UnitGroupRolesAssigned then
-	UnitGroupRolesAssigned = function(unit)
-		local symbol = "MAINTANK"
-		if GetPartyAssignment and GetPartyAssignment(symbol, unit) then
-			return "TANK"
-		end
-		return "NONE"
+API.UnitGroupRolesAssigned = UnitGroupRolesAssigned or function(unit)
+	local symbol = "MAINTANK"
+	if GetPartyAssignment and GetPartyAssignment(symbol, unit) then
+		return "TANK"
 	end
+	return "NONE"
 end
 
 -- GetSpecialization / GetSpecializationRole are absent on 3.3.5 and every
@@ -335,13 +337,13 @@ end
 -- that expects a real spec id, then receive nil from the stub.
 
 -- IsLoggedIn is 4.x+. core:Enable() calls it unconditionally, and a nil call
--- there aborted the enable sequence, leaving BigWigs disabled forever.
-if not IsLoggedIn then
-	IsLoggedIn = function() return true end
-end
+-- there aborted the enable sequence, leaving BigWigs disabled forever. Expose
+-- privately; the client already provides it so this normally forwards.
+API.IsLoggedIn = IsLoggedIn or function() return true end
 
 -- 3.3.5 has no IsEventRegistered (added in MoP). It is NOT added to the global
 -- frame prototype here: patching RegisterEvent/UnregisterEvent for every widget
 -- in the game also patched every ElvUI frame, which broke ElvUI's settings
 -- (missing menu entries / unrendered text). BossBlock, the only caller, uses a
 -- local fallback instead.
+

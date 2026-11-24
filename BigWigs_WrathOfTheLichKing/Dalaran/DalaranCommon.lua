@@ -1,5 +1,5 @@
-DalaranFW = {}
-local D = DalaranFW
+BigWigsAPI.internal.DalaranFW = {}
+local D = BigWigsAPI.internal.DalaranFW
 local GetTime = GetTime
 local format = string.format
 

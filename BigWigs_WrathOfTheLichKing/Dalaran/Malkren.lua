@@ -1,5 +1,6 @@
 local mod = BigWigs:NewBoss("Overseer Malkren", 961, 53046)
 if not mod then return end
+local DalaranFW = BigWigsAPI.internal.DalaranFW
 mod:RegisterEnableMob(53046)
 mod:SetEncounterID(53046)
 mod:SetStage(1)

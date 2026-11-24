@@ -13,6 +13,7 @@ if not plugin then return end
 --
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
+local C_Timer = BigWigsAPI.C_Timer
 local media = LibStub("BW-LibSharedMedia-3.0")
 local FONT = media.MediaType and media.MediaType.FONT or "font"
 plugin.displayName = L.infoBox

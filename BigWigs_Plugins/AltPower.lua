@@ -22,6 +22,8 @@ plugin.defaultDB = {
 --
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
+local GetNumGroupMembers, IsInGroup, IsInRaid = BigWigsAPI.GetNumGroupMembers, BigWigsAPI.IsInGroup, BigWigsAPI.IsInRaid
+local UnitGroupRolesAssigned = BigWigsAPI.UnitGroupRolesAssigned
 local media = LibStub("BW-LibSharedMedia-3.0")
 local FONT = media.MediaType and media.MediaType.FONT or "font"
 plugin.displayName = L.altPowerTitle

@@ -28,12 +28,12 @@ end
 local L = BigWigsAPI:GetLocale("BigWigs: Common")
 local UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitIsConnected = UnitAffectingCombat, UnitIsPlayer, UnitGUID, UnitPosition, UnitIsConnected
 -- Nozdor 3.3.5: C_EncounterJournal may be absent (no dungeon journal API); guard.
-local C_EncounterJournal_GetSectionInfo = C_EncounterJournal and C_EncounterJournal.GetSectionInfo
-local GetSpellInfo, GetSpellTexture, GetTime, IsSpellKnown = GetSpellInfo, BigWigsGetSpellTexture or GetSpellTexture, GetTime, IsSpellKnown
+local C_EncounterJournal_GetSectionInfo = BigWigsAPI.C_EncounterJournal.GetSectionInfo
+local GetSpellInfo, GetSpellTexture, GetTime, IsSpellKnown = GetSpellInfo, BigWigsGetSpellTexture or GetSpellTexture, GetTime, BigWigsAPI.IsSpellKnown
 -- Nozdor 3.3.5: UnitGroupRolesAssigned does not exist. There is no role API
 -- on this client, so report "NONE" (BigWigs treats it as unknown) instead of
 -- erroring on every boss module enable.
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned or function(unit)
+local UnitGroupRolesAssigned = BigWigsAPI.UnitGroupRolesAssigned or function(unit)
 	if GetPartyAssignment and GetPartyAssignment("MAINTANK", unit) then
 		return "TANK"
 	end
@@ -41,6 +41,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned or function(unit)
 end
 local SendChatMessage, GetInstanceInfo, Timer = BigWigsLoader.SendChatMessage, BigWigsLoader.GetInstanceInfo, BigWigsLoader.CTimerAfter
 local IsEncounterInProgress = BigWigsAPI.IsEncounterInProgress
+local GetNumGroupMembers, IsInGroup, IsInRaid = BigWigsAPI.GetNumGroupMembers, BigWigsAPI.IsInGroup, BigWigsAPI.IsInRaid
 local format, find, gsub, band, tremove, wipe = string.format, string.find, string.gsub, bit.band, table.remove, table.wipe
 local select, type, next, tonumber = select, type, next, tonumber
 local C = core.C
@@ -1467,7 +1468,7 @@ do
 		"raid31", "raid32", "raid33", "raid34", "raid35", "raid36", "raid37", "raid38", "raid39", "raid40"
 	}
 	local partyList = {"player", "party1", "party2", "party3", "party4"}
-	local GetNumGroupMembers, IsInRaid = GetNumGroupMembers, IsInRaid
+	local GetNumGroupMembers, IsInRaid = BigWigsAPI.GetNumGroupMembers, BigWigsAPI.IsInRaid
 	--- Iterate over your group.
 	-- Automatically uses "party" or "raid" tokens depending on your group type.
 	-- @return iterator
@@ -2730,7 +2731,7 @@ function boss:PlayVictorySound()
 end
 
 do
-	local SendAddonMessage, IsInGroup = BigWigsLoader.SendAddonMessage, IsInGroup
+	local SendAddonMessage, IsInGroup = BigWigsLoader.SendAddonMessage, BigWigsAPI.IsInGroup
 	--- Send an addon sync to other players.
 	-- @param msg the sync message/prefix
 	-- @param[opt] extra other optional value you want to send

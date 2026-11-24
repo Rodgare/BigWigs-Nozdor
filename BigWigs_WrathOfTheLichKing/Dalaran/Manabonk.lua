@@ -1,5 +1,6 @@
 local mod = BigWigs:NewBoss("Manabonk", 961, 53080)
 if not mod then return end
+local DalaranFW = BigWigsAPI.internal.DalaranFW
 mod:RegisterEnableMob(53080)
 mod:SetEncounterID(53080)
 mod:SetStage(1)

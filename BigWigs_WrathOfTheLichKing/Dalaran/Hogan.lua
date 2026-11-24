@@ -1,5 +1,6 @@
 local mod = BigWigs:NewBoss("Hogan Death Herald", 961, 53000)
 if not mod then return end
+local DalaranFW = BigWigsAPI.internal.DalaranFW
 mod:RegisterEnableMob(53000)
 mod:SetEncounterID(53000)
 mod:SetStage(1)

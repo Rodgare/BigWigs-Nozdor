@@ -13,8 +13,8 @@ local descriptions = {}
 
 -- Nozdor 3.3.5: C_EncounterJournal may be absent entirely (no dungeon journal
 -- API on this client); capture what exists and treat nil lookups as "no data".
-local GetSpellInfo, GetSpellTexture, GetSpellDescription = GetSpellInfo, BigWigsGetSpellTexture or GetSpellTexture, GetSpellDescription
-local C_EncounterJournal_GetSectionInfo = C_EncounterJournal and C_EncounterJournal.GetSectionInfo
+local GetSpellInfo, GetSpellTexture, GetSpellDescription = GetSpellInfo, BigWigsGetSpellTexture or GetSpellTexture, BigWigsAPI.GetSpellDescription
+local C_EncounterJournal_GetSectionInfo = BigWigsAPI.C_EncounterJournal.GetSectionInfo
 -- Nozdor 3.3.5: generic spell-icon fallback (the same one DBM uses) for abilities
 -- whose icon cannot be resolved on this client, so options are never icon-less.
 local defaultIcon = "Interface\\Icons\\Spell_Nature_WispSplode"

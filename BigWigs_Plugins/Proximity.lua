@@ -36,6 +36,7 @@ plugin.defaultDB = {
 local db = nil
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
+local GetNumGroupMembers, IsInGroup, IsInRaid = BigWigsAPI.GetNumGroupMembers, BigWigsAPI.IsInGroup, BigWigsAPI.IsInRaid
 plugin.displayName = L.proximity_name
 local L_proximityTitle = L.proximityTitle
 

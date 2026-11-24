@@ -16,6 +16,10 @@ end
 local L = BigWigsAPI:GetLocale("BigWigs")
 local mod, public = {}, {}
 local bwFrame = CreateFrame("Frame")
+-- Client API shims live on BigWigsAPI, never in the global namespace.
+local C_Map, C_Timer = BigWigsAPI.C_Map, BigWigsAPI.C_Timer
+local GetNumGroupMembers, IsInGroup, IsInRaid = BigWigsAPI.GetNumGroupMembers, BigWigsAPI.IsInGroup, BigWigsAPI.IsInRaid
+local IsLoggedIn, IsSpellKnown, UnitGroupRolesAssigned = BigWigsAPI.IsLoggedIn, BigWigsAPI.IsSpellKnown, BigWigsAPI.UnitGroupRolesAssigned
 
 -- Nozdor client compatibility: textures have neither SetColorTexture nor
 -- SetColor (both were removed in the modern API). Fill solid color through

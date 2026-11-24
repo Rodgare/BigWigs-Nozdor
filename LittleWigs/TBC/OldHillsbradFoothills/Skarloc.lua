@@ -4,6 +4,7 @@
 
 local mod, CL = BigWigs:NewBoss("Captain Skarloc", 560, 539)
 if not mod then return end
+local C_Scenario = BigWigsAPI.C_Scenario
 mod:RegisterEnableMob(
 	17862, -- Captain Skarloc
 	17860, -- Durnholde Veteran

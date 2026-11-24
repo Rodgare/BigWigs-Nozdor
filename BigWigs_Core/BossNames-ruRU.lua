@@ -5,7 +5,7 @@
 -- Keyed by module name so Core.lua NewBoss can localize displayName without the
 -- retail Encounter-Journal API (EJ_GetEncounterInfo) which does not exist here.
 
-BigWigs_BossNames_ruRU = {
+BigWigsAPI.internal.BossNames_ruRU = {
 	["Aeonus"] = "Эонус",
 	["Akil'zon"] = "Акил'зон",
 	["Algalon the Observer"] = "Алгалон Наблюдатель",

@@ -25,6 +25,8 @@ local L = BigWigsAPI:GetLocale("BigWigs")
 local CL = BigWigsAPI:GetLocale("BigWigs: Common")
 local loader = BigWigsLoader
 core.SendMessage = loader.SendMessage
+local C_Map, C_EncounterJournal = BigWigsAPI.C_Map, BigWigsAPI.C_EncounterJournal
+local IsInGroup, IsLoggedIn = BigWigsAPI.IsInGroup, BigWigsAPI.IsLoggedIn
 
 local customBossOptions = {}
 local pName = UnitName("player")
@@ -549,7 +551,7 @@ do
 			-- API) is absent/nil here, so boss names would always fall back to the
 			-- English module name. Use the bundled Russian name table (BossNames-ruRU.lua)
 			-- instead so the options dropdown and in-raid messages show localized names.
-			m.displayName = (BigWigs_BossNames_ruRU and BigWigs_BossNames_ruRU[moduleName])
+			m.displayName = (BigWigsAPI.internal.BossNames_ruRU and BigWigsAPI.internal.BossNames_ruRU[moduleName])
 				or (EJ_GetEncounterInfo and journalId and EJ_GetEncounterInfo(journalId))
 				or moduleName
 

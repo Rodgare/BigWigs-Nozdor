@@ -1,5 +1,6 @@
 local mod = BigWigs:NewBoss("High Cultist Daren", 961, 53070)
 if not mod then return end
+local DalaranFW = BigWigsAPI.internal.DalaranFW
 mod:RegisterEnableMob(53070)
 mod:SetEncounterID(53070)
 mod:SetStage(1)

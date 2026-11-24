@@ -29,6 +29,7 @@ end
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
 local IsEncounterInProgress = BigWigsAPI.IsEncounterInProgress
+local C_Timer, IsInGroup, IsInRaid = BigWigsAPI.C_Timer, BigWigsAPI.IsInGroup, BigWigsAPI.IsInRaid
 plugin.displayName = L.bars
 
 local startBreak -- Break timer function

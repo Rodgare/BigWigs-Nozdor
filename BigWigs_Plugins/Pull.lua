@@ -11,6 +11,7 @@ if not plugin then return end
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
 local IsEncounterInProgress = BigWigsAPI.IsEncounterInProgress
+local IsInGroup, IsInRaid, UnitGroupRolesAssigned = BigWigsAPI.IsInGroup, BigWigsAPI.IsInRaid, BigWigsAPI.UnitGroupRolesAssigned
 local GetInstanceInfo = BigWigsLoader.GetInstanceInfo
 local SendAddonMessage = BigWigsLoader.SendAddonMessage
 local isLogging = false

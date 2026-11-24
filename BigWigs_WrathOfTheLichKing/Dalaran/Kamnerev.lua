@@ -1,5 +1,6 @@
 local mod = BigWigs:NewBoss("Kamnerev the Living Earth", 961, 53060)
 if not mod then return end
+local DalaranFW = BigWigsAPI.internal.DalaranFW
 mod:RegisterEnableMob(53060)
 mod:SetEncounterID(53060)
 mod:SetStage(1)

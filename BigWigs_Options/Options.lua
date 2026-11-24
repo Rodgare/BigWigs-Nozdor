@@ -15,6 +15,9 @@ local lds = LibStub("BW-LibDualSpec-1.0")
 
 local loader = BigWigsLoader
 local API = BigWigsAPI
+local C_Map, C_EncounterJournal = API.C_Map, API.C_EncounterJournal
+local EJ_GetTierInfo, GetSpellDescription = API.EJ_GetTierInfo, API.GetSpellDescription
+local IsInGroup, IsInRaid = API.IsInGroup, API.IsInRaid
 local sort = table.sort
 options.SendMessage = loader.SendMessage
 
