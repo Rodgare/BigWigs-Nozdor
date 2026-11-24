@@ -25,6 +25,7 @@ plugin.defaultDB = {
 --
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
+local IsEncounterInProgress = BigWigsAPI.IsEncounterInProgress
 plugin.displayName = L.bossBlock
 local GetBestMapForUnit = BigWigsLoader.GetBestMapForUnit
 local GetSubZoneText = GetSubZoneText

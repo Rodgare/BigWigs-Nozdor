@@ -40,6 +40,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned or function(unit)
 	return "NONE"
 end
 local SendChatMessage, GetInstanceInfo, Timer = BigWigsLoader.SendChatMessage, BigWigsLoader.GetInstanceInfo, BigWigsLoader.CTimerAfter
+local IsEncounterInProgress = BigWigsAPI.IsEncounterInProgress
 local format, find, gsub, band, tremove, wipe = string.format, string.find, string.gsub, bit.band, table.remove, table.wipe
 local select, type, next, tonumber = select, type, next, tonumber
 local C = core.C
@@ -857,11 +858,11 @@ do
 	local noID = "Module '%s' tried to register/unregister a widget event without specifying a widget id."
 	local noFunc = "Module '%s' tried to register a widget event with the function '%s' which doesn't exist in the module."
 
-	local GetIconAndTextWidgetVisualizationInfo = C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo
+	local GetIconAndTextWidgetVisualizationInfo = C_UIWidgetManager and C_UIWidgetManager.GetIconAndTextWidgetVisualizationInfo
 	function boss:UPDATE_UI_WIDGET(_, tbl)
 		local id = tbl.widgetID
 		local func = widgetEventMap[self][id]
-		if func then
+		if func and GetIconAndTextWidgetVisualizationInfo then
 			local dataTbl = GetIconAndTextWidgetVisualizationInfo(id)
 			self[func](self, id, dataTbl.text)
 		end

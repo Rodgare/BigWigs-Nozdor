@@ -677,6 +677,7 @@ local function getDefaultToggleOption(scrollFrame, dropdown, module, bossOption)
 	end
 	-- Nozdor 3.3.5: C_Spell (retail spell-data prefetch) may be absent / a no-op;
 	-- guard so the options screen can never crash on a spell that isn't cached.
+	local C_Spell = BigWigsAPI.C_Spell
 	if spellId and C_Spell and C_Spell.IsSpellDataCached and not C_Spell.IsSpellDataCached(spellId) then
 		needsUpdate[spellId] = check
 		if C_Spell.RequestLoadSpellData then C_Spell.RequestLoadSpellData(spellId) end

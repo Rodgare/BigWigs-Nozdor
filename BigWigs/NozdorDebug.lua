@@ -161,9 +161,52 @@ if BigWigsLoader and BigWigsLoader.RegisterMessage then
 	BigWigsLoader.RegisterMessage(listener, "BigWigs_OnBossEngage")
 end
 
+local totHooked = false
+local function totTrace()
+	local stack = debugstack and debugstack() or ""
+	local out = {}
+	for line in stack:gmatch("[^\n]+") do
+		if line:find("NozdorDebug", 1, true) or line:find("hooksecurefunc", 1, true) then
+			-- skip our own hook frames
+		else
+			out[#out + 1] = line
+		end
+		if #out >= 5 then break end
+	end
+	return table.concat(out, " <- ")
+end
+
+local function hookTargetOfTarget()
+	if totHooked then return end
+	if not TargetFrameToT then print("|cFF33FF99BigWigs|r TargetFrameToT not found.") return end
+	totHooked = true
+	hooksecurefunc(TargetFrameToT, "Hide", function()
+		local line = "ToT Hide: " .. totTrace()
+		logEvent("TOT", line)
+		print("|cFFFF3333BigWigs|r " .. line)
+	end)
+	hooksecurefunc(TargetFrameToT, "Show", function()
+		local line = "ToT Show: " .. totTrace()
+		logEvent("TOT", line)
+		print("|cFF33FF99BigWigs|r " .. line)
+	end)
+	hooksecurefunc(TargetFrameToT, "SetAlpha", function(_, alpha)
+		if alpha == 0 then
+			local line = "ToT Alpha(0): " .. totTrace()
+			logEvent("TOT", line)
+			print("|cFFFF3333BigWigs|r " .. line)
+		end
+	end)
+	print("|cFF33FF99BigWigs|r ToT tracer enabled. Reproduce, then /bwdbg dump")
+end
+
 SLASH_BIGWIGSDEBUG1 = "/bwdbg"
 SlashCmdList["BIGWIGSDEBUG"] = function(msg)
 	local cmd = (msg or ""):lower():match("^%s*(%S*)") or ""
+	if cmd == "tot" then
+		hookTargetOfTarget()
+		return
+	end
 	if cmd == "clear" then
 		BigWigsDebugDB = { events = {} }
 		print("|cFF33FF99BigWigs|r debug log cleared.")

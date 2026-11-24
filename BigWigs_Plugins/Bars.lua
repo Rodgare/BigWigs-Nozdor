@@ -28,6 +28,7 @@ do
 end
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
+local IsEncounterInProgress = BigWigsAPI.IsEncounterInProgress
 plugin.displayName = L.bars
 
 local startBreak -- Break timer function
@@ -1987,10 +1988,6 @@ do
 	timelineAnchor:SetMinResize(80, 40)
 	timelineAnchor:EnableMouse(true)
 	timelineAnchor:RegisterForDrag("LeftButton")
-	-- Keep the timeline's dark strip below unit frames (MEDIUM): it spans a
-	-- large area and used to cover things like the target-of-target frame
-	-- while bars were active during an encounter.
-	timelineAnchor:SetFrameStrata("LOW")
 	timelineAnchor:SetFrameLevel(21)
 
 	local bg = timelineAnchor:CreateTexture(nil, "BACKGROUND")
@@ -2135,7 +2132,6 @@ do
 	timelineLanding = CreateFrame("Frame", "BigWigsTimelineLanding", UIParent)
 	timelineLanding:SetClampedToScreen(true)
 	timelineLanding:SetMovable(true)
-	timelineLanding:SetFrameStrata("LOW")
 	timelineLanding:SetFrameLevel(22)
 	timelineLanding:RegisterForDrag("LeftButton")
 	timelineLanding:SetBackdrop(backdrop)

@@ -235,7 +235,7 @@ end
 do
 	local units = {"boss1", "boss2", "boss3", "boss4", "boss5"}
 
-	local UnitHealth, UnitHealthMax, UnitName, IsEncounterInProgress = UnitHealth, UnitHealthMax, UnitName, IsEncounterInProgress
+	local UnitHealth, UnitHealthMax, UnitName, IsEncounterInProgress = UnitHealth, UnitHealthMax, UnitName, BigWigsAPI.IsEncounterInProgress
 	local function StoreHealth()
 		if IsEncounterInProgress() then
 			for i = 1, 5 do

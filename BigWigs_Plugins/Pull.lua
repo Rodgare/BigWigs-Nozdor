@@ -10,10 +10,11 @@ if not plugin then return end
 --
 
 local L = BigWigsAPI:GetLocale("BigWigs: Plugins")
+local IsEncounterInProgress = BigWigsAPI.IsEncounterInProgress
 local GetInstanceInfo = BigWigsLoader.GetInstanceInfo
 local SendAddonMessage = BigWigsLoader.SendAddonMessage
 local isLogging = false
-local IsEncounterInProgress, PlaySoundFile = IsEncounterInProgress, PlaySoundFile
+local IsEncounterInProgress, PlaySoundFile = BigWigsAPI.IsEncounterInProgress, PlaySoundFile
 local media = LibStub("BW-LibSharedMedia-3.0")
 local SOUND = media.MediaType and media.MediaType.SOUND or "sound"
 

@@ -137,11 +137,11 @@ do
 	end
 end
 
--- IsEncounterInProgress: not available on 3.3.5. Used for pull/wipe bookkeeping;
--- returning false merely disables those optimizations, it never errors.
-if not IsEncounterInProgress then
-	IsEncounterInProgress = function() return false end
-end
+-- IsEncounterInProgress: not available on 3.3.5. Do not create it as a global:
+-- the custom Nozdor FrameXML does `if IsEncounterInProgress then` checks and a
+-- false-returning stub can silently send Blizzard UI code down the wrong path.
+-- Expose it privately for BigWigs callers instead.
+BigWigsAPI.IsEncounterInProgress = IsEncounterInProgress or function() return false end
 
 -- IsSpellKnown: guarded here so callers never hit a nil global.
 if not IsSpellKnown then
@@ -239,15 +239,15 @@ do
 	end
 end
 
--- C_Spell: assume spell data is always "cached" so previews never stall.
-if not C_Spell then
-	C_Spell = {}
-end
-if not C_Spell.IsSpellDataCached then
-	C_Spell.IsSpellDataCached = function() return true end
-end
-if not C_Spell.RequestLoadSpellData then
-	C_Spell.RequestLoadSpellData = function() end
+-- C_Spell: only used by BigWigs_Options for spell-data prefetch. Keep it
+-- private: a global stub makes the custom FrameXML's `if C_Spell then` checks
+-- take a modern path that expects real spell data on 3.3.5.
+do
+	local realCSpell = C_Spell
+	BigWigsAPI.C_Spell = {
+		IsSpellDataCached = (realCSpell and realCSpell.IsSpellDataCached) or function() return true end,
+		RequestLoadSpellData = (realCSpell and realCSpell.RequestLoadSpellData) or function() end,
+	}
 end
 
 -- ElvUI nameplates flip onto the modern driver path whenever C_NamePlate is
@@ -255,13 +255,10 @@ end
 -- true while GetNamePlateForUnit/GetNamePlates returned nil, so ElvUI's
 -- NAME_PLATE_UNIT_ADDED never found a frame and every nameplate disappeared.
 -- Leave the client namespace absent so ElvUI keeps its working 3.3.5 fallback.
--- (C_Scenario, C_BattleNet, C_FriendList, C_UIWidgetManager have no such
--- consumer, so they are still stubbed to return nil without erroring.)
-for _, ns in next, { "C_Scenario", "C_BattleNet", "C_FriendList", "C_UIWidgetManager" } do
-	if not _G[ns] then
-		_G[ns] = setmetatable({}, { __index = function(self, k) self[k] = function() return nil end; return self[k] end })
-	end
-end
+-- The same rule applies to every C_* namespace: on this custom client the
+-- FrameXML is partially modernized and does `if C_Foo then` checks, so a
+-- truthy empty stub can silently send Blizzard code down a broken path.
+-- BigWigs callers guard these namespaces themselves instead.
 
 -- Nozdor 3.3.5: EJ_GetTierInfo (retail Encounter-Journal API, used to label the
 -- expansion tiers in the BigWigs options tree) does not exist here. The raid /
@@ -331,12 +328,11 @@ if not UnitGroupRolesAssigned then
 	end
 end
 
-if not GetSpecialization then
-	GetSpecialization = function() return nil end
-end
-if not GetSpecializationRole then
-	GetSpecializationRole = function() return nil end
-end
+-- GetSpecialization / GetSpecializationRole are absent on 3.3.5 and every
+-- BigWigs caller already guards them (`if GetSpecialization then ... end`).
+-- Do NOT create them globally: other addons (WeakAuras, Bartender, HealBot)
+-- also do `if GetSpecialization then` and would silently take a modern path
+-- that expects a real spec id, then receive nil from the stub.
 
 -- IsLoggedIn is 4.x+. core:Enable() calls it unconditionally, and a nil call
 -- there aborted the enable sequence, leaving BigWigs disabled forever.
